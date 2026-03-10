@@ -1,1 +1,1 @@
-# mynpmpackages.wtf
+# mypackages.dev

@@ -6,6 +6,6 @@ export const GITHUB_API = 'https://api.github.com';
 
 export const PROJECT_OWNER = 'phun-ky';
 
-export const PROJECT_NAME = 'mynpmpackages.wtf';
+export const PROJECT_NAME = 'mypackages.dev';
 
 export const PROJECT_REPO_SITE_URL = `https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}`;
