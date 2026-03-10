@@ -1,0 +1,9 @@
+.meta {
+  min-width: 320px;
+  gap: var(--container-padding);
+  grid-area: meta;
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr 320px;
+  grid-template-areas: 'downloads downloads downloads packages';
+}

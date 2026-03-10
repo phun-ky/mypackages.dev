@@ -1,0 +1,184 @@
+.navigation {
+  border-right: 1px solid rgba(29, 30, 38, 0.5);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  width: var(--navigation-width);
+  grid-area: navigation;
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  position: sticky;
+  top: var(--header-height);
+  background-color: rgba(8, 11, 22, 1);
+  overflow: hidden;
+  z-index: 900;
+
+  &:hover {
+    overflow: auto;
+
+    .navigation-list-action,
+    .navigation-list-item {
+      width: 100%;
+    }
+  }
+}
+
+.navigation-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation-list-item {
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  margin: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5rem;
+  &.push-from-top {
+    margin-top: auto;
+  }
+  &.is-active .navigation-list-action {
+    color: var(--color-text-accent);
+    opacity: 1;
+    background-color: rgba(56, 189, 248, 0.2);
+    & svg {
+      color: var(--color-text-accent);
+    }
+  }
+  & .navigation-list {
+    display: none;
+  }
+
+  &.is-open .navigation-list {
+    display: block;
+  }
+}
+.navigation-list-action {
+  height: 2rem;
+  width: 100%;
+  position: relative;
+  line-height: 120%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: transparent;
+  opacity: 0.7;
+  border-radius: 6px;
+  font-weight: 500;
+  border: none;
+  color: var(--color-text-accent);
+  font-size: var(--text-size-90);
+  text-decoration: none;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+
+  gap: 0.5rem;
+  &:hover {
+    background-color: var(--color-brand);
+    color: black;
+    opacity: 1;
+  }
+  & .label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  & svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+}
+
+.navigation-list.sub {
+  margin-top: 0rem;
+}
+
+.sub .navigation-list-action.npm-package {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0rem;
+
+  & .name {
+    font-weight: 400;
+    color: var(--color-brand);
+    font-size: calc(var(--text-size-100) * 0.9);
+    line-height: 130%;
+    margin-bottom: 0.25rem;
+  }
+  & .downloads {
+    font-weight: 400;
+    color: var(--color-text-accent);
+    font-size: calc(var(--text-size-100) * 1);
+    line-height: 130%;
+  }
+}
+
+.sub .navigation-list-action {
+  font-size: calc(var(--text-size-100) * 1);
+}
+
+.sub .navigation-list-item {
+  padding-left: var(--container-padding);
+}
+
+.sub .navigation-list-action.npm-package {
+  height: 4rem;
+  padding-left: calc((var(--text-size-100) * 2) + 1rem);
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='black' d='M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019l-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z'/%3E%3C/svg%3E");
+  & > span {
+    text-overflow: ellipsis;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  &::before {
+    background-color: currentColor;
+    mask: var(--icon) no-repeat;
+    mask-size: 100% 100%;
+    content: '';
+    display: block;
+    width: calc(var(--text-size-100) * 2);
+    height: calc(var(--text-size-100) * 2);
+    flex-grow: 0;
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-shrink: 0;
+    border-radius: calc(var(--text-size-100) * 0.6);
+  }
+}
+
+.navigation-list-item.is-parent > .navigation-list-action {
+  & svg {
+    transform: rotate(-0deg);
+    margin-left: auto;
+    height: calc(var(--text-size-100) * 2);
+    width: calc(var(--text-size-100) * 2);
+    pointer-events: none;
+  }
+}
+
+.navigation-list-item.is-parent.is-open {
+  & svg {
+    transform: rotate(-180deg);
+  }
+}

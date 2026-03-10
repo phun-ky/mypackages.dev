@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Alexander Vassbotn Røyne-Helgesen" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+    base-uri 'self';
+    block-all-mixed-content;
+    font-src 'self' https: data:;
+    img-src 'self' https: data:;
+    connect-src 'self'
+      https://registry.npmjs.org
+      https://api.npmjs.org
+      https://api.github.com
+      https://api.bitbucket.org
+      https://gitlab.com
+      https://api.osv.dev
+      https://zendzcuvkwbszzyjfefa.supabase.co
+      wss://zendzcuvkwbszzyjfefa.supabase.co;
+    object-src 'none';
+    script-src https://code.highcharts.com https://static.getclicky.com https://in.getclicky.com 'self' 'unsafe-inline' 'wasm-unsafe-eval';
+    script-src-attr 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https: 'unsafe-inline';
+    upgrade-insecure-requests"
+    />
+    <link rel="shortcut icon" href="/meta/favicon.ico?v2" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/meta/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="/meta/favicon.svg" />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/meta/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/meta/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mynpmpackages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend+Deca:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      if (
+        (localStorage.getItem('prefers-color-scheme') &&
+          localStorage.getItem('prefers-color-scheme') === 'light') ||
+        (!localStorage.getItem('prefers-color-scheme') &&
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: light)').matches)
+      ) {
+        document.querySelector('html').classList.add('theme--light');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div class="loader-container" id="loader-container">
+      <div class="loader" id="loader"></div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

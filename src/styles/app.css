@@ -1,0 +1,91 @@
+.app {
+  /* box-shadow: inset -10px 0 100px -32px rgba(255, 255, 255, 0.15); */
+  /* background-size: 0.5rem 0.5rem; */
+  /* box-shadow: inset 0 0 200px 100px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  flex-direction: column;
+  /* transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); */
+
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+
+  @media screen and (min-width: 600px) {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    grid-template-areas: 'header header' 'navigation main' 'footer footer';
+  }
+
+  &:has(.sign-in-page) {
+    &::after,
+    &::before {
+      content: none;
+    }
+  }
+
+  &:has(.start-page) {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: unset;
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    box-shadow: inset 0 0 40px 0 rgba(0, 0, 0, 0.7);
+    background-attachment: fixed;
+    background-image:
+      linear-gradient(175deg, rgba(8, 11, 22, 1) 20%, rgba(8, 11, 22, 0) 60%),
+      linear-gradient(-90deg, rgba(8, 11, 22, 0) 0%, rgba(8, 11, 22, 1) 70%),
+      var(--bg-url);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    padding: 1rem;
+    box-shadow: none;
+
+    @media screen and (min-width: 600px) {
+      padding: 4rem;
+      gap: 4rem;
+    }
+
+    &::after,
+    &::before {
+      content: none;
+    }
+  }
+
+  &:has(.navigation:hover) {
+    --navigation-width: 240px;
+  }
+  /* &::after,
+  &::before {
+    box-shadow: -10px 0 500px 200px rgba(56, 189, 248, 0.2);
+    content: '';
+    position: absolute;
+
+    display: block;
+    user-select: none;
+    pointer-events: none;
+    border-radius: 100%;
+    height: 10rem;
+    width: 10rem;
+    z-index: -1;
+    background-color: rgba(56, 189, 248, 0.2);
+  }
+
+  &::before {
+    box-shadow: -10px 0 400px 50px rgba(56, 189, 248, 0.2);
+    left: -10rem;
+    top: -1vh;
+    height: 50vh;
+  }
+  &::after {
+    height: 1px;
+    width: 1px;
+    right: 25vw;
+    top: 60vh;
+  } */
+}

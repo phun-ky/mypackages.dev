@@ -1,0 +1,44 @@
+.maintainers {
+  display: flex;
+  grid-area: maintainers;
+  aspect-ratio: unset;
+  position: relative;
+
+  .maintainers-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  & .total {
+    font-size: var(--text-size-500);
+    display: flex;
+    line-height: 2rem;
+    font-weight: 600;
+
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-family-numbers);
+  }
+
+  .avatars > * {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    text-decoration: none;
+    & > img {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 50%;
+    }
+  }
+  .avatars > a:not(:first-child):not(:last-child) {
+    margin-left: -0.75rem;
+  }
+  .avatars > a:last-child:not(:last-child) {
+    margin-left: -0.75rem;
+  }
+}

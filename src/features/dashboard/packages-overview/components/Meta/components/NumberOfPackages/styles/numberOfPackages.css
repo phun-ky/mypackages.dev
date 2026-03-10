@@ -1,0 +1,7 @@
+.number-of-packages {
+  grid-area: packages;
+  &.emphasized-card {
+    width: 320px;
+    min-width: 320px;
+  }
+}

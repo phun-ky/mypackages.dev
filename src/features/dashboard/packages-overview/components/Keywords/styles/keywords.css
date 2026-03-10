@@ -1,0 +1,18 @@
+.keywords {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  grid-area: keywords;
+  padding-top: 6rem;
+  & .tag-link {
+    font-size: var(--text-size-200);
+  }
+  & > .title {
+    position: absolute;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    top: 2rem;
+    left: 0;
+  }
+}

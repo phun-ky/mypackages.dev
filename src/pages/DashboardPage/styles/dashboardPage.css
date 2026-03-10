@@ -1,0 +1,14 @@
+.dashboard-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-bottom: 8rem;
+
+  h1 {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}

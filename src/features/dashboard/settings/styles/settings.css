@@ -1,0 +1,8 @@
+.settings {
+  display: flex;
+  padding: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #1d1e28;
+}

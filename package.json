@@ -1,0 +1,39 @@
+{
+  "name": "mynpmpackages.wtf",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://mynpmpackages.wtf",
+  "bugs": {
+    "url": "https://github.com/phun-ky/mynpmpackages.wtf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phun-ky/mynpmpackages.wtf.git"
+  },
+  "license": "MIT",
+  "author": "Alexander Vassbotn Røyne-Helgesen",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "eslint": "^9.20.0",
+    "eslint-config-phun-ky": "^1.0.0",
+    "prettier": "3.7.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vite-tsconfig-paths": "^6.1.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.91.1",
+    "diff-dom": "^5.2.1",
+    "dompurify": "^3.3.1",
+    "highcharts": "^12.5.0",
+    "marked": "^17.0.1",
+    "shiki": "^3.22.0"
+  }
+}

@@ -1,0 +1,113 @@
+.sign-in-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media screen and (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-template-areas: 'main aside';
+  }
+
+  header {
+    position: relative;
+    width: 100%;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .home-link {
+      display: flex;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: var(--text-size-200);
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+
+      svg {
+        height: 3rem;
+        width: 3rem;
+      }
+    }
+  }
+
+  main {
+    grid-area: main;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .login-button {
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+      width: 100%;
+    }
+  }
+
+  aside {
+    grid-area: aside;
+    min-height: 100vh;
+    display: none;
+    position: relative;
+    background-color: rgba(8, 11, 22, 1);
+    background-image:
+      linear-gradient(145deg, rgba(8, 11, 22, 1) -30%, rgba(8, 11, 22, 0) 60%),
+      linear-gradient(90deg, rgba(8, 11, 22, 1) 0%, rgba(8, 11, 22, 0) 50%),
+      var(--bg-url);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: white;
+    background-attachment: fixed;
+    box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.2);
+
+    .package-preview {
+      grid-area: unset;
+    }
+    &::after {
+      content: '';
+      isolation: isolate;
+      position: absolute;
+      display: block;
+      width: 5%;
+      height: 20%;
+      background-color: transparent;
+      box-shadow: 0 0 200px 40px rgba(0, 0, 0, 0.9);
+      border-radius: 50%;
+      left: calc(100% - 5%);
+      z-index: -1;
+      top: 10%;
+    }
+
+    &::before {
+      content: '';
+      isolation: isolate;
+      position: absolute;
+      display: block;
+      width: 5%;
+      height: 30%;
+      background-color: transparent;
+      box-shadow: 0 0 200px 40px rgba(0, 0, 0, 0.9);
+      border-radius: 50%;
+      left: calc(100% - 5%);
+      z-index: -1;
+      top: 50%;
+    }
+    @media screen and (min-width: 1280px) {
+      display: grid;
+      place-items: center;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.packages-overview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  grid-area: overview;
+
+  font-family: var(--font-family-body);
+}
+@media screen and (min-width: 720px) {
+  .packages-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+      'meta meta meta'
+      'popular-packages popular-packages popular-packages'
+      'newest-packages newest-packages newest-packages'
+      'trending-packages trending-packages trending-packages'
+      'packages-table packages-table packages-table'
+      'keywords keywords keywords';
+  }
+}

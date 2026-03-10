@@ -1,0 +1,29 @@
+.container {
+  z-index: 1;
+  max-width: var(--size-container);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.container.is-full {
+  max-width: 100%;
+}
+
+.container.is-medium {
+  max-width: calc(var(--size-container) * 0.85);
+}
+
+.container.is-small {
+  max-width: calc(var(--size-container) * 0.7);
+}
+
+@media screen and (max-width: 991px) {
+  .container.is-medium,
+  .container.is-small {
+    max-width: var(--size-container);
+  }
+}

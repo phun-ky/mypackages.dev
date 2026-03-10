@@ -1,0 +1,37 @@
+.table-of-contents {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.table-of-contents a,
+footer a {
+  text-decoration: none;
+}
+
+.table-of-contents a:hover,
+footer a:hover {
+  text-decoration: underline;
+}
+
+.table-of-contents ol li {
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.table-of-contents > div > ol {
+  padding: 0;
+}
+.table-of-contents ol {
+  list-style-position: inside;
+}
+
+.table-of-contents ol > ol {
+  padding-left: 0;
+}
+
+.table-of-contents ol > ol > ol {
+  padding-left: 2rem;
+}
+.table-of-contents ol > ol > ol > ol {
+  padding-left: 2rem;
+}
