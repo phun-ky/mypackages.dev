@@ -6,6 +6,13 @@ import { popstate } from './lib/spa/utils/popstate';
 // Styles
 import './styles/site.css';
 
+const url = new URL(window.location.href);
+const redirectedPath = url.searchParams.get('p');
+
+if (redirectedPath) {
+  history.replaceState(null, '', decodeURIComponent(redirectedPath));
+}
+
 // Events that happens on URL change in our SPA
 window.addEventListener('popstate', popstate);
 // window.addEventListener('hashchange', popstate);

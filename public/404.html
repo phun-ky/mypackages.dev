@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My packages</title>
+    <script>
+      const target =
+        window.location.pathname +
+        window.location.search +
+        window.location.hash;
+
+      window.location.replace('/?p=' + encodeURIComponent(target));
+    </script>
+  </head>
+  <body></body>
+</html>
