@@ -29,18 +29,18 @@
   "devDependencies": {
     "git-cz": "^4.9.0",
     "eslint": "^9.20.0",
-    "eslint-config-phun-ky": "^1.0.0",
-    "prettier": "3.7.4",
+    "eslint-config-phun-ky": "^1.0.35",
+    "prettier": "3.8.1",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vite-tsconfig-paths": "^6.1.1"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.91.1",
+    "@supabase/supabase-js": "^2.99.0",
     "diff-dom": "^5.2.1",
-    "dompurify": "^3.3.1",
+    "dompurify": "^3.3.2",
     "highcharts": "^12.5.0",
-    "marked": "^17.0.1",
+    "marked": "^17.0.4",
     "shiki": "^3.22.0"
   }
 }
