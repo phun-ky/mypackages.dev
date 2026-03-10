@@ -6,9 +6,9 @@ name: Checks
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
     types: [opened, synchronize] # Workflow triggering events
 
   # Allows you to run this workflow manually from the Actions tab
@@ -25,13 +25,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Checkout all branches and tags
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 24
       - name: Install dependencies
         run: | # Install and link dependencies
           npm i
@@ -39,5 +39,3 @@ jobs:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
       - name: Build # Build all packages
         run: npm run build
-
-
