@@ -13,7 +13,7 @@
   @media screen and (min-width: 600px) {
     display: grid;
     grid-template-columns: 48px 1fr;
-    grid-template-areas: 'header header' 'navigation main' 'footer footer';
+    grid-template-areas: 'global-alert global-alert' 'header header' 'navigation main' 'footer footer';
   }
 
   &:has(.sign-in-page) {

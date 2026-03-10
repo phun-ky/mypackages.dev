@@ -2,6 +2,8 @@ import { getOptionsFromHash } from './app/options/get-options-from-hash';
 import { callPage } from './app/routing/call-page';
 import { createAuthGuard } from './app/routing/create-auth-guard';
 import { pageLoaders } from './app/routing/page-loaders';
+import { Link } from './components/actions/Link';
+import { Alert } from './components/feedback/Alert';
 import { getBreadcrumbsFromRoutes } from './components/page-section/Breadcrumbs/utils/get-breadcrumbs';
 import { Footer } from './components/page-section/Footer';
 import { Header } from './components/page-section/Header';
@@ -77,7 +79,20 @@ const App = async (initialProps: Partial<PagePropsType>) => {
           withMenus: true
         });
 
-  return html`${await Header({ page: _pageId, ..._resolvedPageProps, crumbs })}
+  return html` ${_pageId !== 'StartPage'
+    ? Alert({
+        className: 'global-alert',
+        title: 'This project is currently in Alpha!',
+        size: 'wide',
+        description: html`Expect issues, and if you encounter them,
+        ${Link({
+          to: 'https://github.com/phun-ky/mypackages.dev/issues',
+          children: 'please report it.'
+        })}`,
+
+        type: 'important'
+      })
+    : ''}${await Header({ page: _pageId, ..._resolvedPageProps, crumbs })}
   ${Navigation({
     page: _pageId,
     ...(_resolvedPageProps as unknown as { username?: string })

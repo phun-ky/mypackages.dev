@@ -26,6 +26,11 @@
       text-align: center;
     }
   }
+  &.global-alert {
+    width: 100%;
+    grid-column: 1 / span 2;
+    grid-area: global-alert;
+  }
   & p {
     margin-top: 1rem;
     margin-bottom: 1rem;
