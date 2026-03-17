@@ -2,6 +2,7 @@ import { getLastYearDownloadsResult } from '../../../../../../../services/npm/ge
 import type { FetchUserPackagesUnionItem } from '../../../../../../../types';
 import { assertNever } from '../../../../../../../utils/error/assert-never';
 import { getDataForChart } from '../../../../../../package/get-data-for-chart';
+import { Link } from '/components/actions/Link';
 
 const html = String.raw;
 
@@ -9,6 +10,7 @@ export const PackagesList = async (
   pkg: FetchUserPackagesUnionItem,
   signal?: AbortSignal
 ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name, links } = pkg.package;
   const numberFormat = new Intl.NumberFormat(navigator.language);
   const monthlyDownloads = numberFormat.format(pkg.downloads.monthly);
@@ -103,7 +105,7 @@ export const PackagesList = async (
 
   return html`<tr>
     <td class="string package-name">
-      <a href="${links.npm}"><span>${name}</span></a>
+      ${Link({ to: `/packages/${name}`, children: html`<span>${name}</span>` })}
     </td>
     <td>
       <span class="percentage-change ${percentageChangeStateClass}">

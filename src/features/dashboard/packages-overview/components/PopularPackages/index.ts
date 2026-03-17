@@ -1,12 +1,12 @@
+import { Package } from '../../../../../components/content/Package';
 import type { ComponentBasePropsType } from '../../../../../lib/spa/types';
 import type { Config, FetchUserPackagesUnionItem } from '../../../../../types';
-import { Package } from '../../../../../components/content/Package';
 
 import './styles/popularPackages.css';
 
 const html = String.raw;
 
-export type PopularPackagesPropsType = ComponentBasePropsType & {
+type PopularPackagesPropsType = ComponentBasePropsType & {
   packages: FetchUserPackagesUnionItem[];
   options: Config;
 };

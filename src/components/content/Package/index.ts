@@ -1,18 +1,18 @@
 import { getDataForChart } from '../../../features/package/get-data-for-chart';
 import { renderSinglePackageChart } from '../../../features/package-chart';
 import { releaseStatusFromHealth } from '../../../features/release-status';
-import { addOnAfterAppRender, addOnClick } from '../../../lib/spa';
-import { navigateTo } from '../../../lib/spa/utils/navigate-to';
+import { addOnAfterAppRender } from '../../../lib/spa';
 import { getLastYearDownloadsResult } from '../../../services/npm/get-last-year-downloads-result';
 import type { Config, FetchUserPackagesUnionItem } from '../../../types';
 import { assertNever } from '../../../utils/error/assert-never';
 import { slugify } from '../../../utils/slugify';
 
 import './styles/package.css';
+import { Link } from '/components/actions/Link';
 
 const html = String.raw;
 
-export type PackagePropsType = {
+type PackagePropsType = {
   type?: 'popular' | 'newest' | 'all' | 'trending';
   pkg: FetchUserPackagesUnionItem;
   index: number;
@@ -118,13 +118,10 @@ export const Package = async (props: PackagePropsType, signal: AbortSignal) => {
 
   const packageElementInnerId = `package-${slugify(name)}-inner`;
 
-  addOnClick(packageElementInnerId, (e: Event) => {
-    e.preventDefault();
-    navigateTo(`/packages/${name}`);
-  });
-
-  return html`<div class="package ${type} status-${status.key}">
-    <div class="inner" id="${packageElementInnerId}" tabindex="0">
+  return html`${Link({
+    to: `/packages/${name}`,
+    className: `package ${type} status-${status.key}`,
+    children: html`<div class="inner" id="${packageElementInnerId}">
       <span class="action">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -175,6 +172,6 @@ export const Package = async (props: PackagePropsType, signal: AbortSignal) => {
         ${formattedMoM}
       </span>
       <div id="chart-${type}-${index}" class="chart"></div>
-    </div>
-  </div>`;
+    </div>`
+  })} `;
 };

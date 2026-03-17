@@ -6,6 +6,7 @@
   background-color: rgba(16, 17, 26, 1);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
+  text-decoration: none;
 
   min-width: 320px;
   max-width: 440px;
