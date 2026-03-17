@@ -104,7 +104,7 @@ a.button {
 .button.primary.cta {
   border-radius: 12px;
   font-size: var(--text-size-300);
-  height: 2.75rem;
+  height: 3rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);

@@ -23,15 +23,21 @@ export const Footer = ({ page }: FooterPropsType) => {
       size: 'small',
       children: html` <span class="hr full" role="presentation"></span>
         <div class="inner">
-          <p>
-            Made with <strong>WD-40</strong> by
-            <a target="_blank" href="https://phun-ky.net">
-              Alexander Vassbotn Røyne-Helgesen
-            </a>
-            . <br />
-            Buy <strong>me</strong> some
-            <a href="https://www.paypal.me/phunky/20">monkey grease?</a>
-          </p>
+          <div>
+            <p>
+              Made with <strong>WD-40</strong> by
+              <a target="_blank" href="https://phun-ky.net">
+                Alexander Vassbotn Røyne-Helgesen
+              </a>
+              . <br />
+              Buy <strong>me</strong> some
+              <a href="https://www.paypal.me/phunky/20">monkey grease?</a>
+            </p>
+            <p>
+              npm is a registered trademark of npm, Inc. This site is not
+              affiliated with npm, Inc.
+            </p>
+          </div>
           <p class="cc-license">
             <span>
               <a
