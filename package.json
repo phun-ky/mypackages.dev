@@ -29,16 +29,16 @@
   "devDependencies": {
     "git-cz": "^4.9.0",
     "eslint": "^10.4.0",
-    "eslint-config-phun-ky": "^2.0.2",
+    "eslint-config-phun-ky": "^2.0.3",
     "prettier": "3.8.3",
     "typescript": "~6.0.3",
-    "vite": "^8.0.13",
+    "vite": "^8.0.14",
     "vite-tsconfig-paths": "^6.1.1"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.106.0",
+    "@supabase/supabase-js": "^2.106.2",
     "diff-dom": "^5.2.1",
-    "dompurify": "^3.4.5",
+    "dompurify": "^3.4.6",
     "highcharts": "^12.6.0",
     "marked": "^18.0.4",
     "shiki": "^4.1.0"
