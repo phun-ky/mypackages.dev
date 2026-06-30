@@ -28,19 +28,19 @@
   },
   "devDependencies": {
     "git-cz": "^4.9.0",
-    "eslint": "^10.4.1",
-    "eslint-config-phun-ky": "^2.0.3",
-    "prettier": "3.8.3",
+    "eslint": "^10.6.0",
+    "eslint-config-phun-ky": "^2.0.5",
+    "prettier": "3.9.4",
     "typescript": "~6.0.3",
-    "vite": "^8.0.16",
+    "vite": "^8.1.1",
     "vite-tsconfig-paths": "^6.1.1"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.107.0",
+    "@supabase/supabase-js": "^2.110.0",
     "diff-dom": "^5.2.1",
-    "dompurify": "^3.4.8",
+    "dompurify": "^3.4.11",
     "highcharts": "^12.6.0",
-    "marked": "^18.0.4",
-    "shiki": "^4.2.0"
+    "marked": "^18.0.5",
+    "shiki": "^4.3.0"
   }
 }
