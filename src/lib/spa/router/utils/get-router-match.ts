@@ -15,7 +15,12 @@ export const getRouterMatch = (routes: Routes): RouterMatch => {
     const pathName = decodeURI(location.pathname) + '';
 
     match = {
-      route: { path: '/404', page: 'PageNotFoundPage', name: 'Page not found' },
+      route: {
+        path: '/404',
+        page: 'PageNotFoundPage',
+        name: 'Page not found',
+        public: true
+      },
       result: [pathName]
     };
   }

@@ -17,8 +17,11 @@
   "main": "index.html",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc -p tsconfig.build.json && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc",
+    "pretest:e2e": "vite build --mode e2e",
+    "test:e2e": "playwright test",
     "commit": "npx git-cz"
   },
   "config": {
@@ -27,9 +30,11 @@
     }
   },
   "devDependencies": {
-    "git-cz": "^4.9.0",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^24.19.2",
     "eslint": "^10.4.1",
     "eslint-config-phun-ky": "^2.0.3",
+    "git-cz": "^4.9.0",
     "prettier": "3.8.3",
     "typescript": "~6.0.3",
     "vite": "^8.0.16",

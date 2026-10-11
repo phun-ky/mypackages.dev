@@ -25,7 +25,7 @@ export const breadcrumbMetaByPath: Record<string, BreadcrumbMeta> = {
     menu: [
       '/packages',
       '/users',
-      '/about',
+      '/help/about',
       // dashboard will be filtered by auth, but you can keep it here:
       '/dashboard'
     ],
