@@ -1,9 +1,8 @@
 import { DAY_MS } from '../../constants/temporal';
 
 import { fetchAndStore } from './fetch-and-store';
-import { ttlLocalStorage } from './ttl-local-storage';
-
 import { lsKey } from './ls-key';
+import { ttlLocalStorage } from './ttl-local-storage';
 
 export const cachedAsync = async <T>(
   memCache: Map<string, Promise<T> | T>,

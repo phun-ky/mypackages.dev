@@ -1,4 +1,5 @@
 import type { NavigationItem } from '..';
+
 import { isPathActive } from './is-path-active';
 
 export const isItemActive = (
@@ -9,5 +10,6 @@ export const isItemActive = (
   const childActive = Boolean(
     item.children?.some((c) => isItemActive(c, currentPath))
   );
+
   return selfActive || childActive;
 };

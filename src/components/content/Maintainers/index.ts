@@ -2,8 +2,6 @@ import type { NpmIdentity } from '../../../types';
 import { EmphasizedCard } from '../EmphasizedCard';
 import './styles/maintainers.css';
 
-export type MaintainersPropsType = {};
-
 const html = String.raw;
 
 export const Maintainers = (maintainers: NpmIdentity[]) => {

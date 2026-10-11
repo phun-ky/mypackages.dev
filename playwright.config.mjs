@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 3000;

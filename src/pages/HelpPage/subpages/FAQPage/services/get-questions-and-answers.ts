@@ -320,5 +320,6 @@ export const getQuestionsAndAnswers = () => {
       }
     }
   ];
+
   return faqItems;
 };

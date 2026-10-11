@@ -1,8 +1,6 @@
-import type { BreadcrumbItem } from './utils/get-breadcrumbs';
-
-import './styles/breadcrumbs.css';
-
 import { CrumbMenu } from './CrumbMenu';
+import type { BreadcrumbItem } from './utils/get-breadcrumbs';
+import './styles/breadcrumbs.css';
 
 const html = String.raw;
 
@@ -12,6 +10,7 @@ export type BreadcrumbsPropsType = {
 
 export const Breadcrumbs = (props: BreadcrumbsPropsType) => {
   const { items } = props;
+
   if (!items.length) return '';
 
   return html`

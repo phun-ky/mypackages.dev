@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { Package } from '../../../../../components/content/Package';
 import type { ComponentBasePropsType } from '../../../../../lib/spa/types';
 import type { Config, FetchUserPackagesUnionItem } from '../../../../../types';

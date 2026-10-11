@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/no-unused-modules */
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 // import './styles/tokenSettings.css';

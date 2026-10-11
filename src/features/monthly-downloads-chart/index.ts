@@ -1,4 +1,4 @@
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/esm/highcharts.js';
 
 let currentChart: Highcharts.Chart | null = null;
 let currentResizeObserver: ResizeObserver | null = null;

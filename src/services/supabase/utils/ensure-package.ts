@@ -1,5 +1,3 @@
-/* eslint-disable @stylistic/indent */
-
 import { supabase } from '..';
 import { normalizePackageName } from '../../../utils/package/normalize-package-name';
 

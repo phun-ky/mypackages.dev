@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/no-unused-modules */
 /* eslint no-console:0 */
 import type {
   FunctionType,
@@ -101,7 +100,7 @@ export const spa = (() => {
       })
     );
 
-    let _html = '';
+    let _html: string;
 
     try {
       _html = await _templateCallback({ match: page });

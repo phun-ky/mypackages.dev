@@ -87,10 +87,10 @@ export const PackagePage = async (
   let health;
   let stars = 0;
   let openIssues = 0;
-  let repoUrl: NpmRepository | string | undefined = undefined;
 
-  repoUrl = normalizeKnownRepoUrl(details.repository);
-
+  const repoUrl: NpmRepository | string | undefined = normalizeKnownRepoUrl(
+    details.repository
+  );
   const latest = releaseHealth?.latestVersion
     ? `v${releaseHealth.latestVersion}`
     : '-';
