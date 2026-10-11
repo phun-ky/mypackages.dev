@@ -43,7 +43,7 @@ export const AboutPage = async (props: PagePropsType, signal: AbortSignal) => {
               <a class="button primary" href="/dashboard" data-link>
                 Open dashboard
               </a>
-              <a class="button" href="/search" data-link> Search packages </a>
+              <a class="button" href="/" data-link> Search packages </a>
             </div>
 
             <ul class="hero-highlights">

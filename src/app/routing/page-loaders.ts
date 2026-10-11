@@ -99,6 +99,6 @@ export const pageLoaders = {
   PageNotFoundPage: async () => {
     const { PageNotFoundPage } = await import('/pages/PageNotFoundPage');
 
-    return ({ props, signal }: PageCtx) => PageNotFoundPage(props, signal);
+    return () => PageNotFoundPage();
   }
 } satisfies Record<PageId | 'PageNotFoundPage' | 'ErrorPage', LoadPage>;

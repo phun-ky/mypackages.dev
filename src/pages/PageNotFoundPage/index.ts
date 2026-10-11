@@ -1,10 +1,30 @@
-import type { PagePropsType } from '../../lib/spa/types';
+import { Link } from '../../components/actions/Link';
+import { Container } from '../../components/layout/Container';
 
-export const PageNotFoundPage = async (
-  props: PagePropsType,
-  signal: AbortSignal
-) => {
-  console.log(props, signal);
+import '../ErrorPage/styles/errorPage.css';
 
-  return 'Page not found';
+const html = String.raw;
+
+export const PageNotFoundPage = async () => {
+  return html`<section class="error-page">
+    <header class="error-hero">
+      ${Container({
+        size: 'small',
+        children: html`<div class="inner">
+          <h1>Page not found</h1>
+        </div> `
+      })}
+    </header>
+    ${Container({
+      size: 'small',
+      children: html`<div class="inner">
+        <p>The page you are looking for does not exist, or it has moved.</p>
+        ${Link({
+          className: 'button primary',
+          to: '/',
+          children: 'Go to the start page'
+        })}
+      </div> `
+    })}
+  </section>`;
 };

@@ -14,6 +14,23 @@ const isRoutePublic = (match: string | RouterMatch | undefined) => {
 const getReturnTo = () =>
   window.location.pathname + window.location.search + window.location.hash;
 
+/**
+ * Whether the matched route is private and there is no session. Such pages
+ * are not loaded at all, since they fail without a session, and the auth
+ * guard redirects to sign in instead.
+ */
+export const requiresSignIn = ({
+  match,
+  session
+}: {
+  match: string | RouterMatch | undefined;
+  session: Session | null;
+}) =>
+  Boolean(match) &&
+  typeof match !== 'string' &&
+  !isRoutePublic(match) &&
+  !session;
+
 export const createAuthGuard =
   ({
     match,
@@ -23,20 +40,15 @@ export const createAuthGuard =
     session: Session | null;
   }) =>
   async () => {
-    const isAuthed = Boolean(session);
-    const routeIsPublic = isRoutePublic(match);
+    if (requiresSignIn({ match, session })) {
+      const returnTo = getReturnTo();
 
-    if (match && typeof match !== 'string') {
-      if (!routeIsPublic && !isAuthed) {
-        const returnTo = getReturnTo();
+      // avoid infinite loop if already on the signin page
+      if (!window.location.pathname.startsWith('/dashboard/signin')) {
+        const next = `/dashboard/signin?returnTo=${encodeURIComponent(returnTo)}`;
 
-        // avoid infinite loop if already on the signin page
-        if (!window.location.pathname.startsWith('/dashboard/signin')) {
-          const next = `/dashboard/signin?returnTo=${encodeURIComponent(returnTo)}`;
-
-          // important: stop current render and route instead
-          await navigateTo(next);
-        }
+        // important: stop current render and route instead
+        await navigateTo(next);
       }
     }
   };

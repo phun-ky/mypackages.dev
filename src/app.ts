@@ -1,6 +1,9 @@
 import { getOptionsFromHash } from './app/options/get-options-from-hash';
 import { callPage } from './app/routing/call-page';
-import { createAuthGuard } from './app/routing/create-auth-guard';
+import {
+  createAuthGuard,
+  requiresSignIn
+} from './app/routing/create-auth-guard';
 import { pageLoaders } from './app/routing/page-loaders';
 import { Link } from './components/actions/Link';
 import { Alert } from './components/feedback/Alert';
@@ -61,8 +64,11 @@ const App = async (initialProps: Partial<PagePropsType>) => {
 
   const resolvedProps: PagePropsType = { ..._resolvedPageProps, options };
   const load = pageLoaders[_pageId as PageId] ?? pageLoaders.PageNotFoundPage;
-  const page = await load();
-  const content = await callPage(page, { props: resolvedProps, signal });
+  // Private pages fail without a session, so leave them out and let the auth
+  // guard redirect to sign in
+  const content = requiresSignIn({ match, session })
+    ? ''
+    : await callPage(await load(), { props: resolvedProps, signal });
   const isAuthed = Boolean(session);
 
   addOnAfterAppRender(createAuthGuard({ match, session }));
