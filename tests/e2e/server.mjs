@@ -34,7 +34,6 @@ const TYPES = {
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml; charset=utf-8'
 };
-
 /**
  * Finds the file for a URL path in `dist/`: the file itself, or the
  * `index.html` in that directory.

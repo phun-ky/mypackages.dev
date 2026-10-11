@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/indent */
 import type { NpmPackageName } from '../../types';
 import { isAbort } from '../../utils';
 import { HttpError } from '../../utils/error/HttpError.class';

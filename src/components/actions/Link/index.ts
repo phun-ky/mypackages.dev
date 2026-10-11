@@ -9,8 +9,7 @@ export type LinkPropsType = {
 
 export const Link = (props: LinkPropsType) => {
   const { children, to, className = '', style, ...rest } = props;
-  let postfix = '';
-
+  const postfix = '';
   const attrs = Object.entries(rest)
     .map((attr) => {
       const [property, value] = attr;

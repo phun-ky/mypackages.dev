@@ -23,22 +23,27 @@ export const CrumbMenu = (props: CrumbMenuPropsType) => {
 
   const toggle = (e: Event) => {
     const target = e.target;
+
     if (!(target instanceof HTMLElement)) return;
 
     const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
+
     els.forEach((el) => el.classList.remove('is-open'));
 
     const isOpen = target.classList.toggle('is-open');
+
     target.setAttribute('aria-expanded', String(isOpen));
   };
 
   addClickOutside(`crumb-menu-wrapper-${id}`, () => {
     const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
+
     els.forEach((el) => el.classList.remove('is-open'));
   });
 
   addOnRouteChange(() => {
     const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
+
     els.forEach((el) => el.classList.remove('is-open'));
   });
 

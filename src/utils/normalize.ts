@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { isAzureDevOpsRepoUrl } from '../services/azure/is-azure-repo-url';
 import { isBitbucketRepoUrl } from '../services/bitbucket/is-bitbucket-repo-url';
 import { isGitHubRepoUrl } from '../services/github/utils/is-github-repo-url';

@@ -1,6 +1,7 @@
 import type { NavigationItem } from '..';
 import { cx } from '../../../../utils/cx';
 import { Link } from '../../../actions/Link';
+
 import { isItemActive } from './is-item-active';
 
 const html = String.raw;
@@ -13,6 +14,7 @@ export const printMenu = (
   const navigationListClassNames = cx('navigation-list', {
     sub
   });
+
   return html`<ul class="${navigationListClassNames}">
     ${items
       .map((item) => {
@@ -20,7 +22,6 @@ export const printMenu = (
           item;
         const active = isItemActive(item, currentPath);
         const hasChildren = Boolean(children && children.length);
-
         const listItemClassNames = cx(`navigation-list-item ${itemClassName}`, {
           'is-parent': hasChildren,
           'is-active': active
@@ -28,6 +29,7 @@ export const printMenu = (
         const listActionClassNames = cx(
           `navigation-list-action ${actionClassName}`
         );
+
         if (!path || (path && path === '')) {
           return html`<li class="${listItemClassNames}">
             <button
@@ -49,6 +51,7 @@ export const printMenu = (
             ${children ? printMenu(children, currentPath, true) : ''}
           </li>`;
         }
+
         return html`<li class="${listItemClassNames}">
           ${Link({
             to: path,

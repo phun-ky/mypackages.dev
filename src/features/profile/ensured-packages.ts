@@ -1,5 +1,3 @@
-/* eslint-disable @stylistic/indent */
-
 import { supabase } from '../../services/supabase';
 import { fetchEnsuredPackages } from '../../services/supabase/utils/fetch-ensured-package';
 import { normalizePackageName } from '../../utils/package/normalize-package-name';

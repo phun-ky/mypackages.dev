@@ -3,6 +3,7 @@ import { cx } from '../../../utils/cx';
 import './styles/container.css';
 
 const html = String.raw;
+
 export type ContainerPropsType = ComponentBasePropsType & {
   size?: 'small' | 'medium' | 'full';
 };
@@ -13,5 +14,6 @@ export const Container = ({ children, size }: ContainerPropsType) => {
     'is-medium': size === 'medium',
     'is-full': size === 'full'
   });
+
   return html`<div class="${classNames}">${children}</div>`;
 };

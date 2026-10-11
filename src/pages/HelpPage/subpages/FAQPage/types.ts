@@ -4,6 +4,7 @@ export type FAQItemType = {
 };
 
 export type FAQCategory = 'Site' | 'Npm' | 'Github' | 'Account' | 'Privacy';
+
 export type FAQSubCategory =
   | 'Search'
   | 'Package'

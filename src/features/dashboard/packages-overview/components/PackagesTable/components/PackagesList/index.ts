@@ -10,7 +10,6 @@ export const PackagesList = async (
   pkg: FetchUserPackagesUnionItem,
   signal?: AbortSignal
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name } = pkg.package;
   const numberFormat = new Intl.NumberFormat(navigator.language);
   const monthlyDownloads = numberFormat.format(pkg.downloads.monthly);

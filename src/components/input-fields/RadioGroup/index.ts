@@ -18,12 +18,14 @@ export type RadioGroupPropsType = {
 export const RadioGroup = (props: RadioGroupPropsType) => {
   const { name, options, defaultChecked } = props;
   const idPrefix = slugify(name);
+
   return html`<span class="radio-group">
     ${options
       .map((option, idx) => {
         const { label, value, id } = option;
         const idToUse = `${idPrefix}-${slugify(id)}`;
-        const checked = defaultChecked && idx === 0 ? ` checked ` : '';
+        const checked = defaultChecked && idx === 0 ? ' checked ' : '';
+
         return html`<input
             type="radio"
             ${checked}
