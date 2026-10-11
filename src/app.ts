@@ -88,6 +88,7 @@ const App = async (initialProps: Partial<PagePropsType>) => {
   return html` ${_pageId !== 'StartPage'
     ? Alert({
         className: 'global-alert',
+        label: 'Project status',
         title: 'This project is currently in Alpha!',
         size: 'wide',
         description: html`Expect issues, and if you encounter them,

@@ -10,5 +10,5 @@ export const PackagesPage = async (
 ) => {
   console.log(props, signal);
 
-  return html`<section class="packages-page"></section>`;
+  return html`<section class="packages-page"><h1>Packages</h1></section>`;
 };

@@ -59,7 +59,9 @@ export const FAQPage = async (props: PagePropsType, signal: AbortSignal) => {
                         />
                       </svg>
                       <h4>
-                        ${DOMPurify.sanitize(marked.parse(question) as string)}
+                        ${DOMPurify.sanitize(
+                          marked.parseInline(question) as string
+                        )}
                       </h4>
 
                       <svg

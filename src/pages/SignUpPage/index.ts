@@ -24,7 +24,7 @@ export const SignUpPage = async () => {
   });
 
   return html`<section class="sign-in-page">
-    <main>
+    <div class="sign-in-main">
       <header>
         ${Container({
           children: html`${Link({
@@ -73,7 +73,7 @@ export const SignUpPage = async () => {
             ${Link({ to: '/dashboard/signin', children: 'Sign in' })}
           </p>`
       })}
-    </main>
+    </div>
     <aside>${PackagePreview()}</aside>
   </section>`;
 };

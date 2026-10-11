@@ -3,6 +3,8 @@ export type LinkPropsType = {
   to: string;
   className?: string;
   style?: string;
+  /** For links without text, like icons */
+  'aria-label'?: string;
 };
 
 export const Link = (props: LinkPropsType) => {

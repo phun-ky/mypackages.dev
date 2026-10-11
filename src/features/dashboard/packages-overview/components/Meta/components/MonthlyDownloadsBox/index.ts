@@ -110,6 +110,10 @@ export const MonthlyDownloadsBox = async (
         </span>
         ${formattedMoM}
       </span>
-      <div class="monthly-downloads-chart" id="chart-container"></div>`
+      <div
+        class="monthly-downloads-chart"
+        id="chart-container"
+        aria-hidden="true"
+      ></div>`
   });
 };

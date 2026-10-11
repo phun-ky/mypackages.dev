@@ -38,7 +38,8 @@ export const StartPage = async (
           ${Link({
             to: '/',
             children: Logo(),
-            className: 'logo'
+            className: 'logo',
+            'aria-label': 'My packages'
           })}
           <div class="signin-container">
             ${Link({
@@ -65,6 +66,7 @@ export const StartPage = async (
                 <input
                   type="search"
                   placeholder="Try: @phun-ky/speccer"
+                  aria-label="Package or npm username"
                   id="query-term-to-use"
                   autocomplete="off"
                   data-lpignore="true"
