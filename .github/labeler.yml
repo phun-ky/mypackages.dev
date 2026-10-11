@@ -1,59 +1,56 @@
 'section: tests':
-  - changed-files:
-      - any-glob-to-any-file:
-          - '**/__tests__/**'
-          - 'jest.config.ts'
+  - any:
+      - head-branch: ['^test']
+      - changed-files:
+          - any-glob-to-any-file:
+              - 'tests/**'
+              - 'playwright.config.mjs'
 
 'section: workflows':
-  - changed-files:
-      - any-glob-to-any-file:
-          - '.github/workflows/**'
+  - any:
+      - head-branch: ['^ci']
+      - changed-files:
+          - any-glob-to-any-file:
+              - '.github/workflows/**'
 
+# Files in the root of the repository
 'section: repo':
   - changed-files:
       - any-glob-to-any-file:
-          - '**'
+          - '*'
 
 'experience: developer':
   - changed-files:
       - any-glob-to-any-file:
-          - '.eslintignore'
-          - '.eslintrc.json'
+          - '.editorconfig'
           - '.gitignore'
-          - '.npmrc'
           - '.prettierrc'
-          - 'tslint.json'
-          - '.stylintrc'
-          - '.postcssrc.cjs'
-          - '.postcssrc.js'
+          - 'eslint.config.mjs'
+          - 'tsconfig*.json'
+          - 'vite.config.ts'
 
 'context: github':
   - changed-files:
       - any-glob-to-any-file:
           - '.github/**'
 
-'context: docker':
-  - changed-files:
-      - any-glob-to-any-file:
-          - 'Dockerfile'
-
-'context: npm':
-  - changed-files:
-      - any-glob-to-any-file:
-          - '.npmrc'
-
-'context: rollup':
-  - changed-files:
-      - any-glob-to-any-file:
-          - 'rollup.config.js'
-          - 'rollup.*.config.js'
-
-'mindless: docs':
-  - changed-files:
-      - any-glob-to-any-file:
-          - '**/*.md'
+'mindless: ✏️ docs':
+  - any:
+      - head-branch: ['^docs']
+      - changed-files:
+          - any-glob-to-any-file:
+              - '**/*.md'
 
 'mindless: 📦 dependencies':
   - changed-files:
       - any-glob-to-any-file:
           - 'package-lock.json'
+
+'✨ feature':
+  - head-branch: ['^feat']
+
+'problems: 🐛 bug':
+  - head-branch: ['^fix']
+
+'mindless: 🤖 chore':
+  - head-branch: ['^chore']
