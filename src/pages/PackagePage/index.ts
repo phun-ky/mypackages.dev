@@ -251,6 +251,7 @@ export const PackagePage = async (
           <a
             href="https://www.npmjs.com/package/${packageName}"
             class="npm-link"
+            aria-label="${packageName} on npm"
             rel="noopener noreferrer"
             target="_blank"
             onClick="(e) => e.stopPropagation()"

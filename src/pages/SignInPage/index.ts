@@ -33,7 +33,7 @@ export const SignInPage = async (props: SignInPagePropsType) => {
   });
 
   return html`<section class="sign-in-page">
-    <main>
+    <div class="sign-in-main">
       <header>
         ${Container({
           children: html`${Link({
@@ -82,7 +82,7 @@ export const SignInPage = async (props: SignInPagePropsType) => {
             ${Link({ to: '/dashboard/signup', children: 'Sign up' })}
           </p>`
       })}
-    </main>
+    </div>
     <aside>${PackagePreview()}</aside>
   </section>`;
 };

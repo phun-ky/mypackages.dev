@@ -73,6 +73,29 @@ export const test = base.extend<{ pageErrors: string[] }>({
 });
 
 /**
+ * Answers calls to a Supabase edge function with `body`, instead of the empty
+ * list every other Supabase request gets.
+ */
+export const mockSupabaseFunction = async (
+  page: Page,
+  name: string,
+  body: unknown
+): Promise<void> => {
+  await page.route(`**/functions/v1/${name}`, (route) =>
+    route.fulfill({
+      status: route.request().method() === 'OPTIONS' ? 204 : 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': '*'
+      },
+      contentType: 'application/json',
+      body: JSON.stringify(body)
+    })
+  );
+};
+
+/**
  * Waits until the app has rendered a page and hidden its loader.
  *
  * The renderer replaces `<div id="app">` with `<div class="app">` on the first
