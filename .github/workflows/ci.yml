@@ -87,12 +87,32 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+  functions:
+    name: Supabase functions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      # The edge runtime runs Deno 2, see supabase/config.toml
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: 2.x
+      - name: Typecheck
+        run: deno check --no-lock supabase/functions/*/index.ts
+      # The functions import supabase-js by URL and use `any` in two places,
+      # as deployed. Moving the imports to an import map and removing `any`
+      # changes the deployed code, so it is done separately.
+      - name: Lint
+        run:
+          deno lint --rules-exclude=no-import-prefix,no-explicit-any
+          supabase/functions
+
   # The status check to require for pull requests. Add new jobs to `needs`.
   check:
     name: check
     # Not always(): a run cancelled by a newer push shouldn't report a failure
     if: ${{ !cancelled() }}
-    needs: [lint, build, e2e]
+    needs: [lint, build, e2e, functions]
     runs-on: ubuntu-24.04
     steps:
       - name: Check that all jobs passed
@@ -102,7 +122,7 @@ jobs:
             'cancelled') || contains(needs.*.result, 'skipped') }}
           RESULTS:
             lint=${{ needs.lint.result }} build=${{ needs.build.result }}
-            e2e=${{ needs.e2e.result }}
+            e2e=${{ needs.e2e.result }} functions=${{ needs.functions.result }}
         run: |
           echo "$RESULTS"
           [ "$FAILED" = "false" ]

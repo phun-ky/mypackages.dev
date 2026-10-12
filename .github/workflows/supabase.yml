@@ -1,0 +1,52 @@
+name: Deploy Supabase functions
+
+# A path filter is fine here: this workflow isn't a required status check
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'supabase/functions/**'
+      - 'supabase/config.toml'
+      - '.github/workflows/supabase.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Don't cancel a deploy in progress, but skip runs queued behind it
+concurrency:
+  group: supabase
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Holds SUPABASE_ACCESS_TOKEN. Limit it to main in the repository settings.
+    environment: supabase
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.120.0
+      # Deploys every function in supabase/functions, with the settings in
+      # supabase/config.toml. No --prune: functions that only exist in the
+      # project are left alone.
+      - name: Deploy functions
+        run: supabase functions deploy --use-api --project-ref "$PROJECT_REF"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: zendzcuvkwbszzyjfefa
+
+  notify:
+    name: Notify failed deploy
+    needs: deploy
+    if: ${{ failure() }}
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write
+    steps:
+      - uses: drivendataorg/failed-build-issue-action@v1
+        with:
+          label-name: 'problems: 💔 build failed'
