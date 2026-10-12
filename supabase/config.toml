@@ -1,0 +1,49 @@
+# Supabase project for mypackages.dev. The edge functions in functions/ are
+# deployed from here by .github/workflows/supabase.yml, so change them here,
+# not in the Supabase dashboard: the next deploy overwrites dashboard edits.
+#
+# Only what deploys need is set. Anything else falls back to the CLI defaults,
+# which only apply to a local stack (`supabase start`).
+# See https://supabase.com/docs/guides/local-development/cli/config
+
+project_id = "mypackages.dev"
+
+[edge_runtime]
+deno_version = 2
+
+# Every function checks the caller itself, if it needs a user, so the
+# platform's JWT check is off, as it was when they were created in the
+# dashboard. Without `verify_jwt`, a deploy keeps the deployed setting.
+
+[functions.ensure_package]
+verify_jwt = false
+
+[functions.get-active-token-meta]
+verify_jwt = false
+
+[functions.list-secrets]
+verify_jwt = false
+
+[functions.npm-downloads-last-month]
+verify_jwt = false
+
+[functions.npm-downloads-last-year]
+verify_jwt = false
+
+[functions.npm-exists-package]
+verify_jwt = false
+
+[functions.npm-package-details]
+verify_jwt = false
+
+[functions.npm-search-by-user-role]
+verify_jwt = false
+
+[functions.npm-user-has-packages]
+verify_jwt = false
+
+[functions.save-secret]
+verify_jwt = false
+
+[functions.set-active-token]
+verify_jwt = false

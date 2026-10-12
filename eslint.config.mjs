@@ -4,8 +4,13 @@ import globals from 'globals';
 
 export default defineConfig([
   {
-    // Generated files
-    ignores: ['playwright-report/**', 'test-results/**']
+    ignores: [
+      // Generated files
+      'playwright-report/**',
+      'test-results/**',
+      // Deno code, checked with `deno check` and `deno lint` in CI
+      'supabase/functions/**'
+    ]
   },
   {
     extends: [customConfig]
