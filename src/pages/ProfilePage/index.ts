@@ -7,6 +7,7 @@ import { mountEnsuredPackages } from '../../features/profile/ensured-packages';
 import { mountNpmSettings } from '../../features/profile/npm-settings/mount';
 import { addOnAfterAppRender } from '../../lib/spa';
 import type { PagePropsType } from '../../lib/spa/types';
+import { escapeAttr } from '../../utils/escape-html';
 
 import './styles/profilePage.css';
 
@@ -56,7 +57,12 @@ export const ProfilePage = async (
               <label for="email">Last name</label>
             </div>
             <div class="input-container">
-              <input type="email" id="email" disabled value="${email}" />
+              <input
+                type="email"
+                id="email"
+                disabled
+                value="${escapeAttr(email)}"
+              />
             </div>
           </div>
           <div class="input-group horizontal">

@@ -1,5 +1,6 @@
 import { supabase } from '../../services/supabase';
 import { fetchEnsuredPackages } from '../../services/supabase/utils/fetch-ensured-package';
+import { escapeHtml } from '../../utils/escape-html';
 import { normalizePackageName } from '../../utils/package/normalize-package-name';
 
 export type EnsuredRow = {
@@ -216,7 +217,7 @@ export const mountEnsuredPackages = async (
 
         console.log('msg', res.code, msg, res.error, res.message);
 
-        setStatus(status, 'error', msg);
+        setStatus(status, 'error', escapeHtml(msg));
         input.disabled = false;
 
         if (target instanceof HTMLButtonElement) target.disabled = false;
@@ -290,7 +291,7 @@ export const mountEnsuredPackages = async (
         setStatus(
           status,
           'error',
-          err instanceof Error ? err.message : 'Remove failed'
+          escapeHtml(err instanceof Error ? err.message : 'Remove failed')
         );
 
         if (target instanceof HTMLButtonElement) target.disabled = false;

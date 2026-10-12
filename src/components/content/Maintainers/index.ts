@@ -1,4 +1,5 @@
 import type { NpmIdentity } from '../../../types';
+import { escapeAttr } from '../../../utils/escape-html';
 import { EmphasizedCard } from '../EmphasizedCard';
 import './styles/maintainers.css';
 
@@ -22,7 +23,9 @@ export const Maintainers = (maintainers: NpmIdentity[]) => {
       <span class="total">${maintainers.length}</span>
       <div class="avatars">
         ${maintainers
-          .map(({ name }) => {
+          .map((maintainer) => {
+            const name = escapeAttr(maintainer.name);
+
             return html`<a
               href="https://www.npmjs.com/~${name}"
               rel="noopener noreferrer"

@@ -7,6 +7,7 @@ import { Container } from '../../components/layout/Container';
 import { PROJECT_REPO_SITE_URL } from '../../constants';
 import { buildBugReportUrl } from '../../features/bugs/build-github-issue-url';
 import type { PagePropsType } from '../../lib/spa/types';
+import { escapeHtml } from '../../utils/escape-html';
 import { truncateText } from '../../utils/truncate-text';
 
 import './styles/errorPage.css';
@@ -124,7 +125,7 @@ export const ErrorPage = async (props: PagePropsType, signal: AbortSignal) => {
         <h2>Error</h2>
         ${Alert({
           type: 'caution',
-          description: error.toString()
+          description: escapeHtml(error.toString())
         })}
         <h2>Stacktrace</h2>
         ${highlighted} ${button}

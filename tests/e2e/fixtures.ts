@@ -1,6 +1,19 @@
-import { expect, test as base, type Page } from '@playwright/test';
+import { expect, test as base, type Page, type Route } from '@playwright/test';
 
 export { expect };
+
+// The APIs are called from the page's origin, so answer CORS preflights too
+const fulfillJson = (route: Route, body: unknown) =>
+  route.fulfill({
+    status: route.request().method() === 'OPTIONS' ? 204 : 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': '*'
+    },
+    contentType: 'application/json',
+    body: JSON.stringify(body)
+  });
 
 /**
  * Playwright `test` with two automatic additions for every test:
@@ -26,17 +39,7 @@ export const test = base.extend<{ pageErrors: string[] }>({
       // Registered last, so it takes precedence over the abort above
       await page.route(
         (url) => url.hostname.endsWith('.supabase.co'),
-        (route) =>
-          route.fulfill({
-            status: route.request().method() === 'OPTIONS' ? 204 : 200,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Headers': '*',
-              'Access-Control-Allow-Methods': '*'
-            },
-            contentType: 'application/json',
-            body: '[]'
-          })
+        (route) => fulfillJson(route, [])
       );
 
       page.on('pageerror', (error) =>
@@ -82,17 +85,34 @@ export const mockSupabaseFunction = async (
   body: unknown
 ): Promise<void> => {
   await page.route(`**/functions/v1/${name}`, (route) =>
-    route.fulfill({
-      status: route.request().method() === 'OPTIONS' ? 204 : 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Methods': '*'
-      },
-      contentType: 'application/json',
-      body: JSON.stringify(body)
-    })
+    fulfillJson(route, body)
   );
+};
+
+/**
+ * Answers selects from a Supabase table or view with `rows`, whatever the
+ * query parameters.
+ */
+export const mockSupabaseTable = async (
+  page: Page,
+  table: string,
+  rows: unknown[]
+): Promise<void> => {
+  await page.route(`**/rest/v1/${table}?*`, (route) =>
+    fulfillJson(route, rows)
+  );
+};
+
+/**
+ * Answers requests to another origin, like the GitHub or OSV API, with
+ * `body` as JSON.
+ */
+export const mockJson = async (
+  page: Page,
+  url: string,
+  body: unknown
+): Promise<void> => {
+  await page.route(url, (route) => fulfillJson(route, body));
 };
 
 /**
