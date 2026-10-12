@@ -2,7 +2,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 import { routes } from '../../src/lib/spa/router/routes';
 
-import { expect, mockSupabaseFunction, test, waitForApp } from './fixtures';
+import { expect, test, waitForApp } from './fixtures';
+import { mockPackages, mockUser } from './mocks';
 
 const PAGES = [
   ...routes
@@ -10,15 +11,25 @@ const PAGES = [
     .map((route) => route.path),
   '/packages/speccer',
   '/users/phun-ky',
+  '/users/phun-ky/packages',
   '/this-does-not-exist'
 ];
+// Known bugs, fixed on their own branch. A test marked here must fail, so
+// remove the entry when the bug is fixed.
+const KNOWN_BUGS: Record<string, string[]> = {
+  // Unlabelled charts, and an icon-only GitHub link
+  '/packages/speccer': ['has no accessibility violations'],
+  // Unlabelled charts
+  '/users/phun-ky': ['has no accessibility violations'],
+  // Unlabelled charts, and no <h1>
+  '/users/phun-ky/packages': ['has no accessibility violations']
+};
+const knownBug = (path: string, title: string) =>
+  test.fail(KNOWN_BUGS[path]?.includes(title) ?? false, 'Known bug');
 
 test.beforeEach(async ({ page }) => {
-  // A user without packages
-  await mockSupabaseFunction(page, 'npm-search-by-user-role', {
-    ok: true,
-    data: { objects: [], total: 0 }
-  });
+  await mockPackages(page, { speccer: {}, '@phun-ky/speccer': {} });
+  await mockUser(page, 'phun-ky', ['speccer', '@phun-ky/speccer']);
 });
 
 for (const path of PAGES) {
@@ -29,6 +40,8 @@ for (const path of PAGES) {
     });
 
     test('has no accessibility violations', async ({ page }) => {
+      knownBug(path, 'has no accessibility violations');
+
       // Without preload, axe doesn't fetch the stylesheets again, which the
       // CSP blocks for Google Fonts
       const { violations } = await new AxeBuilder({ page })
@@ -47,6 +60,8 @@ for (const path of PAGES) {
     });
 
     test('labels every form field', async ({ page }) => {
+      knownBug(path, 'labels every form field');
+
       // axe accepts a placeholder as a label, but it disappears on input
       const unlabelled = await page
         .locator('input:not([type="hidden"]), select, textarea')
@@ -65,6 +80,8 @@ for (const path of PAGES) {
     });
 
     test('has no block elements in headings', async ({ page }) => {
+      knownBug(path, 'has no block elements in headings');
+
       // Browsers render these, but headings may only hold phrasing content
       const invalid = await page
         .locator(

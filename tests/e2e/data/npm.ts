@@ -59,3 +59,38 @@ export const lastYearDownloads = (name: string, perDay = 100) => {
 
   return { downloads, package: name, start: isoDay(start), end: isoDay(end) };
 };
+
+/**
+ * An npm search response listing `names`, as the user search returns it
+ */
+export const searchResponse = (username: string, names: string[]) => {
+  const updated = new Date(Date.now() - 30 * DAY_MS).toISOString();
+
+  return {
+    objects: names.map((name) => ({
+      package: {
+        name,
+        version: '1.0.0',
+        description: `The ${name} package`,
+        keywords: ['testing'],
+        date: updated,
+        links: {
+          npm: `https://www.npmjs.com/package/${name}`,
+          repository: `https://github.com/example/${name}`
+        },
+        publisher: { username, email: `${username}@example.com` },
+        maintainers: [{ username, email: `${username}@example.com` }]
+      },
+      downloads: { monthly: 3000, weekly: 700 },
+      dependents: 2,
+      updated,
+      searchScore: 1,
+      score: {
+        final: 0.5,
+        detail: { quality: 0.5, popularity: 0.5, maintenance: 0.5 }
+      }
+    })),
+    total: names.length,
+    time: new Date().toISOString()
+  };
+};

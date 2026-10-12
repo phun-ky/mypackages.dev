@@ -3,9 +3,9 @@ import { expect, test as base, type Page, type Route } from '@playwright/test';
 export { expect };
 
 // The APIs are called from the page's origin, so answer CORS preflights too
-const fulfillJson = (route: Route, body: unknown) =>
+const fulfillJson = (route: Route, body: unknown, status = 200) =>
   route.fulfill({
-    status: route.request().method() === 'OPTIONS' ? 204 : 200,
+    status: route.request().method() === 'OPTIONS' ? 204 : status,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*',
@@ -77,16 +77,22 @@ export const test = base.extend<{ pageErrors: string[] }>({
 
 /**
  * Answers calls to a Supabase edge function with `body`, instead of the empty
- * list every other Supabase request gets.
+ * list every other Supabase request gets. Pass a function to answer based on
+ * the JSON the page sent, like a package name.
  */
 export const mockSupabaseFunction = async (
   page: Page,
   name: string,
-  body: unknown
+  body: object | null | ((request: Record<string, unknown>) => unknown)
 ): Promise<void> => {
-  await page.route(`**/functions/v1/${name}`, (route) =>
-    fulfillJson(route, body)
-  );
+  await page.route(`**/functions/v1/${name}`, (route) => {
+    const request = route.request();
+
+    if (typeof body !== 'function' || request.method() === 'OPTIONS')
+      return fulfillJson(route, body);
+
+    return fulfillJson(route, body(request.postDataJSON() ?? {}));
+  });
 };
 
 /**
@@ -110,9 +116,10 @@ export const mockSupabaseTable = async (
 export const mockJson = async (
   page: Page,
   url: string,
-  body: unknown
+  body: unknown,
+  status = 200
 ): Promise<void> => {
-  await page.route(url, (route) => fulfillJson(route, body));
+  await page.route(url, (route) => fulfillJson(route, body, status));
 };
 
 /**
