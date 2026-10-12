@@ -58,14 +58,7 @@ export type PackageEngines =
   | undefined;
 
 export type RelativeTimeFormatUnit =
-  | 'year'
-  | 'quarter'
-  | 'month'
-  | 'week'
-  | 'day'
-  | 'hour'
-  | 'minute'
-  | 'second';
+  'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
 
 export type RelativeTimeFormatUnitsList = {
   unit: RelativeTimeFormatUnit;

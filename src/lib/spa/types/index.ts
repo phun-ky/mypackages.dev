@@ -21,8 +21,7 @@ export type AppPageType =
   | ((props: Partial<PagePropsType>) => Promise<string>);
 
 export type FunctionType =
-  | ((...args: unknown[]) => void)
-  | ((...args: unknown[]) => Promise<void>);
+  ((...args: unknown[]) => void) | ((...args: unknown[]) => Promise<void>);
 
 export type FunctionReturnStringType = (...args: unknown[]) => string;
 
@@ -48,11 +47,7 @@ export type EventDataUnion<T> = FunctionType | FunctionReturnStringType | T;
 export type EventArray = EventDataId[];
 
 export type UseStateValue =
-  | boolean
-  | string
-  | number
-  | unknown[]
-  | Record<string, unknown>;
+  boolean | string | number | unknown[] | Record<string, unknown>;
 
 export type UseStateReturn = [UseStateValue, (newValue: UseStateValue) => void];
 

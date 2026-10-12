@@ -1,9 +1,5 @@
 export type HttpErrorKind =
-  | 'rate_limited'
-  | 'upstream'
-  | 'client'
-  | 'network'
-  | 'unknown';
+  'rate_limited' | 'upstream' | 'client' | 'network' | 'unknown';
 
 export class HttpError extends Error {
   public readonly name = 'HttpError';

@@ -3,18 +3,10 @@ import type { NpmDist } from '../../types';
 import { clamp } from '../../utils/clamp';
 
 export type ProvenanceKey =
-  | 'verified'
-  | 'present'
-  | 'missing'
-  | 'unknown'
-  | 'invalid';
+  'verified' | 'present' | 'missing' | 'unknown' | 'invalid';
 
 export type ProvenanceLabel =
-  | 'Verified'
-  | 'Present'
-  | 'Missing'
-  | 'Unknown'
-  | 'Invalid';
+  'Verified' | 'Present' | 'Missing' | 'Unknown' | 'Invalid';
 
 export type ProvenanceReason =
   | 'no-dist'
@@ -61,8 +53,7 @@ export const packageProvenance = (dist?: NpmDist | null): ProvenanceResult => {
     : [];
   const sigCount = signatures.length;
   const attestations = (dist as any).attestations as
-    | { url?: string; provenance?: { predicateType?: string } }
-    | undefined;
+    { url?: string; provenance?: { predicateType?: string } } | undefined;
   const attestationUrl = attestations?.url;
   const predicateType = attestations?.provenance?.predicateType;
   const hasAttestations = Boolean(attestationUrl);

@@ -108,9 +108,7 @@ const cloneNewEntryRow = (template: HTMLElement) => {
 
   const input = clone.querySelector('input') as HTMLInputElement | null;
   const btn = clone.querySelector('button, .button, input[type="submit"]') as
-    | HTMLButtonElement
-    | HTMLElement
-    | null;
+    HTMLButtonElement | HTMLElement | null;
   const status = clone.querySelector('.status') as HTMLElement | null;
 
   if (input) {
