@@ -11,6 +11,11 @@ project_id = "mypackages.dev"
 [edge_runtime]
 deno_version = 2
 
+# The migrations are tested on a local database, which must match the
+# project's Postgres version
+[db]
+major_version = 17
+
 # Every function checks the caller itself, if it needs a user, so the
 # platform's JWT check is off, as it was when they were created in the
 # dashboard. Without `verify_jwt`, a deploy keeps the deployed setting.
