@@ -1,6 +1,7 @@
 import { getLastYearDownloadsResult } from '../../../../../../../services/npm/get-last-year-downloads-result';
 import type { FetchUserPackagesUnionItem } from '../../../../../../../types';
 import { assertNever } from '../../../../../../../utils/error/assert-never';
+import { escapeHtml } from '../../../../../../../utils/escape-html';
 import { getDataForChart } from '../../../../../../package/get-data-for-chart';
 import { Link } from '/components/actions/Link';
 
@@ -104,7 +105,10 @@ export const PackagesList = async (
 
   return html`<tr>
     <td class="string package-name">
-      ${Link({ to: `/packages/${name}`, children: html`<span>${name}</span>` })}
+      ${Link({
+        to: `/packages/${name}`,
+        children: html`<span>${escapeHtml(name)}</span>`
+      })}
     </td>
     <td>
       <span class="percentage-change ${percentageChangeStateClass}">

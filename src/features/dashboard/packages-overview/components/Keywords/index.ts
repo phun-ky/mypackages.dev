@@ -1,4 +1,5 @@
 import type { FetchUserPackagesUnionItem } from '../../../../../types';
+import { escapeHtml } from '../../../../../utils/escape-html';
 import './styles/keywords.css';
 
 export type KeywordsPropsType = {
@@ -19,7 +20,7 @@ export const Keywords = (props: KeywordsPropsType) => {
       ${k
         .map(
           (k) =>
-            `<a class="badge is-neutral" rel="noopener noreferrer" target="_blank" href="https://www.npmjs.com/search?q=keywords:${k}">${k}</a>`
+            `<a class="badge is-neutral" rel="noopener noreferrer" target="_blank" href="https://www.npmjs.com/search?q=keywords:${encodeURIComponent(k)}">${escapeHtml(k)}</a>`
         )
         .join('\n')}
     </div>

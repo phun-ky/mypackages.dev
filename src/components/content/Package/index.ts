@@ -5,6 +5,7 @@ import { addOnAfterAppRender } from '../../../lib/spa';
 import { getLastYearDownloadsResult } from '../../../services/npm/get-last-year-downloads-result';
 import type { Config, FetchUserPackagesUnionItem } from '../../../types';
 import { assertNever } from '../../../utils/error/assert-never';
+import { escapeHtml } from '../../../utils/escape-html';
 import { slugify } from '../../../utils/slugify';
 
 import './styles/package.css';
@@ -132,7 +133,7 @@ export const Package = async (props: PackagePropsType, signal: AbortSignal) => {
         </svg>
       </span>
       <div class="title-container">
-        <span class="title"> ${name} </span>
+        <span class="title"> ${escapeHtml(name)} </span>
       </div>
       <span class="downloads">
         ${numberFormat.format(pkg.downloads.monthly)}

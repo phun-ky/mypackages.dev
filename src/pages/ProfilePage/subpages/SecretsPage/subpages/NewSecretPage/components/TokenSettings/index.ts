@@ -5,6 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { setActiveProviderToken } from '../../../../../../../../features/profile/secrets/utils/set-active-provider-token';
 import { addOnAfterAppRender } from '../../../../../../../../lib/spa';
 import type { ComponentBasePropsType } from '../../../../../../../../lib/spa/types';
+import { escapeAttr } from '../../../../../../../../utils/escape-html';
 
 const html = String.raw;
 
@@ -23,14 +24,6 @@ export type StoreProviderTokenBodyType = {
   token: string;
   meta?: Record<string, unknown>;
 };
-
-const escapeHtml = (s: string) =>
-  s
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
 
 export const storeProviderToken = async (
   supabase: SupabaseClient,
@@ -119,7 +112,7 @@ export const TokenSettings = async (props: TokenSettingsPropsType) => {
             data-label
             autocomplete="off"
             spellcheck="false"
-            value="${escapeHtml(label)}"
+            value="${escapeAttr(label)}"
             placeholder="e.g. default, work, personal"
           />
           <label class="field"> Label (optional) </label>

@@ -6,6 +6,7 @@ import { setActiveProviderToken } from '../../../../features/profile/secrets/uti
 import { addOnAfterAppRender } from '../../../../lib/spa';
 import type { PagePropsType } from '../../../../lib/spa/types';
 import { supabase } from '../../../../services/supabase';
+import { escapeHtml } from '../../../../utils/escape-html';
 
 const html = String.raw;
 
@@ -60,7 +61,7 @@ export const SecretsPage = async (
                   data-provider="${provider}"
                 >
                   <td>
-                    ${label ?? ''}
+                    ${escapeHtml(label)}
                     ${isActive
                       ? html` <span class="badge" data-active>Active</span>`
                       : ''}

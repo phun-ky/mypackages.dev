@@ -8,6 +8,7 @@ import {
 } from '../../../../../lib/spa';
 import { signOut } from '../../../../../services/github';
 import { cx } from '../../../../../utils/cx';
+import { escapeAttr, escapeHtml } from '../../../../../utils/escape-html';
 import { Button } from '../../../../actions/Button';
 import { Link } from '../../../../actions/Link';
 import { getInitialsForUser } from '../../utils/get-initials-for-user';
@@ -28,13 +29,13 @@ export const ProfileMenu = async (session?: Session | null) => {
 
   const avatar =
     avatarUrl && avatarUrl !== ''
-      ? `<img src="${avatarUrl}" alt="${name}" class="avatar" />`
-      : `<span class="avatar">${getInitialsForUser(name)}</span>`;
+      ? `<img src="${escapeAttr(avatarUrl)}" alt="${escapeAttr(name)}" class="avatar" />`
+      : `<span class="avatar">${escapeHtml(getInitialsForUser(name))}</span>`;
   const menu = [
     {
       type: 'user-meta',
-      children: html`<span class="username">${user_name}</span>
-        <span class="email">${email}</span>`
+      children: html`<span class="username">${escapeHtml(user_name)}</span>
+        <span class="email">${escapeHtml(email)}</span>`
     },
     {
       type: 'separator'

@@ -1,5 +1,9 @@
 import type { Routes } from '../types';
 
+// Route parameters are package names and npm usernames, which never contain
+// these characters. Leaving them out keeps markup in a crafted URL from
+// reaching the page: such URLs get the "page not found" page.
+
 export const routes = [
   { path: '/', page: 'StartPage', name: 'Start', regex: /^\/$/, public: true },
 
@@ -31,7 +35,7 @@ export const routes = [
     path: '/users/:username/packages',
     page: 'UserPackagesPage',
     name: 'User Packages',
-    regex: /^\/users\/([^/]+)\/packages$/,
+    regex: /^\/users\/([^/\s<>"'`&]+)\/packages$/,
     public: true
   },
   // Public user profile
@@ -39,7 +43,7 @@ export const routes = [
     path: '/users/:username',
     page: 'UserPage',
     name: 'User profile',
-    regex: /^\/users\/([^/]+)$/,
+    regex: /^\/users\/([^/\s<>"'`&]+)$/,
     public: true
   },
   {
@@ -64,7 +68,7 @@ export const routes = [
     path: '/packages/:packageName',
     page: 'PackagePage',
     name: 'Package',
-    regex: /^\/packages\/(.+)$/,
+    regex: /^\/packages\/((?:@[^/\s<>"'`&]+\/)?[^/\s<>"'`&]+)$/,
     public: true
   },
 

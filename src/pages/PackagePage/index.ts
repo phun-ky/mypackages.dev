@@ -30,6 +30,7 @@ import { packageQuality } from '../../services/package/quality';
 import { packageSecurity } from '../../services/package/security';
 import type { NpmRepository } from '../../types';
 import { cx } from '../../utils/cx';
+import { escapeAttr, escapeHtml, safeUrl } from '../../utils/escape-html';
 import { formatRelativeTime } from '../../utils/format';
 import { normalizeKnownRepoUrl } from '../../utils/normalize';
 import { compactNumberFormat, numberFormat } from '../../utils/number-format';
@@ -218,21 +219,24 @@ export const PackagePage = async (
     pkg: details
   });
   const dependents = hasDependents({ role, username, packageName });
+  // Only http(s) links, never `javascript:` and the like from package.json
+  const homepageUrl = safeUrl(details.homepage);
+  const bugsUrl = safeUrl(typeof bugs === 'string' ? bugs : bugs?.url);
 
   return html`<section class="package-page">
     ${Container({
       children: html`<header class="package-header">
         <h1>
-          ${details.name}
+          ${escapeHtml(details.name)}
           <span class="badges">
             <span class="badge is-stable"> ${latest} </span>
           </span>
         </h1>
-        <p class="description">${details.description}</p>
+        <p class="description">${escapeHtml(details.description)}</p>
         <div class="package-links">
           ${repoUrl
             ? html`<a
-                href="${repoUrl}"
+                href="${escapeAttr(repoUrl)}"
                 class="github-link"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -265,12 +269,15 @@ export const PackagePage = async (
             </svg>
           </a>
           <span class="badges">
-            <span class="badge is-${status.key}" title="${status.title}">
+            <span
+              class="badge is-${status.key}"
+              title="${escapeAttr(status.title)}"
+            >
               ${status.label}
             </span>
             ${releaseHealth && releaseHealth.license
               ? html`<span class="badge is-neutral" title="License">
-                  ${releaseHealth.license}
+                  ${escapeHtml(releaseHealth.license)}
                 </span>`
               : ''}
           </span>
@@ -612,7 +619,7 @@ export const PackagePage = async (
                 ${keywords
                   .map(
                     (keyword) =>
-                      `<a class="badge is-neutral" rel="noopener noreferrer" target="_blank" href="https://www.npmjs.com/search?q=keywords:${keyword}">${keyword}</a>`
+                      `<a class="badge is-neutral" rel="noopener noreferrer" target="_blank" href="https://www.npmjs.com/search?q=keywords:${encodeURIComponent(keyword)}">${escapeHtml(keyword)}</a>`
                   )
                   .join('\n')}
               </div>
@@ -633,11 +640,11 @@ export const PackagePage = async (
             className: 'links',
             children: html`<div class="links-inner">
               <ul>
-                ${details.homepage
-                  ? `<li>${Link({ to: details.homepage, children: 'Homepage' })}</li>`
+                ${homepageUrl
+                  ? `<li>${Link({ to: homepageUrl, children: 'Homepage' })}</li>`
                   : ''}
-                ${details.bugs
-                  ? `<li>${Link({ to: typeof details.bugs === 'string' ? details.bugs : details.bugs.url, children: 'Bugs' })}</li>`
+                ${bugsUrl
+                  ? `<li>${Link({ to: bugsUrl, children: 'Bugs' })}</li>`
                   : ''}
                 ${repoUrl
                   ? `<li>${Link({ to: repoUrl, children: 'Repository' })}</li>`

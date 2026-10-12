@@ -1,6 +1,7 @@
 import { Card } from '../../../components/content/Card';
 import { addOnAfterAppRender } from '../../../lib/spa';
 import { supabase } from '../../../services/supabase';
+import { escapeAttr, escapeHtml } from '../../../utils/escape-html';
 import './styles/frontpageSearchStatistics.css';
 
 const html = String.raw;
@@ -18,10 +19,15 @@ export const FrontpageSearchStatistics = async () => {
     const htmlString = Card({
       children: html`${latest
         ?.map((entry) => {
-          const { kind, username, package_name } = entry;
+          const { kind } = entry;
+          const username = escapeHtml(entry.username);
+          const packageName = escapeHtml(entry.package_name);
 
           if (kind === 'user')
-            return html`<a href="/users/${username}" data-link>
+            return html`<a
+              href="/users/${escapeAttr(entry.username)}"
+              data-link
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="var(--color-brand)"
@@ -34,7 +40,10 @@ export const FrontpageSearchStatistics = async () => {
               ${username}
             </a>`;
 
-          return html`<a href="/packages/${package_name}" data-link>
+          return html`<a
+            href="/packages/${escapeAttr(entry.package_name)}"
+            data-link
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#10b981"
@@ -44,7 +53,7 @@ export const FrontpageSearchStatistics = async () => {
                 d="M450-177.23v-285.54L200-607.54v278.62q0 3.07 1.54 5.77 1.54 2.69 4.61 4.61zm60 0 243.85-141.31q3.07-1.92 4.61-4.61 1.54-2.7 1.54-5.77v-278.62L510-462.77zm-66.15 65.46L176.16-265.85q-17.08-9.84-26.62-26.3-9.54-16.47-9.54-36.16v-303.38q0-19.69 9.54-36.16 9.54-16.46 26.62-26.3l267.69-154.08q17.07-9.85 36.15-9.85t36.15 9.85l267.69 154.08q17.08 9.84 26.62 26.3 9.54 16.47 9.54 36.16v303.38q0 19.69-9.54 36.16-9.54 16.46-26.62 26.3L516.15-111.77q-17.07 9.85-36.15 9.85t-36.15-9.85M634.23-604 727-657.23 486.15-796.54q-3.07-1.92-6.15-1.92t-6.15 1.92l-86.85 50zM480-514.46l93-53.85-247-142.77-93 53.85z"
               />
             </svg>
-            ${package_name}
+            ${packageName}
           </a>`;
         })
         .join('\n')}`
@@ -65,10 +74,11 @@ export const FrontpageSearchStatistics = async () => {
     const htmlString = Card({
       children: html`${trending
         ?.map((entry) => {
-          const { kind, term } = entry;
+          const { kind } = entry;
+          const term = escapeHtml(entry.term);
 
           if (kind === 'user')
-            return html`<a href="/users/${term}" data-link>
+            return html`<a href="/users/${escapeAttr(entry.term)}" data-link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="var(--color-brand)"
@@ -81,7 +91,7 @@ export const FrontpageSearchStatistics = async () => {
               ${term}
             </a>`;
 
-          return html`<a href="/packages/${term}" data-link>
+          return html`<a href="/packages/${escapeAttr(entry.term)}" data-link>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#10b981"
@@ -112,10 +122,11 @@ export const FrontpageSearchStatistics = async () => {
       className: 'column-2',
       children: html`${popular
         ?.map((entry) => {
-          const { kind, term } = entry;
+          const { kind } = entry;
+          const term = escapeHtml(entry.term);
 
           if (kind === 'user')
-            return html`<a href="/users/${term}" data-link>
+            return html`<a href="/users/${escapeAttr(entry.term)}" data-link>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="var(--color-brand)"
@@ -128,7 +139,7 @@ export const FrontpageSearchStatistics = async () => {
               ${term}
             </a>`;
 
-          return html`<a href="/packages/${term}" data-link>
+          return html`<a href="/packages/${escapeAttr(entry.term)}" data-link>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="#10b981"
