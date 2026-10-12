@@ -6,13 +6,7 @@ export type FAQItemType = {
 export type FAQCategory = 'Site' | 'Npm' | 'Github' | 'Account' | 'Privacy';
 
 export type FAQSubCategory =
-  | 'Search'
-  | 'Package'
-  | 'Health'
-  | 'General'
-  | 'Legal'
-  | 'Repo'
-  | 'Login';
+  'Search' | 'Package' | 'Health' | 'General' | 'Legal' | 'Repo' | 'Login';
 
 export type FAQItemsType = FAQItemType[];
 

@@ -62,24 +62,28 @@ export const SecretsPage = async (
                 >
                   <td>
                     ${escapeHtml(label)}
-                    ${isActive
-                      ? html` <span class="badge" data-active>Active</span>`
-                      : ''}
+                    ${
+                      isActive
+                        ? html` <span class="badge" data-active>Active</span>`
+                        : ''
+                    }
                   </td>
                   <td>${provider}</td>
                   <td>${updated_at}</td>
                   <td>
-                    ${provider === 'npm'
-                      ? html`<button
-                          type="button"
-                          class="button"
-                          data-make-active
-                          data-token-id="${id}"
-                          ${isActive ? 'disabled' : ''}
-                        >
-                          ${isActive ? 'Active' : 'Use for npm'}
-                        </button>`
-                      : ''}
+                    ${
+                      provider === 'npm'
+                        ? html`<button
+                            type="button"
+                            class="button"
+                            data-make-active
+                            data-token-id="${id}"
+                            ${isActive ? 'disabled' : ''}
+                          >
+                            ${isActive ? 'Active' : 'Use for npm'}
+                          </button>`
+                        : ''
+                    }
                   </td>
                 </tr>`;
               })

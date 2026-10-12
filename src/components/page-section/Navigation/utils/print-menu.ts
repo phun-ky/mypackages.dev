@@ -38,15 +38,17 @@ export const printMenu = (
               class="${listActionClassNames}"
             >
               ${icon ? icon : ''} <span class="label">${name}</span>
-              ${hasChildren
-                ? html`<svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 -960 960 960"
-                  >
-                    <path d="M480-360 280-560h400z" />
-                  </svg>`
-                : ''}
+              ${
+                hasChildren
+                  ? html`<svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 -960 960 960"
+                    >
+                      <path d="M480-360 280-560h400z" />
+                    </svg>`
+                  : ''
+              }
             </button>
             ${children ? printMenu(children, currentPath, true) : ''}
           </li>`;

@@ -7,20 +7,10 @@ import { scoreCadence } from '../../utils/score-cadence';
 import { scoreRecency } from '../../utils/score-recency';
 
 export type MaintenanceKey =
-  | 'unknown'
-  | 'deprecated'
-  | 'fresh'
-  | 'stable'
-  | 'stale'
-  | 'dormant';
+  'unknown' | 'deprecated' | 'fresh' | 'stable' | 'stale' | 'dormant';
 
 export type MaintenanceLabel =
-  | 'Unknown'
-  | 'Deprecated'
-  | 'Fresh'
-  | 'Stable'
-  | 'Stale'
-  | 'Dormant';
+  'Unknown' | 'Deprecated' | 'Fresh' | 'Stable' | 'Stale' | 'Dormant';
 
 export type MaintenanceResult = {
   key: MaintenanceKey;

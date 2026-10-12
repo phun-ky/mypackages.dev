@@ -85,21 +85,23 @@ const App = async (initialProps: Partial<PagePropsType>) => {
           withMenus: true
         });
 
-  return html` ${_pageId !== 'StartPage'
-    ? Alert({
-        className: 'global-alert',
-        label: 'Project status',
-        title: 'This project is currently in Alpha!',
-        size: 'wide',
-        description: html`Expect issues, and if you encounter them,
-        ${Link({
-          to: 'https://github.com/phun-ky/mypackages.dev/issues',
-          children: 'please report it.'
-        })}`,
+  return html` ${
+    _pageId !== 'StartPage'
+      ? Alert({
+          className: 'global-alert',
+          label: 'Project status',
+          title: 'This project is currently in Alpha!',
+          size: 'wide',
+          description: html`Expect issues, and if you encounter them,
+          ${Link({
+            to: 'https://github.com/phun-ky/mypackages.dev/issues',
+            children: 'please report it.'
+          })}`,
 
-        type: 'important'
-      })
-    : ''}${await Header({ page: _pageId, ..._resolvedPageProps, crumbs })}
+          type: 'important'
+        })
+      : ''
+  }${await Header({ page: _pageId, ..._resolvedPageProps, crumbs })}
   ${Navigation({
     page: _pageId,
     ...(_resolvedPageProps as unknown as { username?: string })
