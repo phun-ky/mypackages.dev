@@ -47,7 +47,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "diff-dom": "^5.2.1",
     "dompurify": "^3.4.16",
-    "highcharts": "^12.6.2",
+    "highcharts": "^13.1.1",
     "marked": "^18.1.0",
     "shiki": "^4.5.0"
   },
