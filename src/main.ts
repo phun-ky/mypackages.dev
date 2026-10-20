@@ -3,6 +3,10 @@ import { DOMContentLoaded } from './lib/spa/utils/dom-content-loaded';
 import { eventAfterAppRender } from './lib/spa/utils/event-after-app-render';
 import { popstate } from './lib/spa/utils/popstate';
 
+// Fonts, served from the site itself instead of Google Fonts. Inter with its
+// optical size axis, as before.
+import '@fontsource-variable/inter/opsz.css';
+import '@fontsource-variable/lexend-deca';
 // Styles
 import './styles/site.css';
 

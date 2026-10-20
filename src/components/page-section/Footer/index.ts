@@ -51,7 +51,7 @@ export const Footer = ({ page }: FooterPropsType) => {
                   style="border-width: 0"
                   width="88"
                   height="31"
-                  src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"
+                  src="/meta/cc-by-nc-sa-4.0-88x31.png"
                 />
               </a>
             </span>

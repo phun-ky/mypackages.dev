@@ -1,5 +1,6 @@
 import type { NpmIdentity } from '../../../types';
-import { escapeAttr } from '../../../utils/escape-html';
+import { escapeAttr, escapeHtml } from '../../../utils/escape-html';
+import { getInitialsForUser } from '../../page-section/Header/utils/get-initials-for-user';
 import { EmphasizedCard } from '../EmphasizedCard';
 import './styles/maintainers.css';
 
@@ -25,18 +26,18 @@ export const Maintainers = (maintainers: NpmIdentity[]) => {
         ${maintainers
           .map((maintainer) => {
             const name = escapeAttr(maintainer.name);
+            const initials = escapeHtml(getInitialsForUser(maintainer.name));
 
+            // Initials, not a photo: loading GitHub avatars by npm username
+            // contacts GitHub and can show someone else (see #37)
             return html`<a
               href="https://www.npmjs.com/~${name}"
               rel="noopener noreferrer"
               target="_blank"
+              title="${name}"
+              aria-label="${name} on npm"
             >
-              <img
-                src="https://avatars.githubusercontent.com/${name}"
-                alt="${name}"
-                title="${name}"
-                loading="lazy"
-              />
+              <span aria-hidden="true">${initials}</span>
             </a>`;
           })
           .join('\n')}
