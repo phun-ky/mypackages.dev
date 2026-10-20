@@ -4,7 +4,25 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(17);
+select plan(23);
+
+-- Two users with a stored npm token each, made as the owner, like
+-- save-secret and set-active-token do
+insert into auth.users (id, email) values
+  ('00000000-0000-4000-8000-000000000001', 'one@example.com'),
+  ('00000000-0000-4000-8000-000000000002', 'two@example.com');
+
+insert into public.user_provider_tokens (id, user_id, provider, label, vault_secret_id)
+values
+  ('00000000-0000-4000-8000-0000000000a1', '00000000-0000-4000-8000-000000000001',
+   'npm', 'default', vault.create_secret('npm_token_one', 'pat:npm:test:one')),
+  ('00000000-0000-4000-8000-0000000000a2', '00000000-0000-4000-8000-000000000002',
+   'npm', 'default', vault.create_secret('npm_token_two', 'pat:npm:test:two'));
+
+insert into public.user_provider_token_selections (user_id, provider, active_token_id)
+values
+  ('00000000-0000-4000-8000-000000000001', 'npm', '00000000-0000-4000-8000-0000000000a1'),
+  ('00000000-0000-4000-8000-000000000002', 'npm', '00000000-0000-4000-8000-0000000000a2');
 
 -- As a visitor, with the public anon key -----------------------------------
 
@@ -129,6 +147,14 @@ select throws_ok(
   'anon cannot call the token functions'
 );
 
+select throws_ok(
+  $$ select public.get_provider_token_secret(
+       '00000000-0000-4000-8000-000000000001', 'npm') $$,
+  '42501',
+  null,
+  'anon cannot read stored tokens'
+);
+
 -- As a signed-in user -------------------------------------------------------
 
 reset role;
@@ -146,6 +172,49 @@ select throws_ok(
   '42501',
   null,
   'signed-in users cannot read who searched'
+);
+
+-- Only the edge functions need a token, so the browser must never get one,
+-- even its own: a script injected into the site could send it anywhere
+set local request.jwt.claims to
+  '{"sub": "00000000-0000-4000-8000-000000000001", "role": "authenticated"}';
+
+select throws_ok(
+  $$ select public.get_active_provider_token_secret('npm') $$,
+  '42501',
+  null,
+  'signed-in users cannot read their stored token'
+);
+
+select throws_ok(
+  $$ select public.get_provider_token_secret(
+       '00000000-0000-4000-8000-000000000001', 'npm') $$,
+  '42501',
+  null,
+  'signed-in users cannot read stored tokens by user id'
+);
+
+-- As the edge functions, with the service role ------------------------------
+
+reset role;
+set local role service_role;
+
+select is(
+  public.get_provider_token_secret('00000000-0000-4000-8000-000000000001', 'npm'),
+  'npm_token_one',
+  'the service role gets the active token of the given user'
+);
+
+select is(
+  public.get_provider_token_secret('00000000-0000-4000-8000-000000000002', 'npm'),
+  'npm_token_two',
+  'each user gets their own token'
+);
+
+select is(
+  public.get_provider_token_secret('00000000-0000-4000-8000-000000000001', 'github'),
+  null,
+  'no token for a provider without one'
 );
 
 select * from finish();
