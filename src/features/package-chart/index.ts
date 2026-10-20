@@ -1,6 +1,7 @@
 import Highcharts from 'highcharts/esm/highcharts.js';
 
 import type { NpmPackageName } from '../../types';
+import { themeColor } from '../../utils/theme-color';
 
 import { rollingMedian } from './utils/rolling-median';
 
@@ -27,12 +28,12 @@ export const renderSinglePackageChart = async (
       chart: {
         type: 'areaspline',
         margin: 0,
-        backgroundColor: 'rgba(255,255,255,0)'
+        backgroundColor: themeColor('contrast', 0)
       },
       tooltip: { enabled: false },
       title: { text: undefined },
       xAxis: {
-        gridLineColor: 'rgba(255,255,255,0.05)',
+        gridLineColor: themeColor('contrast', 0.05),
         gridLineWidth: 0,
         margin: 0,
         maxPadding: 0,
@@ -47,7 +48,7 @@ export const renderSinglePackageChart = async (
         margin: 0,
         gridLineWidth: 0,
         maxPadding: 0,
-        gridLineColor: 'rgba(255,255,255,0.05)'
+        gridLineColor: themeColor('contrast', 0.05)
       },
       legend: { enabled: false },
       plotOptions: {
@@ -83,7 +84,7 @@ export const renderSinglePackageChart = async (
           name: 'Median (3mo)',
           type: 'spline',
           data: smoothData,
-          color: 'rgba(255,255,255,0.3)',
+          color: themeColor('contrast', 0.3),
           // dashStyle: 'ShortDash',
           lineWidth: 1,
           marker: { enabled: false },

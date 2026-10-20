@@ -14,32 +14,32 @@ a.card,
   background-image:
     radial-gradient(
       circle at center right,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0) 100%
+      rgb(var(--rgb-shade) / 0.7) 0%,
+      rgb(var(--rgb-shade) / 0) 100%
     ),
     radial-gradient(
       ellipse at 50% 150%,
-      rgba(56, 189, 248, 0.2) 0%,
-      rgba(56, 189, 248, 0) 50%
+      rgb(var(--rgb-brand) / 0.2) 0%,
+      rgb(var(--rgb-brand) / 0) 50%
     ),
     radial-gradient(
       circle at 10% 50%,
-      rgba(56, 189, 248, 0.02) 0%,
-      rgba(56, 189, 248, 0) 20%
+      rgb(var(--rgb-brand) / 0.02) 0%,
+      rgb(var(--rgb-brand) / 0) 20%
     ),
     radial-gradient(
       circle at 60% 30%,
-      rgba(56, 189, 248, 0.1) -10%,
-      rgba(56, 189, 248, 0) 50%
+      rgb(var(--rgb-brand) / 0.1) -10%,
+      rgb(var(--rgb-brand) / 0) 50%
     );
   background-position:
     center center,
     center bottom;
   background-repeat: no-repeat no-repeat;
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  border: 1px solid rgba(29, 30, 38, 0.3);
+    0 1px 3px rgb(var(--rgb-shadow) / 0.12),
+    0 1px 2px rgb(var(--rgb-shadow) / 0.24);
+  border: 1px solid rgb(var(--rgb-surface) / 0.3);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -71,7 +71,7 @@ a.card,
 
   &::after,
   &::before {
-    box-shadow: -10px 0 500px 100px rgba(56, 189, 248, 0.05);
+    box-shadow: -10px 0 500px 100px rgb(var(--rgb-brand) / 0.05);
     content: '';
     position: absolute;
     bottom: -10rem;

@@ -1,5 +1,5 @@
 .navigation {
-  border-right: 1px solid rgba(29, 30, 38, 0.5);
+  border-right: 1px solid rgb(var(--rgb-surface) / 0.5);
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-left: 0.5rem;
@@ -11,7 +11,7 @@
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   position: sticky;
   top: var(--header-height);
-  background-color: rgba(8, 11, 22, 1);
+  background-color: rgb(var(--rgb-canvas));
   overflow: hidden;
   z-index: 900;
 
@@ -54,7 +54,7 @@
   &.is-active .navigation-list-action {
     color: var(--color-text-accent);
     opacity: 1;
-    background-color: rgba(56, 189, 248, 0.2);
+    background-color: rgb(var(--rgb-brand) / 0.2);
     & svg {
       color: var(--color-text-accent);
     }
@@ -89,7 +89,7 @@
   gap: 0.5rem;
   &:hover {
     background-color: var(--color-brand);
-    color: black;
+    color: rgb(var(--rgb-on-brand));
     opacity: 1;
   }
   & .label {

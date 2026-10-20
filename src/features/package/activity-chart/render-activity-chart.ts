@@ -2,6 +2,7 @@ import Highcharts from 'highcharts/esm/highcharts.js';
 
 import 'highcharts/esm/modules/heatmap';
 import type { NpmPackageName } from '../../../types';
+import { themeColor } from '../../../utils/theme-color';
 import type { HeatmapPoint } from '../build-publish-heatmap-series';
 
 export type RenderActivityChartParamsType = {
@@ -32,7 +33,7 @@ export const renderActivityChart = (props: RenderActivityChartParamsType) => {
     const chartOptions: Highcharts.Options = {
       chart: {
         type: 'heatmap',
-        backgroundColor: 'rgba(255,255,255,0)',
+        backgroundColor: themeColor('contrast', 0),
         margin: [0, 0, 0, 0],
 
         height: undefined
@@ -67,10 +68,10 @@ export const renderActivityChart = (props: RenderActivityChartParamsType) => {
         min: 0,
         max: allZero ? 1 : undefined,
         stops: [
-          [0, 'rgba(56, 189, 248, 0.1)'], // transparent for 0 (or very low)
-          [0.1, 'rgba(56, 189, 248, 0.2)'],
-          [0.4, 'rgba(56, 189, 248, 0.6)'],
-          [0.8, 'rgba(56, 189, 248, 0.8)'],
+          [0, themeColor('brand', 0.1)], // transparent for 0 (or very low)
+          [0.1, themeColor('brand', 0.2)],
+          [0.4, themeColor('brand', 0.6)],
+          [0.8, themeColor('brand', 0.8)],
           [1, 'var(--color-brand)']
         ]
       },

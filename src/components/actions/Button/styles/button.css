@@ -7,8 +7,8 @@ a.button {
   height: 2.25rem;
   width: fit-content;
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(56, 189, 248, 0.05);
-  background-color: rgba(56, 189, 248, 0.07);
+  border: 1px solid rgb(var(--rgb-brand) / 0.05);
+  background-color: rgb(var(--rgb-brand) / 0.07);
   color: var(--color-text);
   border-radius: 6px;
   flex-grow: 0;
@@ -48,8 +48,8 @@ a.button {
   }
 
   &:hover {
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    background-color: rgba(56, 189, 248, 0.3);
+    border: 1px solid rgb(var(--rgb-brand) / 0.2);
+    background-color: rgb(var(--rgb-brand) / 0.3);
     color: var(--color-text-accent);
   }
 
@@ -61,23 +61,23 @@ a.button {
   }
 
   &.primary {
-    color: black;
+    color: rgb(var(--rgb-on-brand));
     background-color: var(--color-brand);
     background-image: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(56, 189, 248, 0.7) 100%
+      rgb(var(--rgb-contrast) / 0.2) 0%,
+      rgb(var(--rgb-brand) / 0.7) 100%
     );
   }
 
   &.danger {
     color: var(--color-text);
-    background-color: #450a0a;
-    border-color: #b91c1c;
+    background-color: rgb(var(--rgb-alert-danger-bg));
+    border-color: rgb(var(--rgb-alert-danger-border));
 
     &:hover {
-      border-color: #fb7185;
-      background-color: #b91c1c;
+      border-color: rgb(var(--rgb-alert-danger-text));
+      background-color: rgb(var(--rgb-alert-danger-border));
       color: var(--color-text-accent);
     }
   }
@@ -87,7 +87,7 @@ a.button {
 .button.primary:hover:not(:disabled):not([aria-disabled='true']) {
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.45) 0%,
+    rgb(var(--rgb-contrast) / 0.45) 0%,
     var(--color-brand) 100%
   );
 }
@@ -96,8 +96,8 @@ a.button {
 .button.primary:active:not(:disabled):not([aria-disabled='true']) {
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(56, 189, 248, 0.9) 100%
+    rgb(var(--rgb-contrast) / 0.2) 0%,
+    rgb(var(--rgb-brand) / 0.9) 100%
   );
 }
 
@@ -107,25 +107,25 @@ a.button {
   height: 3rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 10px 30px rgb(var(--rgb-brand) / 0.25);
 }
 
 /* cta hover */
 .button.primary.cta:hover:not(:disabled):not([aria-disabled='true']) {
-  color: black;
+  color: rgb(var(--rgb-on-brand));
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.45) 0%,
+    rgb(var(--rgb-contrast) / 0.45) 0%,
     var(--color-brand) 100%
   );
 }
 
 /* cta active */
 .button.primary.cta:active:not(:disabled):not([aria-disabled='true']) {
-  color: black;
+  color: rgb(var(--rgb-on-brand));
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(56, 189, 248, 0.9) 100%
+    rgb(var(--rgb-contrast) / 0.2) 0%,
+    rgb(var(--rgb-brand) / 0.9) 100%
   );
 }

@@ -10,19 +10,19 @@
     width: 480px;
     aspect-ratio: 4/3;
     border-radius: 12px;
-    background-color: rgba(8, 11, 22, 0.1);
-    border-left: 2px solid rgba(29, 207, 154, 0.2);
-    border-bottom: 2px solid rgba(29, 207, 154, 0.1);
-    border-right: 2px solid rgba(56, 189, 248, 0.2);
-    border-top: 2px solid rgba(56, 189, 248, 0.2);
+    background-color: rgb(var(--rgb-canvas) / 0.1);
+    border-left: 2px solid rgb(var(--rgb-brand-2) / 0.2);
+    border-bottom: 2px solid rgb(var(--rgb-brand-2) / 0.1);
+    border-right: 2px solid rgb(var(--rgb-brand) / 0.2);
+    border-top: 2px solid rgb(var(--rgb-brand) / 0.2);
     box-shadow:
-      inset 0 0 50px 10px rgba(255, 255, 255, 0.03),
-      0 10px 20px 10px rgba(0, 0, 0, 0.5),
-      0 -10px 100px 10px rgba(255, 255, 255, 0.05);
+      inset 0 0 50px 10px rgb(var(--rgb-contrast) / 0.03),
+      0 10px 20px 10px rgb(var(--rgb-shadow) / 0.5),
+      0 -10px 100px 10px rgb(var(--rgb-contrast) / 0.05);
     background-image: linear-gradient(
       -180deg,
-      rgba(8, 11, 22, 0.7) 10%,
-      rgba(8, 11, 22, 0) 60%
+      rgb(var(--rgb-canvas) / 0.7) 10%,
+      rgb(var(--rgb-canvas) / 0) 60%
     );
 
     @media screen and (min-width: 600px) {
@@ -38,12 +38,12 @@
       width: 1.5px;
       background-image: linear-gradient(
         0deg,
-        rgba(29, 207, 158, 0) 0%,
-        rgba(255, 255, 255, 1) 50%,
-        rgba(56, 189, 248, 0) 70%
+        rgb(var(--rgb-brand-2) / 0) 0%,
+        rgb(var(--rgb-contrast)) 50%,
+        rgb(var(--rgb-brand) / 0) 70%
       );
       border-radius: 50%;
-      box-shadow: 0 0 50px 10px rgba(29, 207, 158, 0.4);
+      box-shadow: 0 0 50px 10px rgb(var(--rgb-brand-2) / 0.4);
     }
 
     &::after {
@@ -55,9 +55,9 @@
       width: 1.5px;
       background-image: linear-gradient(
         0deg,
-        rgba(56, 189, 248, 0) 0%,
-        rgba(255, 255, 255, 0.8) 40%,
-        rgba(56, 189, 248, 0) 70%
+        rgb(var(--rgb-brand) / 0) 0%,
+        rgb(var(--rgb-contrast) / 0.8) 40%,
+        rgb(var(--rgb-brand) / 0) 70%
       );
       border-radius: 50%;
       box-shadow: 0 0 50px 10px var(--color-brand);
@@ -82,11 +82,11 @@
         content: '';
         height: 1px;
         width: 1px;
-        background-color: black;
+        background-color: rgb(var(--rgb-shade));
         position: absolute;
         left: 40%;
         top: 40%;
-        box-shadow: 0 0 100px 50px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 100px 50px rgb(var(--rgb-shade) / 0.8);
         border-radius: 50%;
         z-index: 1;
       }
@@ -95,11 +95,11 @@
         content: '';
         height: 1px;
         width: 1px;
-        background-color: black;
+        background-color: rgb(var(--rgb-shade));
         position: absolute;
         left: 20%;
         top: 90%;
-        box-shadow: 0 0 200px 200px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 200px 200px rgb(var(--rgb-shade) / 0.5);
         border-radius: 50%;
         z-index: 1;
       }

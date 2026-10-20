@@ -1,5 +1,7 @@
 import Highcharts from 'highcharts/esm/highcharts.js';
 
+import { themeColor } from '../../utils/theme-color';
+
 let currentChart: Highcharts.Chart | null = null;
 let currentResizeObserver: ResizeObserver | null = null;
 
@@ -32,12 +34,12 @@ export const renderMonthlyDownloadsChart = async (
     chart: {
       type: 'areaspline',
       margin: 0,
-      backgroundColor: 'rgba(255,255,255,0)'
+      backgroundColor: themeColor('contrast', 0)
     },
     tooltip: { enabled: false },
     title: { text: undefined },
     xAxis: {
-      gridLineColor: 'rgba(255,255,255,0.05)',
+      gridLineColor: themeColor('contrast', 0.05),
       gridLineWidth: 0,
       margin: 0,
       maxPadding: 0,
@@ -52,7 +54,7 @@ export const renderMonthlyDownloadsChart = async (
       margin: 0,
       gridLineWidth: 0,
       maxPadding: 0,
-      gridLineColor: 'rgba(255,255,255,0.05)'
+      gridLineColor: themeColor('contrast', 0.05)
     },
     legend: { enabled: false },
     plotOptions: {
@@ -77,8 +79,8 @@ export const renderMonthlyDownloadsChart = async (
         color: {
           linearGradient: { x1: 1, y1: 1, x2: 0, y2: 0 },
           stops: [
-            [0, 'rgb(56, 189, 248)'], // Start color (at 0, the top)
-            [1, '#10b981'] // End color (at 1, the bottom)
+            [0, themeColor('brand')], // Start color (at 0, the top)
+            [1, themeColor('success')] // End color (at 1, the bottom)
           ]
         },
         fillColor: {

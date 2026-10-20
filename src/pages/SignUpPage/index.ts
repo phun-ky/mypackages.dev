@@ -35,8 +35,8 @@ export const SignUpPage = async () => {
               >
                 <defs>
                   <linearGradient id="a" x1="1" x2="0" y1="0" y2="1">
-                    <stop offset="0" stop-color="#38bdf8" />
-                    <stop offset="1" stop-color="#1dcf9e" />
+                    <stop offset="0" class="logo-stop-start" />
+                    <stop offset="1" class="logo-stop-end" />
                   </linearGradient>
                 </defs>
                 <path

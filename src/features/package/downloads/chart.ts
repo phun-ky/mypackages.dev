@@ -2,6 +2,7 @@ import Highcharts from 'highcharts/esm/highcharts.js';
 
 import type { NpmPackageName } from '../../../types';
 import { compactNumberFormat } from '../../../utils/number-format';
+import { themeColor } from '../../../utils/theme-color';
 // import { rollingMedian } from '../../../features/package-chart/utils/rolling-median';
 
 export type RenderPackagePageDownloadsChartPropsType = {
@@ -25,22 +26,22 @@ export const renderPackagePageDownloadsChart = (
       chart: {
         type: 'areaspline',
         margin: [16, 0, 32, 56],
-        backgroundColor: 'rgba(255,255,255,0)'
+        backgroundColor: themeColor('contrast', 0)
       },
       legend: {
         enabled: false
       },
       title: { text: undefined },
       xAxis: {
-        gridLineColor: 'rgba(255,255,255,0.05)',
+        gridLineColor: themeColor('contrast', 0.05),
 
         type: 'datetime',
 
         // Ensure we get nice month ticks even for sparse data
         tickInterval: 30 * 24 * 3600 * 1000, // monthly-ish fallback
         tickmarkPlacement: 'on',
-        lineColor: 'rgba(255,255,255,0.05)',
-        tickColor: 'rgba(255,255,255,0.05)',
+        lineColor: themeColor('contrast', 0.05),
+        tickColor: themeColor('contrast', 0.05),
         tickPositioner: function () {
           const e = this.getExtremes(); // { min, max, dataMin, dataMax, ... }
           // Prefer the "data" extremes; fall back to axis extremes
@@ -72,19 +73,19 @@ export const renderPackagePageDownloadsChart = (
           format: '{value:%b}', // Jan, Feb, ...
           // format: '{value:%b %Y}',   // Jan 2026
           // format: '{value:%m}',      // 01..12
-          style: { color: 'rgba(255,255,255,0.2)' }
+          style: { color: themeColor('contrast', 0.2) }
         }
       },
       yAxis: {
         title: {
           text: undefined
         },
-        gridLineColor: 'rgba(255,255,255,0.05)',
+        gridLineColor: themeColor('contrast', 0.05),
 
         tickAmount: 4, // try 3–6 depending on height
         labels: {
           enabled: true,
-          style: { color: 'rgba(255,255,255,0.2)' },
+          style: { color: themeColor('contrast', 0.2) },
           formatter() {
             return compactNumberFormat.format(Number(this.value));
           }

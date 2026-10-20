@@ -2,12 +2,20 @@
   position: relative;
   .start-page-inner {
     position: relative;
-    border-top: 2px solid rgba(29, 30, 38, 0.3);
-    border-left: 2px solid rgba(29, 30, 38, 0.3);
-    background-color: rgba(8, 11, 22, 1);
+    border-top: 2px solid rgb(var(--rgb-surface) / 0.3);
+    border-left: 2px solid rgb(var(--rgb-surface) / 0.3);
+    background-color: rgb(var(--rgb-canvas));
     background-image:
-      linear-gradient(145deg, rgba(8, 11, 22, 1) -30%, rgba(8, 11, 22, 0) 60%),
-      linear-gradient(90deg, rgba(8, 11, 22, 1) 0%, rgba(8, 11, 22, 0) 50%),
+      linear-gradient(
+        145deg,
+        rgb(var(--rgb-canvas)) -30%,
+        rgb(var(--rgb-canvas) / 0) 60%
+      ),
+      linear-gradient(
+        90deg,
+        rgb(var(--rgb-canvas)) 0%,
+        rgb(var(--rgb-canvas) / 0) 50%
+      ),
       var(--bg-url);
     background-size: cover;
     background-position: center center;
@@ -18,10 +26,10 @@
     align-items: flex-start;
     border-radius: 1rem;
     place-items: center;
-    color: white;
+    color: rgb(var(--rgb-contrast));
     height: 100%;
     background-attachment: fixed;
-    box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 18px 0px rgb(var(--rgb-shadow) / 0.2);
 
     &::after {
       content: '';
@@ -31,7 +39,7 @@
       width: 5%;
       height: 20%;
       background-color: transparent;
-      box-shadow: 0 0 200px 40px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 200px 40px rgb(var(--rgb-shade) / 0.9);
       border-radius: 50%;
       left: calc(100% - 5%);
       z-index: -1;
@@ -46,7 +54,7 @@
       width: 5%;
       height: 30%;
       background-color: transparent;
-      box-shadow: 0 0 200px 40px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 200px 40px rgb(var(--rgb-shade) / 0.9);
       border-radius: 50%;
       left: calc(100% - 5%);
       z-index: -1;
@@ -86,7 +94,7 @@
     justify-content: flex-start;
     flex-shrink: 0;
     align-items: center;
-    border-bottom: 2px solid rgba(29, 30, 38, 0.3);
+    border-bottom: 2px solid rgb(var(--rgb-surface) / 0.3);
 
     @media screen and (min-width: 600px) {
       padding-left: 2.5rem;
@@ -98,7 +106,7 @@
       height: 2.25rem;
       width: 2.25rem;
       border-radius: 6px;
-      background-color: rgba(255, 255, 255, 0.03);
+      background-color: rgb(var(--rgb-contrast) / 0.03);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -151,9 +159,9 @@
       flex-grow: 0;
       padding: 0.25rem 0.5rem;
 
-      box-shadow: inset 0 0 0 2px rgba(29, 30, 38, 0.3);
+      box-shadow: inset 0 0 0 2px rgb(var(--rgb-surface) / 0.3);
       border: 0px solid transparent;
-      background-color: rgba(56, 189, 248, 0.2);
+      background-color: rgb(var(--rgb-brand) / 0.2);
       font-family: var(--font-family-heading);
       border-radius: 6px;
       color: inherit;
@@ -218,13 +226,13 @@
   34%,
   66% {
     content: "a user's packages";
-    color: #f59e0b;
+    color: rgb(var(--rgb-warning));
   }
 
   67%,
   100% {
     content: 'a package';
-    color: #10b981;
+    color: rgb(var(--rgb-success));
   }
 }
 

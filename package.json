@@ -19,7 +19,7 @@
     "dev": "vite",
     "build": "tsc -p tsconfig.build.json && vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/check-colours.mjs",
     "typecheck": "tsc",
     "pretest:e2e": "vite build --mode e2e",
     "test:e2e": "playwright test",
