@@ -106,6 +106,9 @@ jobs:
         run:
           deno lint --rules-exclude=no-import-prefix,no-explicit-any
           supabase/functions
+      # Unit and property tests, like those for the portfolio snapshot
+      - name: Test
+        run: deno test --no-lock supabase/functions
 
   database:
     name: Database
