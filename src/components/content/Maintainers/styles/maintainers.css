@@ -29,10 +29,18 @@
     width: 2rem;
     border-radius: 50%;
     text-decoration: none;
-    & > img {
+    & > span {
+      display: grid;
+      place-items: center;
       height: 2rem;
       width: 2rem;
       border-radius: 50%;
+      border: 2px solid rgba(8, 11, 22, 1);
+      background: linear-gradient(135deg, #38bdf8, #1dcf9e);
+      color: rgba(8, 11, 22, 1);
+      font-family: var(--font-family-heading);
+      font-size: var(--text-size-80);
+      font-weight: 600;
     }
   }
   .avatars > a:not(:first-child):not(:last-child) {

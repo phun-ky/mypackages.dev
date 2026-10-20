@@ -113,7 +113,21 @@ test.describe('package page', () => {
     await expect(
       page.getByRole('link', { name: 'Repository' })
     ).toHaveAttribute('href', 'https://github.com/example/speccer');
-    await expect(page.getByRole('img', { name: 'example' })).toBeVisible();
+    // Initials, not a GitHub avatar, see #37
+    await expect(page.getByRole('link', { name: 'example on npm' })).toHaveText(
+      'EX'
+    );
+    await expect(
+      page.getByRole('link', { name: 'example on npm' })
+    ).toHaveAttribute('href', 'https://www.npmjs.com/~example');
+  });
+
+  test('keeps each card on its own', async ({ page }) => {
+    // diff-dom parses templates itself, and doesn't see an end tag split
+    // over two lines (`</span` and `>`), so the cards after it end up inside
+    await expect(page.locator('.emphasized-card .emphasized-card')).toHaveCount(
+      0
+    );
   });
 
   test('draws the downloads chart', async ({ page }) => {
