@@ -72,14 +72,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgb(var(--rgb-contrast) / 0.1);
             border-radius: 10px;
           }
 
           & > svg {
             height: 1rem;
             width: 1rem;
-            color: rgb(16, 17, 26);
+            color: rgb(var(--rgb-surface-deep));
           }
           &.negative {
             display: none;
@@ -93,13 +93,13 @@
         }
 
         &.positive {
-          color: rgb(58, 232, 73);
+          color: rgb(var(--rgb-up));
           opacity: 1;
           & .icon {
-            color: rgb(58, 232, 73);
+            color: rgb(var(--rgb-up));
 
             &::after {
-              background-color: rgba(58, 232, 73, 0.1);
+              background-color: rgb(var(--rgb-up) / 0.1);
             }
             &.negative {
               display: none;
@@ -114,12 +114,12 @@
         }
 
         &.negative {
-          color: rgb(239, 60, 64);
+          color: rgb(var(--rgb-down));
           opacity: 1;
           & .icon {
-            color: rgb(239, 60, 64);
+            color: rgb(var(--rgb-down));
             &::after {
-              background-color: rgba(239, 60, 64, 0.1);
+              background-color: rgb(var(--rgb-down) / 0.1);
             }
             &.negative {
               display: flex;

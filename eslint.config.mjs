@@ -56,9 +56,16 @@ export default defineConfig([
   },
   {
     // Run in Node, not the browser
-    files: ['tests/e2e/server.mjs', '*.config.{js,mjs,ts}'],
+    files: ['tests/e2e/server.mjs', 'scripts/**', '*.config.{js,mjs,ts}'],
     languageOptions: {
       globals: globals.node
+    }
+  },
+  {
+    // Command line scripts report on the console
+    files: ['scripts/**'],
+    rules: {
+      'no-console': 'off'
     }
   }
 ]);

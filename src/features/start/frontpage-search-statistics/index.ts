@@ -46,7 +46,7 @@ export const FrontpageSearchStatistics = async () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#10b981"
+              class="icon-success"
               viewBox="0 -960 960 960"
             >
               <path
@@ -94,7 +94,7 @@ export const FrontpageSearchStatistics = async () => {
           return html`<a href="/packages/${escapeAttr(entry.term)}" data-link>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#10b981"
+              class="icon-success"
               viewBox="0 -960 960 960"
             >
               <path
@@ -142,7 +142,7 @@ export const FrontpageSearchStatistics = async () => {
           return html`<a href="/packages/${escapeAttr(entry.term)}" data-link>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="#10b981"
+              class="icon-success"
               viewBox="0 -960 960 960"
             >
               <path

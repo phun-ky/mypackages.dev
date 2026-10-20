@@ -35,9 +35,13 @@
       height: 2rem;
       width: 2rem;
       border-radius: 50%;
-      border: 2px solid rgba(8, 11, 22, 1);
-      background: linear-gradient(135deg, #38bdf8, #1dcf9e);
-      color: rgba(8, 11, 22, 1);
+      border: 2px solid rgb(var(--rgb-canvas));
+      background: linear-gradient(
+        135deg,
+        rgb(var(--rgb-brand)),
+        rgb(var(--rgb-brand-2))
+      );
+      color: rgb(var(--rgb-canvas));
       font-family: var(--font-family-heading);
       font-size: var(--text-size-80);
       font-weight: 600;

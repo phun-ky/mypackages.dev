@@ -1,6 +1,6 @@
 .package-page {
   position: relative;
-  background-color: rgba(8, 11, 22, 1);
+  background-color: rgb(var(--rgb-canvas));
   .links {
     grid-area: links;
     aspect-ratio: unset;
@@ -188,7 +188,7 @@
     &::before {
       content: 'Downloads last month';
       text-decoration: none;
-      color: #fafbf8;
+      color: rgb(var(--rgb-text-bright));
       font-family: var(--font-family-heading);
       font-size: var(--text-size-100);
       line-height: 120%;
@@ -228,14 +228,14 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgb(var(--rgb-contrast) / 0.1);
         border-radius: 12px;
       }
 
       & > svg {
         height: 1rem;
         width: 1rem;
-        color: rgb(16, 17, 26);
+        color: rgb(var(--rgb-surface-deep));
       }
       &.negative {
         display: none;
@@ -249,13 +249,13 @@
     }
 
     &.positive {
-      color: rgb(58, 232, 73);
+      color: rgb(var(--rgb-up));
       opacity: 1;
       & .icon {
-        color: rgb(58, 232, 73);
+        color: rgb(var(--rgb-up));
 
         &::after {
-          background-color: rgba(58, 232, 73, 0.1);
+          background-color: rgb(var(--rgb-up) / 0.1);
         }
         &.negative {
           display: none;
@@ -270,12 +270,12 @@
     }
 
     &.negative {
-      color: rgb(239, 60, 64);
+      color: rgb(var(--rgb-down));
       opacity: 1;
       & .icon {
-        color: rgb(239, 60, 64);
+        color: rgb(var(--rgb-down));
         &::after {
-          background-color: rgba(239, 60, 64, 0.1);
+          background-color: rgb(var(--rgb-down) / 0.1);
         }
         &.negative {
           display: flex;
@@ -334,10 +334,10 @@
     gap: 1rem;
   }
 
-  --package-color: rgb(56, 189, 248);
-  --package-color-alpha: rgba(56, 189, 248, 0.5);
-  --package-color-gradient-start: rgba(56, 189, 248, 0.4);
-  --package-color-gradient-stop: rgba(56, 189, 248, 0.05);
+  --package-color: rgb(var(--rgb-brand));
+  --package-color-alpha: rgb(var(--rgb-brand) / 0.5);
+  --package-color-gradient-start: rgb(var(--rgb-brand) / 0.4);
+  --package-color-gradient-stop: rgb(var(--rgb-brand) / 0.05);
 
   .package-card-downloads-chart {
     width: 100%;
@@ -384,7 +384,7 @@
     & .card {
       display: flex;
       flex-direction: row;
-      border: 1px solid rgba(29, 30, 38, 0.3);
+      border: 1px solid rgb(var(--rgb-surface) / 0.3);
       gap: 1rem;
 
       justify-content: flex-start;
@@ -460,23 +460,23 @@
 
 /* Base token-ish values (you can reuse) */
 :root {
-  --c-gray-500: #6b7280;
-  --c-gray-600: #4b5563;
+  --c-gray-500: rgb(var(--rgb-neutral));
+  --c-gray-600: rgb(var(--rgb-neutral-strong));
 
-  --c-green-500: #22c55e;
-  --c-green-600: #16a34a;
+  --c-green-500: rgb(var(--rgb-success-bright));
+  --c-green-600: rgb(var(--rgb-success-strong));
 
-  --c-emerald-500: #10b981;
+  --c-emerald-500: rgb(var(--rgb-success));
 
-  --c-yellow-500: #eab308;
-  --c-amber-500: #f59e0b;
+  --c-yellow-500: rgb(var(--rgb-warning-bright));
+  --c-amber-500: rgb(var(--rgb-warning));
 
-  --c-orange-500: #f97316;
+  --c-orange-500: rgb(var(--rgb-caution));
 
-  --c-red-500: #ef4444;
-  --c-red-600: #dc2626;
+  --c-red-500: rgb(var(--rgb-danger-bright));
+  --c-red-600: rgb(var(--rgb-danger-strong));
 
-  --c-blue-500: #3b82f6;
+  --c-blue-500: rgb(var(--rgb-info));
 }
 
 /* =========================

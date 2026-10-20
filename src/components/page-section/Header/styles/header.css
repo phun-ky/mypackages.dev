@@ -2,8 +2,8 @@
   position: sticky;
   top: 0;
   height: var(--header-height);
-  background-color: rgba(8, 11, 22, 1);
-  border-bottom: 1px solid #1d1e28;
+  background-color: rgb(var(--rgb-canvas));
+  border-bottom: 1px solid rgb(var(--rgb-surface-raised));
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -18,7 +18,7 @@
       height: 2.25rem;
       width: 2.25rem;
       border-radius: 6px;
-      background-color: rgba(255, 255, 255, 0.03);
+      background-color: rgb(var(--rgb-contrast) / 0.03);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -49,11 +49,11 @@
 }
 
 span.avatar {
-  background-color: rgb(56, 189, 248);
-  color: black;
+  background-color: rgb(var(--rgb-brand));
+  color: rgb(var(--rgb-on-brand));
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.3) 0%,
+    rgb(var(--rgb-contrast) / 0.3) 0%,
     var(--color-brand) 100%
   );
   font-size: var(--text-size-400);

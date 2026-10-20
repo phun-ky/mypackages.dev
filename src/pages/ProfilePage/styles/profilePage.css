@@ -1,5 +1,5 @@
 form.well {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgb(var(--rgb-contrast) / 0.05);
   padding: 0;
   border-radius: 12px;
   display: flex;
@@ -7,7 +7,7 @@ form.well {
   justify-content: flex-start;
   align-items: flex-start;
 
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgb(var(--rgb-contrast) / 0.05);
 
   .input-group {
     padding: 1rem;
@@ -56,7 +56,7 @@ form.well {
       min-width: 320px;
     }
     &:not(:last-child) {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgb(var(--rgb-contrast) / 0.05);
     }
     label {
       width: 100%;
@@ -67,13 +67,13 @@ form.well {
     opacity: 0.8;
   }
   .status[data-kind='ok'] {
-    color: var(--color-success, #2ecc71);
+    color: var(--color-success, rgb(var(--rgb-success-flat)));
   }
   .status[data-kind='warn'] {
-    color: var(--color-warning, #f1c40f);
+    color: var(--color-warning, rgb(var(--rgb-warning-flat)));
   }
   .status[data-kind='error'] {
-    color: var(--color-danger, #e74c3c);
+    color: var(--color-danger, rgb(var(--rgb-danger-flat)));
   }
 
   .package-entries {

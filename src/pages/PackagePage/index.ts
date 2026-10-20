@@ -267,7 +267,7 @@ export const PackagePage = async (
                 fill="currentColor"
                 d="M0 16V0h16v16ZM3 3v10h5V5h3v8h2V3Z"
               />
-              <path fill="#ffffff00" d="M3 3h10v10h-2V5H8v8H3Z" />
+              <path fill="none" d="M3 3h10v10h-2V5H8v8H3Z" />
             </svg>
           </a>
           <span class="badges">
@@ -496,7 +496,7 @@ export const PackagePage = async (
                             height="24px"
                             viewBox="0 -960 960 960"
                             width="24px"
-                            fill="#f59e0b"
+                            class="icon-warning"
                           >
                             <path
                               d="M74.62-140 480-840l405.38 700H74.62ZM480-247.69q13.73 0 23.02-9.29t9.29-23.02q0-13.73-9.29-23.02T480-312.31q-13.73 0-23.02 9.29T447.69-280q0 13.73 9.29 23.02t23.02 9.29Zm-30-104.62h60v-200h-60v200Z"

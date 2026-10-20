@@ -1,3 +1,131 @@
+/*
+ * Colours, as RGB channels so they can take an alpha:
+ * `rgb(var(--rgb-brand) / 0.2)`. These are the only colour values in the
+ * stylesheets; `npm run lint` checks that. Dark is the default, and
+ * `.theme--light` (set in index.html from the visitor's choice or system)
+ * redefines them.
+ */
+:root {
+  /* Core */
+  --rgb-canvas: 8 11 22;
+  --rgb-canvas-deep: 5 6 15;
+  --rgb-menu: 8 16 27;
+  --rgb-surface-deep: 16 17 26;
+  --rgb-surface: 29 30 38;
+  --rgb-surface-raised: 29 30 40;
+  --rgb-border-strong: 63 64 75;
+  /* Overlays and text that stand out from the canvas: white on dark */
+  --rgb-contrast: 255 255 255;
+  --rgb-shadow: 0 0 0;
+  /* Layers in card backgrounds: darken in dark, lighten in light */
+  --rgb-shade: 0 0 0;
+  /* Text on brand backgrounds, like buttons and selections */
+  --rgb-on-brand: 0 0 0;
+  --rgb-text: 207 207 207;
+  --rgb-text-dim: 193 193 193;
+  --rgb-text-bright: 250 251 248;
+  --rgb-notice: 19 13 47;
+  --rgb-brand: 56 189 248;
+  --rgb-brand-2: 29 207 158;
+  /* The logo's gradient, the same in both themes */
+  --rgb-logo-start: 56 189 248;
+  --rgb-logo-end: 29 207 158;
+  /* Trends */
+  --rgb-up: 58 232 73;
+  --rgb-down: 239 60 64;
+  /* Status */
+  --rgb-success: 16 185 129;
+  --rgb-success-bright: 34 197 94;
+  --rgb-success-strong: 22 163 74;
+  --rgb-success-flat: 46 204 113;
+  --rgb-warning: 245 158 11;
+  --rgb-warning-bright: 234 179 8;
+  --rgb-warning-soft: 250 182 106;
+  --rgb-caution: 249 115 22;
+  --rgb-warning-flat: 241 196 15;
+  --rgb-danger: 248 81 73;
+  --rgb-danger-bright: 239 68 68;
+  --rgb-danger-strong: 220 38 38;
+  --rgb-danger-flat: 231 76 60;
+  --rgb-info: 59 130 246;
+  --rgb-neutral: 107 114 128;
+  --rgb-neutral-strong: 75 85 99;
+  /* Alerts: background, border, text */
+  --rgb-alert-info-bg: 8 47 73;
+  --rgb-alert-info-border: 21 94 117;
+  --rgb-alert-success-bg: 5 46 26;
+  --rgb-alert-success-border: 6 95 70;
+  --rgb-alert-success-text: 52 211 153;
+  --rgb-alert-notice-bg: 30 27 75;
+  --rgb-alert-notice-border: 67 56 202;
+  --rgb-alert-notice-text: 129 140 248;
+  --rgb-alert-warning-bg: 69 26 3;
+  --rgb-alert-warning-border: 180 83 9;
+  --rgb-alert-warning-text: 251 191 36;
+  --rgb-alert-danger-bg: 69 10 10;
+  --rgb-alert-danger-border: 185 28 28;
+  --rgb-alert-danger-text: 251 113 133;
+  /* Dimmed neutral badges; light needs full strength for 4.5:1 contrast */
+  --badge-neutral-opacity: 0.85;
+}
+
+/* Nebula, refined, light (#47): a soft sky canvas, white surfaces, slate
+   text, and darker brand and status colours that keep their contrast */
+:root.theme--light {
+  --rgb-canvas: 243 247 251;
+  --rgb-canvas-deep: 232 238 245;
+  --rgb-menu: 255 255 255;
+  --rgb-surface-deep: 236 242 248;
+  --rgb-surface: 255 255 255;
+  --rgb-surface-raised: 255 255 255;
+  --rgb-border-strong: 203 213 225;
+  --rgb-contrast: 11 19 36;
+  --rgb-shadow: 15 23 42;
+  --rgb-shade: 255 255 255;
+  --rgb-on-brand: 255 255 255;
+  --rgb-text: 51 65 85;
+  --rgb-text-dim: 81 96 122;
+  --rgb-text-bright: 11 19 36;
+  --rgb-notice: 237 233 254;
+  --rgb-brand: 3 105 161;
+  --rgb-brand-2: 4 120 87;
+  --rgb-up: 21 128 61;
+  --rgb-down: 190 18 60;
+  --rgb-success: 4 120 87;
+  --rgb-success-bright: 21 128 61;
+  --rgb-success-strong: 21 128 61;
+  --rgb-success-flat: 21 128 61;
+  --rgb-warning: 180 83 9;
+  --rgb-warning-bright: 161 98 7;
+  --rgb-warning-soft: 180 83 9;
+  --rgb-caution: 194 65 12;
+  --rgb-warning-flat: 161 98 7;
+  --rgb-danger: 190 18 60;
+  --rgb-danger-bright: 185 28 28;
+  --rgb-danger-strong: 185 28 28;
+  --rgb-danger-flat: 185 28 28;
+  --rgb-info: 29 78 216;
+  --rgb-neutral: 75 85 99;
+  --rgb-neutral-strong: 55 65 81;
+  --rgb-alert-info-bg: 224 242 254;
+  --rgb-alert-info-border: 125 211 252;
+  --rgb-alert-success-bg: 220 252 231;
+  --rgb-alert-success-border: 134 239 172;
+  --rgb-alert-success-text: 21 128 61;
+  --rgb-alert-notice-bg: 238 242 255;
+  --rgb-alert-notice-border: 165 180 252;
+  --rgb-alert-notice-text: 67 56 202;
+  --rgb-alert-warning-bg: 255 247 237;
+  --rgb-alert-warning-border: 253 186 116;
+  --rgb-alert-warning-text: 146 64 14;
+  --rgb-alert-danger-bg: 254 242 242;
+  --rgb-alert-danger-border: 252 165 165;
+  --rgb-alert-danger-text: 185 28 28;
+  --badge-neutral-opacity: 1;
+  /* The nebula is for the dark theme */
+  --bg-url: none;
+}
+
 :root {
   --gap: 2rem;
   --section-padding: 2rem;
@@ -22,11 +150,11 @@
     'Menlo for Powerline', 'Menlo Regular for Powerline', 'DejaVu Sans Mono',
     Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   /* --font-family-numbers: var(--font-family-mono); */
-  --color-brand: rgba(56, 189, 248, 1);
-  --color-text: #cfcfcf;
-  --color-text-accent: #ffffff;
-  --color-brand-gradient-start: rgba(56, 189, 248, 0.2);
-  --color-brand-gradient-stop: rgba(56, 189, 248, 0);
+  --color-brand: rgb(var(--rgb-brand));
+  --color-text: rgb(var(--rgb-text));
+  --color-text-accent: rgb(var(--rgb-contrast));
+  --color-brand-gradient-start: rgb(var(--rgb-brand) / 0.2);
+  --color-brand-gradient-stop: rgb(var(--rgb-brand) / 0);
   --navigation-width: 3rem;
   --bg-url: url(/nebula_2560x1400.webp);
   --text-size-80: 0.79rem;

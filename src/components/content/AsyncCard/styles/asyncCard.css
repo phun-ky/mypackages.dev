@@ -6,7 +6,7 @@
 .skeleton-line {
   height: 12px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(var(--rgb-contrast) / 0.08);
   overflow: hidden;
   position: relative;
 }
@@ -23,7 +23,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.08),
+    rgb(var(--rgb-contrast) / 0.08),
     transparent
   );
   animation: shimmer 1.1s infinite;

@@ -10,7 +10,7 @@ body {
   font-size: var(--text-size-100);
   min-height: 100vh;
   line-height: 1.5;
-  background-color: rgba(8, 11, 22, 1);
+  background-color: rgb(var(--rgb-canvas));
   color: var(--color-text);
 }
 h1,
@@ -103,13 +103,13 @@ strong {
 
 ::selection {
   background-color: var(--color-brand);
-  color: black;
+  color: rgb(var(--rgb-on-brand));
   text-shadow: none;
 }
 
 ::-moz-selection {
   background-color: var(--color-brand);
-  color: black;
+  color: rgb(var(--rgb-on-brand));
   text-shadow: none;
 }
 
@@ -184,13 +184,13 @@ dd.downloads {
 }
 
 .badge.is-deprecated {
-  --pulse: #dc2626;
+  --pulse: rgb(var(--rgb-danger-strong));
   --pulse-rgb: 220 38 38;
 
   position: relative;
 
   background: var(--pulse);
-  color: #130d2f;
+  color: rgb(var(--rgb-notice));
 
   /* base glow */
   box-shadow:
@@ -230,8 +230,8 @@ dd.downloads {
 
 .badge.is-fresh {
   background-color: var(--package-color);
-  color: #130d2f;
-  /* color: #fafbf8; */
+  color: rgb(var(--rgb-notice));
+  /* color: rgb(var(--rgb-text-bright)); */
 }
 
 .badge.is-stale {
@@ -240,18 +240,18 @@ dd.downloads {
 
 .badge.is-stable {
   background-color: var(--package-color);
-  color: #130d2f;
+  color: rgb(var(--rgb-notice));
 }
 
 .badge.is-dormant {
   background-color: var(--package-color);
-  color: #130d2f;
+  color: rgb(var(--rgb-notice));
 }
 
 .badge.is-unknown,
 .badge.is-neutral {
   background-color: transparent;
-  opacity: 0.85;
+  opacity: var(--badge-neutral-opacity);
   border: 1px solid currentColor;
 }
 
@@ -292,7 +292,7 @@ form.form {
   height: calc(100vh - var(--header-height));
   display: none;
   place-items: center;
-  background-color: rgba(8, 11, 22, 1);
+  background-color: rgb(var(--rgb-canvas));
   user-select: none;
   pointer-events: none;
   &.is-visible {
@@ -370,13 +370,13 @@ table {
     font-family: var(--font-family-heading);
     font-size: var(--text-size-200);
     padding: 1rem 0.5rem 0.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgb(var(--rgb-contrast) / 0.05);
   }
 
   td {
     padding: 0.5rem 1rem;
     vertical-align: top;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgb(var(--rgb-contrast) / 0.05);
   }
 
   th.string,
@@ -431,8 +431,8 @@ textarea {
   min-width: 120px;
   padding: 0.5rem 0.75rem;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgb(var(--rgb-contrast) / 0.05);
+  background-color: rgb(var(--rgb-contrast) / 0.05);
   font-family: var(--font-family-heading);
   border-radius: 8px;
   color: inherit;
@@ -489,9 +489,9 @@ textarea {
   padding: 0;
   line-height: 2rem;
   border-radius: 1rem;
-  background-color: rgba(56, 189, 248, 0.2);
+  background-color: rgb(var(--rgb-brand) / 0.2);
   transition: all 70ms cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgb(var(--rgb-brand) / 0.2);
 }
 .toggle[type='checkbox'] + label::before {
   content: '';
@@ -530,7 +530,7 @@ textarea {
 }
 
 .well {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgb(var(--rgb-contrast) / 0.05);
   border-radius: 12px;
   padding: 1rem;
 }
@@ -632,14 +632,14 @@ p {
   height: 2rem;
   border: none;
   background-color: transparent;
-  background-color: rgba(8, 11, 22, 1);
+  background-color: rgb(var(--rgb-canvas));
 
-  border-top: 2px solid rgba(56, 189, 248, 0.2);
+  border-top: 2px solid rgb(var(--rgb-brand) / 0.2);
 
   background-image: linear-gradient(
     -180deg,
-    rgba(8, 11, 22, 0.7) 10%,
-    rgba(8, 11, 22, 0) 60%
+    rgb(var(--rgb-canvas) / 0.7) 10%,
+    rgb(var(--rgb-canvas) / 0) 60%
   );
 
   @media screen and (min-width: 600px) {
@@ -660,12 +660,12 @@ p {
     height: 2px;
     background-image: radial-gradient(
       circle at center center,
-      rgba(29, 207, 158, 0.1) 0%,
-      rgba(255, 255, 255, 0.4) 50%,
-      rgba(56, 189, 248, 0.1) 70%
+      rgb(var(--rgb-brand-2) / 0.1) 0%,
+      rgb(var(--rgb-contrast) / 0.4) 50%,
+      rgb(var(--rgb-brand) / 0.1) 70%
     );
     border-radius: 50%;
-    box-shadow: 0 0 50px 10px rgba(29, 207, 158, 0.4);
+    box-shadow: 0 0 50px 10px rgb(var(--rgb-brand-2) / 0.4);
   }
 }
 
@@ -673,4 +673,18 @@ p {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 2rem;
+}
+
+/* Colours for inline SVGs, which can't read tokens in attributes */
+.logo-stop-start {
+  stop-color: rgb(var(--rgb-logo-start));
+}
+.logo-stop-end {
+  stop-color: rgb(var(--rgb-logo-end));
+}
+.icon-warning {
+  fill: rgb(var(--rgb-warning));
+}
+.icon-success {
+  fill: rgb(var(--rgb-success));
 }

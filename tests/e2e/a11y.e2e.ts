@@ -39,25 +39,39 @@ for (const path of PAGES) {
       await waitForApp(page);
     });
 
-    test('has no accessibility violations', async ({ page }) => {
-      knownBug(path, 'has no accessibility violations');
+    for (const theme of ['dark', 'light']) {
+      test(`has no accessibility violations in ${theme}`, async ({ page }) => {
+        knownBug(path, 'has no accessibility violations');
 
-      // Without preload, axe doesn't fetch the stylesheets again, which the
-      // CSP blocks for Google Fonts
-      const { violations } = await new AxeBuilder({ page })
-        .options({ preload: false })
-        .analyze();
+        // As index.html reads it: the visitor's choice, or else the system's,
+        // which is light in Playwright's browsers
+        await page.evaluate(
+          (choice) => localStorage.setItem('prefers-color-scheme', choice),
+          theme
+        );
+        await page.reload();
+        await waitForApp(page);
 
-      // One line per rule, with the elements that break it
-      expect(
-        violations.map(
-          (violation) =>
-            `${violation.impact} ${violation.id}: ${violation.nodes
-              .map((node) => node.target.join(' '))
-              .join(', ')}`
-        )
-      ).toEqual([]);
-    });
+        await expect(page.locator('html')).toHaveClass(
+          theme === 'light' ? /theme--light/ : /^(?!.*theme--light)/
+        );
+
+        // Without preload, axe doesn't fetch the stylesheets again
+        const { violations } = await new AxeBuilder({ page })
+          .options({ preload: false })
+          .analyze();
+
+        // One line per rule, with the elements that break it
+        expect(
+          violations.map(
+            (violation) =>
+              `${violation.impact} ${violation.id}: ${violation.nodes
+                .map((node) => node.target.join(' '))
+                .join(', ')}`
+          )
+        ).toEqual([]);
+      });
+    }
 
     test('labels every form field', async ({ page }) => {
       knownBug(path, 'labels every form field');
