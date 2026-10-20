@@ -5,6 +5,7 @@ import {
   requiresSignIn
 } from './app/routing/create-auth-guard';
 import { pageLoaders } from './app/routing/page-loaders';
+import { createReturnAfterSignIn } from './app/routing/return-after-sign-in';
 import { Link } from './components/actions/Link';
 import { Alert } from './components/feedback/Alert';
 import { getBreadcrumbsFromRoutes } from './components/page-section/Breadcrumbs/utils/get-breadcrumbs';
@@ -72,6 +73,7 @@ const App = async (initialProps: Partial<PagePropsType>) => {
   const isAuthed = Boolean(session);
 
   addOnAfterAppRender(createAuthGuard({ match, session }));
+  addOnAfterAppRender(createReturnAfterSignIn({ session }));
 
   const crumbs =
     typeof match === 'string'
