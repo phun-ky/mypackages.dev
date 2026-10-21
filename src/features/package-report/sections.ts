@@ -115,7 +115,7 @@ export const verdictCard = (d: ReportData) => {
   ${ring(d.health.scorePct, { label: 'Package health' })}
   <div class="report-summary"><span class="report-label">Package health</span><h2 id="verdict-title">${d.health.label}</h2><p>${escapeHtml(d.verdict)}</p></div>
   <ul class="signals" aria-label="What the score is made of">${rows}</ul>
-  <p class="report-how"><a href="/help/faq" data-link>How the score is worked out</a> · ${Math.round(d.health.confidencePct)}% of the data was available</p>
+  <p class="report-how"><a href="/help/faq#how-is-package-health-worked-out" data-link>How the score is worked out</a> · ${Math.round(d.health.confidencePct)}% of the data was available</p>
 </section>`;
 };
 

@@ -1,196 +1,78 @@
-import { Link } from '../../../../components/actions/Link';
-import { Container } from '../../../../components/layout/Container';
+import { SiteHeader } from '../../../../components/page-section/SiteHeader';
+import {
+  faqLink,
+  sourceCards,
+  weightsBar
+} from '../../../../features/help/sections';
 import type { PagePropsType } from '../../../../lib/spa/types';
 
-import './style/aboutPage.css';
+import '../../styles/helpPage.css';
 
-const html = String.raw;
+const REPOSITORY = 'https://github.com/phun-ky/mypackages.dev';
+// Plain template strings, not `html`, so Prettier never splits an end tag
+// over two lines, which diff-dom can't read (#64)
+const hero = `<div class="help-hero">
+  <span class="help-eyebrow">About</span>
+  <h1>About My packages</h1>
+  <p class="help-lede">A personal tool for keeping an eye on npm packages, which grew into a site anyone can use.</p>
+  <div class="help-row"><a class="pill-button is-primary" href="/" data-link>Search packages</a><a class="pill-button" href="/help/faq" data-link>Questions and answers</a></div>
+</div>`;
+const health =
+  () => `<section class="help-block" aria-labelledby="health-title">
+  <h2 id="health-title">Package health</h2>
+  <div class="help-card help-score">
+    <p>One score from 0 to 100. Each part counts this much, and caps keep a risky package from looking fine.</p>
+    ${weightsBar()}
+    <p><a href="${faqLink('how-is-package-health-worked-out')}" data-link>How the score is worked out</a></p>
+  </div>
+</section>`;
+const story = `<section class="help-block help-two" aria-label="The site and its maker">
+  <div class="help-card">
+    <h2>Why it exists</h2>
+    <div class="help-prose">
+      <p>This site started as a tool for myself. I wanted to know how my npm packages were doing: not one weekly downloads graph per package, but an overview of everything I've authored or maintain.</p>
+      <p>I couldn't find a good alternative, so I built one. It grew into this site, with package health, a dashboard after signing in, and pages for any npm package or user.</p>
+    </div>
+  </div>
+  <div class="help-stack">
+    <div class="help-card">
+      <h2 class="visually-hidden">Who makes it</h2>
+      <div class="help-who"><span class="help-avatar" aria-hidden="true">PK</span><p>Made and maintained by <a href="/users/phun-ky" data-link>phun-ky</a>, as an open source project on GitHub.</p></div>
+      <div class="help-row"><a class="pill-button is-primary" href="/help/feedback" data-link>Send feedback</a><a class="pill-button" href="${REPOSITORY}" target="_blank" rel="noopener noreferrer">Source on GitHub</a></div>
+    </div>
+    <div class="help-card">
+      <h2>Accounts and privacy</h2>
+      <div class="help-prose">
+        <p>Signing in is optional. It gives you a dashboard of your own packages, with GitHub sign-in through Supabase.</p>
+        <p>The site shows public package data. What it stores for an account is only what the dashboard needs.</p>
+      </div>
+    </div>
+  </div>
+</section>`;
+const limits = `<section class="help-block" aria-labelledby="limits-title">
+  <div class="help-card">
+    <h2 id="limits-title">Good to know</h2>
+    <ul class="help-prose">
+      <li>It's a quick signal, not a security audit or a manual review.</li>
+      <li>It isn't real time. npm and GitHub can be slow, or limit how much the site can fetch.</li>
+      <li>Provenance checks that signatures and attestations are present. It doesn't verify them cryptographically yet.</li>
+    </ul>
+  </div>
+</section>`;
 
-export const AboutPage = async (props: PagePropsType, signal: AbortSignal) => {
-  console.log(props, signal);
-
-  return html`<section class="about-page">
-    <header class="about-hero">
-      ${Container({
-        size: 'small',
-        children: html`
-          <div class="inner">
-            ${Link({
-              to: '/help',
-              className: 'button back-to ghost',
-              children: html`<svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 -960 960 960"
-                  fill="currentColor"
-                >
-                  <path
-                    d="m294.92-450 227.85 227.85L480-180 180-480l300-300 42.77 42.15L294.92-510H780v60H294.92Z"
-                  />
-                </svg>
-                Back to Help`
-            })}
-            <div class="title-container">
-              <span class="eyebrow">About</span>
-              <h1>Track your npm packages without the busywork</h1>
-            </div>
-            <p class="lead">
-              A focused dashboard for packages you author or maintain,
-              downloads, trends, health signals, and security context in one
-              place.
-            </p>
-
-            <div class="flex gap-1">
-              <a class="button primary" href="/dashboard" data-link>
-                Open dashboard
-              </a>
-              <a class="button" href="/" data-link> Search packages </a>
-            </div>
-
-            <ul class="hero-highlights">
-              <li>
-                <strong>Portfolio overview</strong> across all your packages
-              </li>
-              <li>
-                <strong>Health signals</strong> with confidence and guardrails
-              </li>
-              <li><strong>Security checks</strong> backed by OSV</li>
-            </ul>
-          </div>
-        `
-      })}
-    </header>
-    ${Container({
-      size: 'small',
-      children: html`
-        <h2>About</h2>
-
-        <p>
-          This site started as a personal tool. I wanted a better way to
-          understand how my npm packages were doing, not just a single weekly
-          downloads graph, but a precise overview across everything I've
-          authored or maintained.
-        </p>
-
-        <p>
-          When I couldn't find a good alternative, I built one. The goal is
-          simple: make it easy to see what's happening across your packages
-          without clicking into each one. Downloads, trends, and key signals
-          should be visible at a glance.
-        </p>
-
-        <p>
-          Over time it grew into a stand-alone site with a dashboard and extra
-          signals like package health. Authentication is handled via GitHub
-          login through Supabase, so you can quickly get a personalized view of
-          the packages you care about.
-        </p>
-
-        <p>
-          Package health is designed as a practical summary, combining signals
-          like security, maintenance, quality, provenance, and popularity, with
-          guardrails to avoid "everything is fine" scores when security looks
-          risky. It's not meant to replace deep audits, but to help you spot
-          what deserves attention.
-        </p>
-
-        <p>
-          If you maintain libraries, publish frequently, or just want a better
-          overview of your package portfolio, I hope this becomes the place you
-          check first.
-        </p>
-
-        <span class="hr" role="presentation"></span>
-        <h3>What you get</h3>
-        <ul>
-          <li>
-            A portfolio view of packages you've <strong>authored</strong> or
-            <strong>maintain</strong>
-          </li>
-          <li>
-            Downloads and trends you can compare across packages (without
-            clicking into each one)
-          </li>
-          <li>
-            Package health signals to quickly spot risk, neglect, or
-            "looks-good-on-paper" situations
-          </li>
-          <li>
-            Extra context from public sources (like vulnerability information
-            and repository stats when available)
-          </li>
-        </ul>
-        <span class="hr" role="presentation"></span>
-        <h3>How it works</h3>
-        <p>
-          The site combines public data from multiple sources and presents it in
-          a way that's easier to compare and reason about at a glance.
-        </p>
-
-        <ul>
-          <li><strong>npm:</strong> registry metadata + download history</li>
-          <li>
-            <strong>OSV:</strong> vulnerability data for specific package
-            versions
-          </li>
-          <li>
-            <strong>GitHub:</strong> repository stats (like stars and open
-            issues) when a valid repo URL is available
-          </li>
-        </ul>
-        <span class="hr" role="presentation"></span>
-        <h3>Package health</h3>
-        <p>
-          Package health is a summary score built from multiple signals
-          (Security, Maintenance, Quality, Provenance, and Popularity). It also
-          includes a <strong>confidence</strong> indicator that reflects how
-          much data was available to compute the score.
-        </p>
-        <p>
-          It's meant as a quick signal, not a final verdict. If you want the
-          details, the full scoring model is described in the FAQ.
-        </p>
-        <span class="hr" role="presentation"></span>
-        <h3>What it's not</h3>
-        <ul>
-          <li>
-            It's not a replacement for deep security audits or manual review
-          </li>
-          <li>
-            It's not guaranteed real-time, upstream APIs can be slow or rate
-            limited
-          </li>
-          <li>
-            Provenance is currently based on <strong>presence</strong> of
-            metadata (signatures/attestations), not cryptographic verification
-            (yet)
-          </li>
-        </ul>
-        <span class="hr" role="presentation"></span>
-        <h3>Privacy & accounts</h3>
-        <p>
-          Signing in is optional, but it enables a personalized dashboard.
-          Authentication is handled via GitHub through Supabase.
-        </p>
-        <p>
-          The site primarily displays public package data. Any stored account
-          data is limited to what's needed to provide dashboard features.
-        </p>
-        <span class="hr" role="presentation"></span>
-        <h3>Feedback & ideas</h3>
-        <p>
-          If you find something off, missing, or you have feature ideas, I'd
-          love to hear it. The site grew out of a real need, and feedback helps
-          steer what to build next.
-        </p>
-        <span class="hr" role="presentation"></span>
-        <h3>What's next</h3>
-        <ul>
-          <li>Alerts (vulnerability changes, download spikes/drops)</li>
-          <li>Better comparisons and saved views across packages</li>
-          <li>More provenance verification and richer supply-chain signals</li>
-          <li>Export/shareable reports</li>
-        </ul>
-      `
-    })}
-  </section>`;
-};
+/**
+ * About the site (#63), as a help centre: where the data comes from and what
+ * the score is up front, then why the site exists and who makes it. What the
+ * site does and doesn't do is on the front page, so it isn't repeated here.
+ */
+export const AboutPage = async ({ session = null }: PagePropsType) =>
+  `<div class="help-page nebula-page">
+  ${SiteHeader({ session, current: 'about' })}
+  <div class="help-wrap">
+    ${hero}
+    <section class="help-block" aria-labelledby="sources-title"><h2 id="sources-title">Where the data comes from</h2>${sourceCards()}</section>
+    ${health()}
+    ${story}
+    ${limits}
+  </div>
+</div>`;

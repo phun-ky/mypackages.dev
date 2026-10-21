@@ -1,55 +1,721 @@
+/* The help hub, About and the FAQ (#63), in the Nebula, refined design.
+   About and the hub are cards, as on the other new pages; the FAQ is laid
+   out like docs. The site-wide rules for text, links, lists and headings are
+   reset here: they're for the older pages. */
 .help-page {
+  color: rgb(var(--rgb-text));
+  font-family: var(--font-family-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.6;
+
+  & :where(h1, h2, h3, h4, p, ul, ol, figure) {
+    margin: 0;
+    max-width: none;
+  }
+
+  & :where(li) {
+    max-width: none;
+    margin: 0;
+  }
+
+  & :where(ul) {
+    padding: 0;
+    list-style: none;
+  }
+
+  & :where(a) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  & :where(strong) {
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & :where(code)::before,
+  & :where(code)::after {
+    content: none;
+  }
+
+  & h1 {
+    margin: 0.35rem 0 0.75rem;
+    font: 600 clamp(2rem, 4.5vw, 2.9rem) / 1.1 var(--font-family-heading);
+    letter-spacing: -0.02em;
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & h2 {
+    font: 600 1.25rem/1.25 var(--font-family-heading);
+    letter-spacing: -0.01em;
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & h3 {
+    font: 600 1.05rem/1.3 var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & [hidden] {
+    display: none !important;
+  }
+}
+
+.help-eyebrow {
+  font: 500 0.8rem var(--font-family-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--rgb-brand));
+}
+
+.help-lede {
+  max-width: 40rem;
+  font-size: 1.12rem;
+  color: rgb(var(--rgb-text-dim));
+}
+
+.help-card {
+  padding: 1.4rem 1.5rem;
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: var(--nebula-radius);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+  backdrop-filter: blur(14px);
+}
+
+.help-card > h2 {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.help-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.help-label {
+  font-size: 0.8rem;
+  color: rgb(var(--rgb-text-dim));
+}
+
+/* Text from the answers and the story. Links in text are underlined, not
+   only coloured (WCAG 1.4.1). */
+.help-prose {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgb(var(--rgb-text-dim));
+
+  & p,
+  & ul,
+  & ol {
+    margin: 0 0 1rem;
+  }
+
+  & ul,
+  & ol,
+  &:is(ul) {
+    padding-left: 1.25rem;
+  }
+
+  & ul,
+  &:is(ul) {
+    list-style: disc;
+  }
+
+  & li {
+    margin: 0.25rem 0;
+  }
+
+  & li::marker {
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & a {
+    color: rgb(var(--rgb-brand));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  & code {
+    padding: 0.1em 0.35em;
+    border-radius: 6px;
+    background: rgb(var(--rgb-text-dim) / 0.14);
+    font:
+      0.88em ui-monospace,
+      Menlo,
+      monospace;
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & h4 {
+    margin: 1.25rem 0 0.5rem;
+    font: 600 1rem var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* The hub and About: one column of cards */
+.help-wrap {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 var(--nebula-gutter) 4rem;
+}
+
+.help-hero {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: 3.5rem 0 2.5rem;
+  text-align: center;
+
+  & .help-lede {
+    margin-bottom: 1.25rem;
+  }
+
+  & .help-row {
+    justify-content: center;
+  }
+}
+
+.help-block {
+  padding-top: 2.5rem;
+
+  & > h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.help-sources {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+
+  & svg {
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-bottom: 0.75rem;
+    padding: 0.55rem;
+    border-radius: 12px;
+    background: rgb(var(--rgb-brand) / 0.12);
+    fill: none;
+    stroke: rgb(var(--rgb-brand));
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  & p {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: rgb(var(--rgb-text-dim));
+  }
+}
+
+.help-score {
+  display: grid;
+  gap: 1rem;
+
+  & p {
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & a {
+    color: rgb(var(--rgb-brand));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.help-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.help-stack {
+  display: grid;
+  gap: 1rem;
+
+  & .help-prose {
+    font-size: 0.92rem;
+  }
+}
+
+.help-who {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  & p {
+    font-size: 0.92rem;
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & a {
+    color: rgb(var(--rgb-brand));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.help-avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--rgb-brand)),
+    rgb(var(--rgb-brand-2))
+  );
+  color: rgb(var(--rgb-on-brand));
+  font: 600 1.05rem var(--font-family-heading);
+}
+
+/* The health score's weights, labels and caps, drawn */
+.help-weights {
+  display: flex;
+  gap: 3px;
+  min-height: 3.6rem;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.help-weight {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.78rem;
+  color: rgb(var(--rgb-on-brand));
 
-  header {
-    width: 100%;
-    gap: 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: unset;
-    position: relative;
-    box-shadow: inset 0 0 40px 0 rgb(var(--rgb-shadow) / 0.7);
-    background-attachment: fixed;
-    background-image:
-      linear-gradient(
-        175deg,
-        rgb(var(--rgb-canvas)) 20%,
-        rgb(var(--rgb-canvas) / 0) 60%
-      ),
-      linear-gradient(
-        -90deg,
-        rgb(var(--rgb-canvas) / 0) 0%,
-        rgb(var(--rgb-canvas)) 70%
-      ),
-      var(--bg-url);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+  & b {
     overflow: hidden;
-    padding: 4rem;
+    font: 600 0.8rem var(--font-family-heading);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
+  &.is-0 {
+    background: rgb(var(--rgb-brand));
+  }
+
+  &.is-1 {
+    background: color-mix(
+      in srgb,
+      rgb(var(--rgb-brand)) 70%,
+      rgb(var(--rgb-brand-2))
+    );
+  }
+
+  &.is-2 {
+    background: color-mix(
+      in srgb,
+      rgb(var(--rgb-brand)) 40%,
+      rgb(var(--rgb-brand-2))
+    );
+  }
+
+  &.is-3 {
+    background: color-mix(
+      in srgb,
+      rgb(var(--rgb-brand)) 15%,
+      rgb(var(--rgb-brand-2))
+    );
+  }
+
+  &.is-4 {
+    background: rgb(var(--rgb-brand-2));
+  }
+}
+
+.help-figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 1.25rem !important;
+  padding: 1.2rem;
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: var(--nebula-radius);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+
+  & .help-label {
+    margin-bottom: -0.35rem;
+  }
+}
+
+.help-bands,
+.help-caps {
+  display: grid;
+  gap: 0.5rem;
+
+  & li {
+    padding: 0.65rem 0.8rem;
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+    border-radius: 12px;
+    background: rgb(var(--rgb-text-dim) / 0.08);
+    font-size: 0.82rem;
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & b {
+    display: block;
+    font: 600 0.92rem var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
+  }
+}
+
+.help-bands {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.help-caps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* The hub */
+.help-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: min(36rem, 100%);
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: 999px;
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+
+  &:focus-within {
+    outline: 2px solid rgb(var(--rgb-brand));
+    outline-offset: 2px;
+  }
+
+  & svg {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: rgb(var(--rgb-text-dim));
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+
+  /* Not the site's filled field: this one sits inside the pill. By id, to
+     outrank the site's input:not(...) rule. */
+  & input#help-search {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
     box-shadow: none;
-    .inner {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 2rem;
+    color: rgb(var(--rgb-text-bright));
+    font: 0.95rem var(--font-family-body);
+    outline: none;
+  }
+}
 
-      p,
-      ul,
-      h1 {
-        margin-bottom: 0;
-      }
-      p,
-      ul {
-        margin-top: 0;
-      }
+.help-results {
+  width: min(36rem, 100%);
+  margin-top: 0.75rem;
+  text-align: left;
+
+  & ul {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+  }
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+    border-radius: 12px;
+    background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+
+    &:hover {
+      border-color: rgb(var(--rgb-brand) / 0.5);
     }
+  }
+
+  & li a {
+    font: 500 0.92rem var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  & li span {
+    flex: none;
+    font-size: 0.8rem;
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & code {
+    font:
+      0.88em ui-monospace,
+      Menlo,
+      monospace;
+  }
+}
+
+.help-count {
+  font-size: 0.85rem;
+  color: rgb(var(--rgb-text-dim));
+
+  & a {
+    color: rgb(var(--rgb-brand));
+    text-decoration: underline;
+  }
+}
+
+.help-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.help-link-card {
+  display: block;
+  height: 100%;
+
+  & h2 {
+    font-size: 1.1rem;
+  }
+
+  & p {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  &:hover {
+    border-color: rgb(var(--rgb-brand) / 0.5);
+  }
+}
+
+.help-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  & a {
+    display: inline-flex;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+    border-radius: 999px;
+    background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+    font-size: 0.88rem;
+
+    &:hover {
+      border-color: rgb(var(--rgb-brand) / 0.5);
+    }
+  }
+
+  & span {
+    color: rgb(var(--rgb-text-dim));
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* The FAQ, as docs: a sidebar, the answers, and "On this page" */
+.help-docs {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 44rem) 12rem;
+  justify-content: center;
+  align-items: start;
+  gap: 3rem;
+  max-width: var(--nebula-max);
+  margin: 0 auto;
+  padding: 0 var(--nebula-gutter) 4rem;
+}
+
+.help-side,
+.help-onpage {
+  position: sticky;
+  top: 5.5rem;
+  padding-top: 2.5rem;
+  font-size: 0.9rem;
+
+  & h2 {
+    margin: 1.25rem 0 0.4rem;
+    font: 600 0.75rem var(--font-family-heading);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & h2:first-child {
+    margin-top: 0;
+  }
+
+  & ul {
+    display: grid;
+    gap: 0.1rem;
+  }
+}
+
+.help-side a {
+  display: block;
+  padding: 0.35rem 0.75rem;
+  border-left: 2px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  color: rgb(var(--rgb-text-dim));
+
+  &:hover,
+  &.is-here {
+    border-color: rgb(var(--rgb-brand));
+    color: rgb(var(--rgb-text-bright));
+  }
+}
+
+.help-onpage a {
+  display: block;
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
+  color: rgb(var(--rgb-text-dim));
+
+  &.is-here {
+    color: rgb(var(--rgb-brand));
+  }
+}
+
+.help-doc {
+  padding-top: 2.5rem;
+
+  & > .help-lede {
+    margin-bottom: 1.5rem;
+  }
+
+  & h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  & h3 code {
+    font:
+      0.9em ui-monospace,
+      Menlo,
+      monospace;
+  }
+
+  /* Below the sticky header when an answer's link is followed */
+  & [id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+.help-topic {
+  padding-top: 2rem;
+
+  & > h2 {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.help-anchor {
+  font-weight: 400;
+  color: rgb(var(--rgb-text-dim));
+
+  &:hover,
+  &:focus-visible {
+    color: rgb(var(--rgb-brand));
+  }
+}
+
+.help-contents {
+  display: none;
+  padding: 0;
+
+  & summary {
+    padding: 0.75rem 1rem;
+    font: 500 0.92rem var(--font-family-heading);
+    cursor: pointer;
+  }
+
+  & ul {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0 1rem 0.75rem;
+  }
+
+  & a {
+    color: rgb(var(--rgb-brand));
+  }
+}
+
+@media (max-width: 1180px) {
+  .help-docs {
+    grid-template-columns: 14rem minmax(0, 44rem);
+  }
+
+  .help-onpage {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .help-docs {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .help-side {
+    display: none;
+  }
+
+  .help-contents {
+    display: block;
+  }
+
+  .help-sources,
+  .help-two,
+  .help-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .help-hero {
+    justify-items: start;
+    text-align: left;
+
+    & .help-row {
+      justify-content: start;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .help-bands {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .help-caps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .help-weight,
+  .help-weight b {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .help-weight b {
+    padding: 0;
   }
 }
