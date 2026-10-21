@@ -23,9 +23,9 @@
     }
   }
 
-  /* The front page is full-bleed: its own header, and the nebula only
-     behind the hero (#47, #60) */
-  &:has(.start-page) {
+  /* Pages in the Nebula, refined design are full-bleed with their own
+     header (#47, #60, #62) */
+  &:has(.nebula-page) {
     display: block;
     min-height: 100vh;
     padding: 0;

@@ -97,4 +97,6 @@ export type ReleaseHealth = {
   enginesNode: string | null;
   deprecatedMessage: string | null;
   hasTypes: boolean;
+  /** Versions published in the 365 days before now */
+  releasesLastYear: number;
 };

@@ -44,7 +44,8 @@
   font-weight: 400;
   color: rgb(var(--rgb-text));
 
-  & a:hover {
+  & a:hover,
+  & a[aria-current='page'] {
     color: rgb(var(--rgb-text-bright));
   }
 }

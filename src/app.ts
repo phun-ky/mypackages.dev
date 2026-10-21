@@ -4,6 +4,7 @@ import {
   createAuthGuard,
   requiresSignIn
 } from './app/routing/create-auth-guard';
+import { NEBULA_PAGES } from './app/routing/nebula-pages';
 import { pageLoaders } from './app/routing/page-loaders';
 import { createReturnAfterSignIn } from './app/routing/return-after-sign-in';
 import { Link } from './components/actions/Link';
@@ -88,7 +89,7 @@ const App = async (initialProps: Partial<PagePropsType>) => {
         });
 
   return html` ${
-    _pageId !== 'StartPage'
+    !NEBULA_PAGES.has(_pageId)
       ? Alert({
           className: 'global-alert',
           label: 'Project status',

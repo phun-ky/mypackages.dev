@@ -1,3 +1,5 @@
+import { NEBULA_PAGES } from '../../../app/routing/nebula-pages';
+
 import { normalizePath } from './utils/normalize-path';
 import { printMenu } from './utils/print-menu';
 
@@ -23,7 +25,7 @@ export const Navigation = (props: NavigationPropsType) => {
   const { username, page } = props;
 
   if (
-    page === 'StartPage' ||
+    NEBULA_PAGES.has(page) ||
     page === 'SignInPage' ||
     page === 'AboutPage' ||
     page === 'FeedbackPage' ||

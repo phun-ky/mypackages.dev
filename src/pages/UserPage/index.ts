@@ -1,8 +1,20 @@
-import { Container } from '../../components/layout/Container';
-import { PackagesOverview } from '../../features/dashboard/packages-overview';
-import { Settings } from '../../features/dashboard/settings';
+import { SiteHeader } from '../../components/page-section/SiteHeader';
+import {
+  attachUserPageEvents,
+  getStoredView
+} from '../../features/user/interactions';
+import { buildPortfolio } from '../../features/user/portfolio/build-portfolio';
+import { getMonthlyDownloads } from '../../features/user/portfolio/get-monthly-downloads';
+import {
+  atAGlance,
+  overview,
+  packagesSection,
+  pageHead,
+  topics
+} from '../../features/user/sections';
 import type { PagePropsType } from '../../lib/spa/types';
 import { getUserPackages } from '../../services/npm/packages/get-user-packages';
+import { escapeHtml } from '../../utils/escape-html';
 
 import './styles/userPage.css';
 
@@ -10,30 +22,61 @@ const html = String.raw;
 
 export type UserPagePropsType = PagePropsType;
 
+/**
+ * A complete overview of a user's packages, in the Insights design (#62):
+ * the totals and where they come from, what needs attention, and every
+ * package by scope or in a table.
+ */
 export const UserPage = async (
   props: UserPagePropsType,
   signal: AbortSignal
 ) => {
-  console.log(props, signal);
+  const { username, options, session = null } = props;
+  const header = SiteHeader({ session, current: 'users' });
 
-  const { username, options } = props;
+  if (!username) {
+    return html`<div class="user-page nebula-page">
+      ${header}
+      <div class="user-content"><h1>No user given</h1></div>
+    </div>`;
+  }
 
-  if (!username || username === '') return html`no user found`;
+  attachUserPageEvents(options);
 
-  const packages = await getUserPackages(username, signal, options);
+  const items = await getUserPackages(username, signal, options);
+  const monthly = await getMonthlyDownloads(
+    items.map((item) => item.package.name),
+    signal
+  );
+  const now = Date.now();
+  const portfolio = buildPortfolio(items, monthly, now);
+  const head = pageHead({
+    username,
+    portfolio,
+    maintainer: options.maintainer,
+    session
+  });
 
-  return html`<section class="user-page">
-    ${Settings({ options })}
-    ${Container({ children: html` <h1>${username}</h1>` })}
-    ${Container({
-      children: html`${await PackagesOverview(
-        {
-          username,
-          options,
-          packages
-        },
-        signal
-      )} `
-    })}
-  </section>`;
+  if (!portfolio.packages.length) {
+    const role = options.maintainer ? 'maintains' : 'authored';
+
+    return html`<div class="user-page nebula-page">
+      ${header}
+      <div class="user-content">
+        ${head}
+        <p class="user-empty">
+          No packages found that ${escapeHtml(username)} ${role}. Try switching
+          between maintainer and author above.
+        </p>
+      </div>
+    </div>`;
+  }
+
+  return html`<div class="user-page nebula-page">
+    ${header}
+    <div class="user-content">
+      ${head} ${overview(portfolio)} ${atAGlance(portfolio, now)}
+      ${packagesSection(portfolio, now, getStoredView())} ${topics(portfolio)}
+    </div>
+  </div>`;
 };

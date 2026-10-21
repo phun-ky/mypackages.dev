@@ -300,7 +300,7 @@ form.form {
   }
 }
 
-body .app:has(.start-page) + .loader-container {
+body .app:has(.nebula-page) + .loader-container {
   top: 0;
   left: 0;
   width: 100vw;

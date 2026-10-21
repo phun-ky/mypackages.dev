@@ -1,3 +1,4 @@
+import { NEBULA_PAGES } from '../../../app/routing/nebula-pages';
 import { addOnClick } from '../../../lib/spa';
 import type { PagePropsType } from '../../../lib/spa/types';
 import { signInWithGitHub } from '../../../services/github';
@@ -31,7 +32,7 @@ export const Header = async (props: HeaderPropsType) => {
     'is-hidden': !isAuthed
   });
 
-  if (page === 'StartPage' || page === 'SignInPage') return html``;
+  if (NEBULA_PAGES.has(page) || page === 'SignInPage') return html``;
 
   if (
     page === 'AboutPage' ||
