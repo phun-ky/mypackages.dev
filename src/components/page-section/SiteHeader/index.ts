@@ -25,7 +25,7 @@ export const SiteHeader = ({ session }: SiteHeaderPropsType) =>
     <nav class="site-header-nav" aria-label="Main">
       ${Link({ to: '/packages', children: 'Packages' })}
       ${Link({ to: '/users', children: 'Users' })}
-      ${Link({ to: '/help/faq', children: 'FAQ' })}
+      ${Link({ to: '#how', children: 'How it works' })}
       ${Link({ to: '/help/about', children: 'About' })}
     </nav>
     <div class="site-header-actions">

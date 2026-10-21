@@ -4,15 +4,15 @@
   gap: 1rem;
 }
 
-.lookup-box {
+.frontpage-search-statistics .lookup-box {
   padding: 1.25rem;
-  border: 1px solid rgb(var(--rgb-contrast) / 0.12);
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
   border-radius: var(--nebula-radius);
-  background: rgb(var(--rgb-surface) / 0.45);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
   backdrop-filter: blur(14px);
 
   & h3 {
-    font-size: var(--text-size-100);
+    font-size: 0.95rem;
     color: rgb(var(--rgb-text-dim));
   }
 }
@@ -32,9 +32,9 @@
     gap: 0.35rem;
     max-width: 100%;
     padding: 0.25rem 0.75rem;
-    border: 1px solid rgb(var(--rgb-contrast) / 0.12);
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
     border-radius: 999px;
-    background: rgb(var(--rgb-surface) / 0.55);
+    background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
     font-size: var(--text-size-90);
     color: rgb(var(--rgb-text-bright));
     text-decoration: none;
@@ -57,12 +57,9 @@
   height: 1rem;
 }
 
-.is-user .lookup-icon {
-  fill: rgb(var(--rgb-brand));
-}
-
+.is-user .lookup-icon,
 .is-package .lookup-icon {
-  fill: rgb(var(--rgb-success));
+  fill: rgb(var(--rgb-text-dim));
 }
 
 @media (max-width: 900px) {

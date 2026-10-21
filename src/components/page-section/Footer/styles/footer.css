@@ -1,7 +1,7 @@
 footer.footer {
   grid-area: footer;
   width: 100%;
-  border-top: 1px solid rgb(var(--rgb-contrast) / 0.1);
+  border-top: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
   font-size: var(--text-size-90);
   color: rgb(var(--rgb-text-dim));
 

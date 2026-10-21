@@ -28,10 +28,10 @@ const change = (pct: number | null) => {
 
   const up = pct >= 0;
   const text = `${up ? '▲' : '▼'} ${Math.abs(pct).toFixed(1)}%`;
-  const said = `${up ? 'up' : 'down'} from the month before`;
+  const said = up ? 'up' : 'down';
 
   // One line per element: diff-dom misreads split end tags (#64)
-  return `<span class="change ${up ? 'is-up' : 'is-down'}">${text}<span class="visually-hidden"> ${said}</span></span>`;
+  return `<span class="change ${up ? 'is-up' : 'is-down'}">${text}<span class="visually-hidden"> ${said}</span> month over month</span>`;
 };
 /** A line through the monthly totals, scaled to their own range. */
 const sparkline = (values: number[]) => {
