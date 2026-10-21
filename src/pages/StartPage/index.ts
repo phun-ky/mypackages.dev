@@ -103,7 +103,11 @@ const NEXT = [
     'Compare packages',
     'Two packages, or this month and last year, side by side.'
   ],
-  ['More registries', 'GitHub Packages, Azure Artifacts, JFrog and Sonatype.']
+  [
+    'More registries',
+    'GitHub Packages, Azure Artifacts, JFrog and Sonatype.',
+    'Later'
+  ]
 ];
 const list = (items: string[][]) =>
   items
@@ -114,8 +118,8 @@ const list = (items: string[][]) =>
     .join('');
 // A plain string, so Prettier doesn't split an end tag over two lines,
 // which diff-dom can't read (#64)
-const roadmapItem = ([title, text]: string[]) =>
-  `<li><strong>${title}</strong><span>${text}</span><span class="tag">Planned</span></li>`;
+const roadmapItem = ([title, text, status = 'Planned']: string[]) =>
+  `<li><strong>${title}</strong><span>${text}</span><span class="tag">${status}</span></li>`;
 
 export const StartPage = async (
   props: StartPagePropsType,
@@ -154,6 +158,7 @@ export const StartPage = async (
             <input
               type="search"
               id="query-term-to-use"
+              class="hero-search-input"
               placeholder="Try @phun-ky/speccer or phun-ky"
               autocomplete="off"
               data-lpignore="true"

@@ -23,40 +23,17 @@
     }
   }
 
+  /* The front page is full-bleed: its own header, and the nebula only
+     behind the hero (#47, #60) */
   &:has(.start-page) {
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: unset;
+    display: block;
     min-height: 100vh;
-    width: 100vw;
-    position: relative;
-    box-shadow: inset 0 0 40px 0 rgb(var(--rgb-shadow) / 0.7);
-    background-attachment: fixed;
-    background-image:
-      linear-gradient(
-        175deg,
-        rgb(var(--rgb-canvas)) 20%,
-        rgb(var(--rgb-canvas) / 0) 60%
-      ),
-      linear-gradient(
-        -90deg,
-        rgb(var(--rgb-canvas) / 0) 0%,
-        rgb(var(--rgb-canvas)) 70%
-      ),
-      var(--bg-url);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    padding: 1rem;
-    box-shadow: none;
+    padding: 0;
+    background: rgb(var(--rgb-canvas));
 
-    @media screen and (min-width: 600px) {
-      padding: 4rem;
-      gap: 4rem;
+    & main.main {
+      min-height: 0;
+      padding-bottom: 0;
     }
 
     &::after,

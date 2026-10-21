@@ -14,13 +14,13 @@
   flex-direction: column;
   gap: 0.3rem;
   padding: 1.25rem;
-  border: 1px solid rgb(var(--rgb-contrast) / 0.12);
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
   border-radius: var(--nebula-radius);
-  background: rgb(var(--rgb-surface) / 0.45);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
   backdrop-filter: blur(14px);
 
   & .label {
-    font-size: var(--text-size-90);
+    font-size: 0.85rem;
     color: rgb(var(--rgb-text-dim));
   }
 
@@ -36,7 +36,8 @@
 }
 
 .change {
-  font-weight: 600;
+  font-size: var(--text-size-90);
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 
   &.is-up {
@@ -82,6 +83,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: rgb(var(--rgb-text-bright));
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   & span {
