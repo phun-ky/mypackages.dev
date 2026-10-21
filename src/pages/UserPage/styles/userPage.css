@@ -383,6 +383,7 @@
   gap: 0.75rem;
   padding: 0;
   list-style: none;
+  aspect-raio: 4/3;
 }
 
 .pkg-tile {
@@ -428,8 +429,8 @@
 
 .pkg-tile-spark {
   grid-column: 1 / -1;
-  height: 2.2rem;
-  margin-top: 0.35rem;
+
+  margin-top: auto;
 }
 
 .pkg-badge {

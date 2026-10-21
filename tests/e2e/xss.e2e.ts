@@ -120,7 +120,7 @@ test.describe('package data from npm', () => {
 
     await expect(page.locator('.description')).toHaveText(description);
     await expect(
-      page.getByRole('link', { name: 'Known vulnerabilities on OSV' })
+      page.getByRole('link', { name: 'Advisories' })
     ).toHaveAttribute(
       'href',
       'https://osv.dev/list?q=plain-test&ecosystem=npm'

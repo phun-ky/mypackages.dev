@@ -17,8 +17,6 @@ const PAGES = [
 // Known bugs, fixed on their own branch. A test marked here must fail, so
 // remove the entry when the bug is fixed.
 const KNOWN_BUGS: Record<string, string[]> = {
-  // Unlabelled charts, and an icon-only GitHub link
-  '/packages/speccer': ['has no accessibility violations'],
   // Unlabelled charts, and no <h1>
   '/users/phun-ky/packages': ['has no accessibility violations']
 };
