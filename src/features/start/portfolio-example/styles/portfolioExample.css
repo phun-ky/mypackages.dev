@@ -1,0 +1,114 @@
+.portfolio-example {
+  /* Room for the cards before they load, so nothing below moves */
+  min-height: 9.5rem;
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.example-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.25rem;
+  border: 1px solid rgb(var(--rgb-contrast) / 0.12);
+  border-radius: var(--nebula-radius);
+  background: rgb(var(--rgb-surface) / 0.45);
+  backdrop-filter: blur(14px);
+
+  & .label {
+    font-size: var(--text-size-90);
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & .big {
+    font: 600 var(--text-size-800) / 1.15 var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
+    font-variant-numeric: tabular-nums;
+  }
+
+  & .muted {
+    color: rgb(var(--rgb-text-dim));
+  }
+}
+
+.change {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &.is-up {
+    color: rgb(var(--rgb-up));
+  }
+  &.is-down {
+    color: rgb(var(--rgb-down));
+  }
+}
+
+.sparkline {
+  width: 100%;
+  height: 3.5rem;
+  margin-top: auto;
+
+  & .sparkline-area {
+    fill: rgb(var(--rgb-brand) / 0.15);
+  }
+
+  & .sparkline-line {
+    fill: none;
+    stroke: rgb(var(--rgb-brand));
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.top-packages {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-size-90);
+
+  & li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+  }
+
+  & a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & span {
+    color: rgb(var(--rgb-text-dim));
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.example-note {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-size-90);
+  color: rgb(var(--rgb-text-dim));
+}
+
+@media (max-width: 900px) {
+  .example-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  /* The trend and the package names need the width */
+  .example-card:nth-child(n + 3) {
+    grid-column: 1 / -1;
+  }
+
+  .example-card .big {
+    font-size: var(--text-size-600);
+  }
+}

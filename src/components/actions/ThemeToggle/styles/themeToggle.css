@@ -1,0 +1,48 @@
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid rgb(var(--rgb-contrast) / 0.12);
+  border-radius: 50%;
+  background: rgb(var(--rgb-surface) / 0.4);
+  color: rgb(var(--rgb-text-bright));
+  cursor: pointer;
+
+  & svg {
+    /* Clicks go to the button: the click handlers only see their own
+       element, not what's inside it (#71) */
+    pointer-events: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: rgb(var(--rgb-brand) / 0.5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--rgb-brand));
+    outline-offset: 2px;
+  }
+
+  /* In dark, offer the sun; in light, the moon */
+  & .icon-moon {
+    display: none;
+  }
+}
+
+:root.theme--light .theme-toggle {
+  & .icon-moon {
+    display: block;
+  }
+  & .icon-sun {
+    display: none;
+  }
+}
