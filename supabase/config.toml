@@ -47,6 +47,11 @@ verify_jwt = false
 [functions.npm-user-has-packages]
 verify_jwt = false
 
+[functions.portfolio-snapshot]
+# Called by the portfolio-snapshot cron job without a JWT; the function
+# checks its own shared secret instead
+verify_jwt = false
+
 [functions.save-secret]
 verify_jwt = false
 

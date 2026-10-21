@@ -106,6 +106,14 @@ jobs:
         run:
           deno lint --rules-exclude=no-import-prefix,no-explicit-any
           supabase/functions
+      # Unit and property tests, like those for the portfolio snapshot. The
+      # functions aren't part of the site's npm project: without this, Deno
+      # reads package.json and looks for types in a node_modules folder that
+      # this job doesn't install.
+      - name: Test
+        run: deno test --no-lock supabase/functions
+        env:
+          DENO_NO_PACKAGE_JSON: 1
 
   database:
     name: Database
