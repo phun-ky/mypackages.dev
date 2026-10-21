@@ -37,3 +37,41 @@
     font: 11px var(--font-family-body);
   }
 }
+
+.score-ring {
+  display: block;
+  width: 8rem;
+  height: 8rem;
+  flex: none;
+}
+
+.score-ring-track {
+  stroke: rgb(var(--rgb-text-dim) / 0.2);
+}
+
+.score-ring-value {
+  stroke: rgb(var(--rgb-up));
+}
+
+.score-ring-number {
+  fill: rgb(var(--rgb-text-bright));
+  font: 600 34px var(--font-family-heading);
+}
+
+.release-heatmap {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  & .heat-0 {
+    fill: rgb(var(--rgb-text-dim) / 0.14);
+  }
+
+  & .heat-1 {
+    fill: rgb(var(--rgb-brand) / 0.55);
+  }
+
+  & .heat-2 {
+    fill: rgb(var(--rgb-brand));
+  }
+}

@@ -99,7 +99,10 @@ test.describe('package page', () => {
 
   test('shows the package from npm', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { level: 1, name: /speccer/ })
+      page.getByRole('heading', { level: 1, name: 'speccer' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('list', { name: 'About this package' })
     ).toContainText('v1.0.0');
     await expect(page.locator('.description')).toHaveText(
       'Annotate your designs'
@@ -113,27 +116,79 @@ test.describe('package page', () => {
     await expect(
       page.getByRole('link', { name: 'Repository' })
     ).toHaveAttribute('href', 'https://github.com/example/speccer');
-    // Initials, not a GitHub avatar, see #37
-    await expect(page.getByRole('link', { name: 'example on npm' })).toHaveText(
-      'EX'
-    );
+    // Maintainers link to their page on the site, with initials, see #37
     await expect(
-      page.getByRole('link', { name: 'example on npm' })
-    ).toHaveAttribute('href', 'https://www.npmjs.com/~example');
+      page.locator('.report-people').getByRole('link', { name: 'example' })
+    ).toHaveAttribute('href', '/users/example');
   });
 
-  test('keeps each card on its own', async ({ page }) => {
-    // diff-dom parses templates itself, and doesn't see an end tag split
-    // over two lines (`</span` and `>`), so the cards after it end up inside
-    await expect(page.locator('.emphasized-card .emphasized-card')).toHaveCount(
-      0
+  test('gives a verdict and the reason for every signal', async ({ page }) => {
+    const verdict = page.getByRole('region', { name: /./ }).filter({
+      has: page.locator('#verdict-title')
+    });
+
+    await expect(verdict.locator('.score-ring')).toHaveAttribute(
+      'aria-label',
+      /Package health/
     );
+    await expect(
+      page
+        .getByRole('list', { name: 'What the score is made of' })
+        .locator('li')
+    ).toHaveCount(5);
+    await expect(page.locator('.signal-reason').first()).not.toBeEmpty();
   });
 
-  test('draws the downloads chart', async ({ page }) => {
+  test('switches the downloads chart between months and weeks', async ({
+    page
+  }) => {
+    const month = page.getByRole('button', { name: 'Month' });
+    const week = page.getByRole('button', { name: 'Week' });
+
+    await expect(page.locator('#chart-months svg')).toBeVisible();
+    await expect(month).toHaveAttribute('aria-pressed', 'true');
+
+    await week.click();
+
+    await expect(page.locator('#chart-weeks svg')).toBeVisible();
+    await expect(page.locator('#chart-months')).toBeHidden();
+    await expect(week).toHaveAttribute('aria-pressed', 'true');
+    await expect(month).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  test('copies the install command', async ({ page }) => {
+    // Firefox can't be granted clipboard access, so record what's written
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: {
+          writeText: async (text: string) => {
+            (window as unknown as { copied: string }).copied = text;
+          }
+        }
+      });
+    });
+    await page
+      .getByRole('button', { name: 'Copy the install command' })
+      .click();
+
     await expect(
-      page.locator('#package-page-chart-speccer .highcharts-root')
+      page.getByRole('button', { name: 'Copied the install command' })
     ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { copied: string }).copied
+      )
+    ).toBe('npm i speccer');
+  });
+
+  test('fits a phone without scrolling sideways', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
   });
 });
 
