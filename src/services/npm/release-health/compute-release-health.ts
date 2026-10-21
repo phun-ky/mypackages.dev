@@ -1,3 +1,4 @@
+import { YEAR_MS } from '../../../constants/temporal';
 import type { NpmRegistryPackument, ReleaseHealth } from '../../../types';
 import { toDateMs } from '../../../utils';
 import { formatEngines } from '../../../utils/format';
@@ -8,7 +9,7 @@ import { getPackageByVersion } from '../packages/utils/get-package-by-version';
 
 export const computeReleaseHealth = (
   registryData: NpmRegistryPackument,
-  { sampleSize = 8 } = {}
+  { sampleSize = 8, now = Date.now() } = {}
 ): ReleaseHealth => {
   if (!registryData || typeof registryData !== 'object') {
     return {
@@ -21,7 +22,8 @@ export const computeReleaseHealth = (
       deprecatedMessage: null,
       license: null,
       enginesNode: null,
-      hasTypes: false
+      hasTypes: false,
+      releasesLastYear: 0
     };
   }
 
@@ -84,6 +86,8 @@ export const computeReleaseHealth = (
     deprecatedMessage,
     license,
     enginesNode,
-    hasTypes
+    hasTypes,
+    releasesLastYear: versionTimes.filter((x) => (x.ms ?? 0) > now - YEAR_MS)
+      .length
   };
 };

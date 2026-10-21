@@ -11,11 +11,7 @@ export type MainPropsType = ComponentBasePropsType & {
 export const Main = (props: MainPropsType) => {
   const { page, children } = props;
 
-  if (
-    page === 'UserPage' ||
-    page === 'PackagePage' ||
-    page === 'DashboardPage'
-  ) {
+  if (page === 'PackagePage' || page === 'DashboardPage') {
     return html`<main class="main">
       ${Alert({
         title:

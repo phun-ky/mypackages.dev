@@ -3,7 +3,7 @@ import { SiteHeader } from '../../components/page-section/SiteHeader';
 import { attachEvents } from '../../features/start/events/attach-events';
 import { FrontpageSearchStatistics } from '../../features/start/frontpage-search-statistics';
 import { PortfolioExample } from '../../features/start/portfolio-example';
-import { addOnClick } from '../../lib/spa';
+import { addOnAfterAppRender, addOnClick } from '../../lib/spa';
 import type { PagePropsType } from '../../lib/spa/types';
 import { supabase } from '../../services/supabase';
 
@@ -128,6 +128,12 @@ export const StartPage = async (
   const { session } = props;
 
   attachEvents(supabase, signal);
+  // Coming from "How it works" on another page
+  addOnAfterAppRender(() => {
+    if (window.location.hash === '#how') {
+      document.getElementById('how')?.scrollIntoView();
+    }
+  });
   // The closing call to action goes back to the search
   addOnClick('start-search', () => {
     const search = document.getElementById('query-term-to-use');
@@ -136,9 +142,9 @@ export const StartPage = async (
     search?.focus({ preventScroll: true });
   });
 
-  return html`<div class="start-page">
+  return html`<div class="start-page nebula-page">
     <div class="start-hero">
-      ${SiteHeader({ session })}
+      ${SiteHeader({ session, onStartPage: true })}
       <section class="hero" aria-labelledby="hero-title">
         <p class="kicker">For people who publish to npm</p>
         <h1 id="hero-title">

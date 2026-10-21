@@ -17,8 +17,6 @@ const PAGES = [
 // Known bugs, fixed on their own branch. A test marked here must fail, so
 // remove the entry when the bug is fixed.
 const KNOWN_BUGS: Record<string, string[]> = {
-  // The overview lists a package in several sections, with the same id
-  '/users/phun-ky': ['has unique ids'],
   // The page has no <h1>
   '/users/phun-ky/packages': ['has one main heading']
 };

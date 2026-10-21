@@ -84,7 +84,7 @@
 /* The Nebula, refined palette from the mockup in #47, on the pages built in
    that design so far. Other pages keep the old values until their redesign
    (#61 to #63); then this moves to :root. */
-.app:has(.start-page) {
+.app:has(.nebula-page) {
   --rgb-canvas: 6 10 22;
   --rgb-surface: 15 23 42;
   --rgb-text-bright: 232 238 248;
@@ -94,7 +94,7 @@
   --rgb-down: 251 113 133;
 }
 
-:root.theme--light .app:has(.start-page) {
+:root.theme--light .app:has(.nebula-page) {
   --rgb-canvas: 243 247 251;
   --rgb-surface: 255 255 255;
   --rgb-text-bright: 11 19 36;

@@ -19,8 +19,6 @@ const PAGES = [
 const KNOWN_BUGS: Record<string, string[]> = {
   // Unlabelled charts, and an icon-only GitHub link
   '/packages/speccer': ['has no accessibility violations'],
-  // Unlabelled charts
-  '/users/phun-ky': ['has no accessibility violations'],
   // Unlabelled charts, and no <h1>
   '/users/phun-ky/packages': ['has no accessibility violations']
 };
