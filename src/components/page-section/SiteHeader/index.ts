@@ -10,7 +10,7 @@ const html = String.raw;
 export type SiteHeaderPropsType = {
   session?: Session | null;
   /** The main section the page belongs to, marked in the nav */
-  current?: 'packages' | 'users';
+  current?: 'packages' | 'users' | 'about';
   /** On the front page, "How it works" scrolls; elsewhere it goes there */
   onStartPage?: boolean;
 };
@@ -42,7 +42,11 @@ export const SiteHeader = ({
         ...(current === 'users' && { 'aria-current': 'page' })
       })}
       ${Link({ to: onStartPage ? '#how' : '/#how', children: 'How it works' })}
-      ${Link({ to: '/help/about', children: 'About' })}
+      ${Link({
+        to: '/help/about',
+        children: 'About',
+        ...(current === 'about' && { 'aria-current': 'page' })
+      })}
     </nav>
     <div class="site-header-actions">
       ${ThemeToggle()}
