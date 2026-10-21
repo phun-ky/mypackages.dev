@@ -4,7 +4,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(11);
+select plan(13);
 
 -- As the function, with the service role -----------------------------------
 
@@ -96,14 +96,43 @@ reset role;
 
 select results_eq(
   $$ select schedule from cron.job where jobname = 'portfolio-snapshot' $$,
-  $$ values ('17 3 * * *'::text) $$,
-  'the snapshot runs once a day'
+  $$ values ('17 3-8 * * *'::text) $$,
+  'the snapshot is tried every hour from 03:17 to 08:17 UTC'
 );
 
 select ok(
   (select command like '%vault.decrypted_secrets%' and command not like '%eyJ%'
    from cron.job where jobname = 'portfolio-snapshot'),
   'the job reads its secret from Vault, not from the migration'
+);
+
+-- Runs the job's command, and counts the requests it queued
+create function pg_temp.requests_queued_by_job() returns bigint
+  language plpgsql as $f$
+declare
+  before bigint := (select count(*) from net.http_request_queue);
+begin
+  execute (select command from cron.job where jobname = 'portfolio-snapshot');
+  return (select count(*) from net.http_request_queue) - before;
+end
+$f$;
+
+select vault.create_secret('http://localhost:54321', 'project_url');
+select vault.create_secret('test-secret', 'portfolio_snapshot_secret');
+
+-- 'someone' was written above, just now
+select is(
+  pg_temp.requests_queued_by_job(),
+  0::bigint,
+  'the job does nothing when today''s snapshot exists'
+);
+
+update public.portfolio_snapshots set computed_at = now() - interval '1 day';
+
+select is(
+  pg_temp.requests_queued_by_job(),
+  1::bigint,
+  'the job calls the function when the snapshot is old'
 );
 
 select * from finish();
