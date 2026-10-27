@@ -2,6 +2,7 @@
 import { DOMContentLoaded } from './lib/spa/utils/dom-content-loaded';
 import { eventAfterAppRender } from './lib/spa/utils/event-after-app-render';
 import { popstate } from './lib/spa/utils/popstate';
+import { reloadOnNewBuild } from './lib/spa/utils/reload-on-new-build';
 
 // Fonts, served from the site itself instead of Google Fonts. Inter with its
 // optical size axis, as before.
@@ -17,6 +18,8 @@ if (redirectedPath) {
   history.replaceState(null, '', decodeURIComponent(redirectedPath));
 }
 
+// A page file from an older build is gone after a deploy
+window.addEventListener('vite:preloadError', reloadOnNewBuild);
 // Events that happens on URL change in our SPA
 window.addEventListener('popstate', popstate);
 // window.addEventListener('hashchange', popstate);
