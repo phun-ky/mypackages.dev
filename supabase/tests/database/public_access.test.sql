@@ -4,7 +4,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(23);
+select plan(25);
 
 -- Two users with a stored npm token each, made as the owner, like
 -- save-secret and set-active-token do
@@ -73,6 +73,23 @@ select throws_ok(
   'P0001',
   'Invalid username',
   'markup is refused as a username'
+);
+
+-- npm's search finds packages for an email too, which must not be shown (#86)
+select throws_ok(
+  $$ select public.log_search_event(
+       '{"kind": "user", "username": "someone@example.com"}'
+     ) $$,
+  'P0001',
+  'Invalid username',
+  'an email is refused as a username'
+);
+
+select lives_ok(
+  $$ select public.log_search_event(
+       '{"kind": "user", "username": "some.one_2"}'
+     ) $$,
+  'usernames with dots and underscores are logged'
 );
 
 select throws_ok(
