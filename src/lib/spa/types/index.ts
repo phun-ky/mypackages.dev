@@ -31,8 +31,8 @@ export type EventDataId = {
 };
 
 export type EventDataAction =
-  | ((e: KeyboardEvent) => void)
-  | ((e: Event) => void)
+  | ((e: KeyboardEvent, element: Element) => void)
+  | ((e: Event, element: Element) => void)
   | FunctionType
   | FunctionReturnStringType;
 

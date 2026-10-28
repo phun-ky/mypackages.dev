@@ -505,9 +505,7 @@
   font: 500 0.82rem var(--font-family-body);
   cursor: pointer;
 
-  /* Clicks go to the button: the handlers only see their own element (#71) */
   & .n {
-    pointer-events: none;
     color: rgb(var(--rgb-text-dim));
     font-variant-numeric: tabular-nums;
   }
