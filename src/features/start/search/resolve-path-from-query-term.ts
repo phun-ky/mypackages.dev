@@ -1,10 +1,14 @@
-import { resolveSearchTarget } from '../../../services/search/resolve-search-target';
+import {
+  type ResolveMode,
+  resolveSearchTarget
+} from '../../../services/search/resolve-search-target';
 
 export const resolvePathFromQueryTerm = async (
   queryTermToUse: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  mode: ResolveMode = 'auto'
 ) => {
-  const res = await resolveSearchTarget(queryTermToUse, 'auto', signal);
+  const res = await resolveSearchTarget(queryTermToUse, mode, signal);
   const to =
     res.kind === 'package'
       ? `/packages/${res.packageName}`

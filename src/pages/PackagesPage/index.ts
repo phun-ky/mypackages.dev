@@ -1,14 +1,9 @@
+import { DiscoverPage } from '../../features/discover/discover-page';
 import type { PagePropsType } from '../../lib/spa/types';
-
-const html = String.raw;
 
 export type PackagesPagePropsType = PagePropsType;
 
-export const PackagesPage = async (
+export const PackagesPage = (
   props: PackagesPagePropsType,
   signal: AbortSignal
-) => {
-  console.log(props, signal);
-
-  return html`<section class="packages-page"><h1>Packages</h1></section>`;
-};
+) => DiscoverPage('package', props, signal);
