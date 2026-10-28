@@ -1,25 +1,12 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
-  });
-}
-
-function bad(msg: string, status = 400) {
-  return json({ error: msg }, status);
-}
+import { responses } from "../_shared/http.ts";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const { json, preflight, failed } = responses(req);
+  const bad = (msg: string, status = 400) => json({ error: msg }, status);
+
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return bad("Method not allowed", 405);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -46,7 +33,7 @@ Deno.serve(async (req) => {
     .eq("user_id", user.id)
     .order("updated_at", { ascending: false });
 
-  if (error) return bad(`DB error: ${error.message}`, 500);
+  if (error) return failed("list-secrets select", error);
 
   return json({ ok: true, items: data ?? [] }, 200);
 });

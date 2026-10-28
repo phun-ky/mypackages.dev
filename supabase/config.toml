@@ -16,36 +16,42 @@ deno_version = 2
 [db]
 major_version = 17
 
-# Every function checks the caller itself, if it needs a user, so the
-# platform's JWT check is off, as it was when they were created in the
-# dashboard. Without `verify_jwt`, a deploy keeps the deployed setting.
+# The platform checks that callers send a valid JWT (#29): the site's anon
+# key, or a signed-in user's token. Callers without the key are refused
+# before a function runs, so the npm functions aren't an open proxy. The
+# functions that need a user still check it themselves.
+#
+# The site sends the legacy anon key, which is a JWT. The newer publishable
+# keys (sb_publishable_...) are not, so moving the site to one means turning
+# this off again and checking the key in the functions. Without `verify_jwt`,
+# a deploy keeps the deployed setting.
 
 [functions.ensure_package]
-verify_jwt = false
+verify_jwt = true
 
 [functions.get-active-token-meta]
-verify_jwt = false
+verify_jwt = true
 
 [functions.list-secrets]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-downloads-last-month]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-downloads-last-year]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-exists-package]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-package-details]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-search-by-user-role]
-verify_jwt = false
+verify_jwt = true
 
 [functions.npm-user-has-packages]
-verify_jwt = false
+verify_jwt = true
 
 [functions.portfolio-snapshot]
 # Called by the portfolio-snapshot cron job without a JWT; the function
@@ -53,7 +59,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.save-secret]
-verify_jwt = false
+verify_jwt = true
 
 [functions.set-active-token]
-verify_jwt = false
+verify_jwt = true

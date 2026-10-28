@@ -110,6 +110,7 @@ export const TokenSettings = async (props: TokenSettingsPropsType) => {
             name="label"
             class="input"
             data-label
+            maxlength="64"
             autocomplete="off"
             spellcheck="false"
             value="${escapeAttr(label)}"
@@ -125,6 +126,7 @@ export const TokenSettings = async (props: TokenSettingsPropsType) => {
           aria-required="true"
           rows="9"
           data-token
+          maxlength="512"
           autocomplete="off"
           spellcheck="false"
           placeholder="Paste secret here"

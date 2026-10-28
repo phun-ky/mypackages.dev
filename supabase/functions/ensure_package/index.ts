@@ -1,25 +1,14 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
-  });
-}
-
-function bad(message: string, status = 400) {
-  return json({ ok: false, error: message }, status);
-}
+import { readBody, responses } from "../_shared/http.ts";
 
 const normalizePackageName = (raw: string) =>
   raw.trim().replace(/\s+/g, "").toLowerCase();
+
+// What npm accepts as a new package name, once lowercased: an optional scope,
+// then URL-safe characters (validate-npm-package-name)
+const PACKAGE_NAME =
+  /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/;
 
 const NPM_REGISTRY = "https://registry.npmjs.org";
 
@@ -30,7 +19,11 @@ async function existsNpmPackage(packageName: string, signal?: AbortSignal) {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const { json, preflight, failed } = responses(req);
+  const bad = (message: string, status = 400) =>
+    json({ ok: false, error: message }, status);
+
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return bad("Method not allowed", 405);
 
   const authHeader = req.headers.get("Authorization");
@@ -44,10 +37,16 @@ Deno.serve(async (req) => {
     global: { headers: { Authorization: authHeader } },
   });
 
-  const {
-    packageName: rawPackageName,
-    registry = "npm",
-  } = await req.json().catch(() => ({} as any));
+  // Identify user (we need user_id for RLS), before asking npm for anyone
+  const { data: userData, error: userErr } = await supabase.auth.getUser();
+  if (userErr || !userData?.user) return bad("Unauthorized", 401);
+
+  const user_id = userData.user.id;
+
+  const body = await readBody(req);
+  if (!body) return bad("Invalid JSON body", 400);
+
+  const { packageName: rawPackageName, registry = "npm" } = body;
 
   if (registry !== "npm") {
     // ready for github later
@@ -57,9 +56,10 @@ Deno.serve(async (req) => {
   const packageName = normalizePackageName(String(rawPackageName ?? ""));
   if (!packageName) return bad("Package name is required", 400);
 
-  // basic sanity; keep permissive for scoped packages
-  // (If you already have stricter validation elsewhere, reuse it.)
   if (packageName.length < 2) return bad("Package name looks too short", 400);
+  if (packageName.length > 214 || !PACKAGE_NAME.test(packageName)) {
+    return bad("Invalid package name", 400);
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
@@ -84,12 +84,6 @@ Deno.serve(async (req) => {
     }, 200);
   }
 
-  // Identify user (we need user_id for RLS)
-  const { data: userData, error: userErr } = await supabase.auth.getUser();
-  if (userErr || !userData?.user) return bad("Unauthorized", 401);
-
-  const user_id = userData.user.id;
-
   // Insert. If it exists already, return a warning response.
   const { data, error } = await supabase
     .from("ensured_packages")
@@ -110,7 +104,7 @@ Deno.serve(async (req) => {
       }, 200);
     }
 
-    return json({ ok: false, error: error.message }, 500);
+    return failed("ensure_package insert", error);
   }
 
   return json({

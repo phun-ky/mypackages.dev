@@ -1,26 +1,15 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "content-type": "application/json" },
-  });
-}
-function bad(msg: string, status = 400) {
-  return json({ ok: false, error: msg }, status);
-}
+import { readBody, responses } from "../_shared/http.ts";
 
 const NPM_REGISTRY = "https://registry.npmjs.org";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const { json, preflight } = responses(req);
+  const bad = (msg: string, status = 400) =>
+    json({ ok: false, error: msg }, status);
+
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return bad("Method not allowed", 405);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -31,12 +20,10 @@ Deno.serve(async (req) => {
     req.headers.get("authorization") ?? req.headers.get("Authorization");
 
   let packageName = "";
-  try {
-    const body = await req.json().catch(() => ({}));
-    packageName = String(body?.packageName ?? "").trim();
-  } catch {
-    return bad("Invalid JSON body", 400);
-  }
+  const body = await readBody(req);
+  if (!body) return bad("Invalid JSON body", 400);
+
+  packageName = String(body.packageName ?? "").trim();
 
   if (!packageName) return bad("Missing packageName", 400);
 
