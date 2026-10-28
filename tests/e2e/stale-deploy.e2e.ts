@@ -48,6 +48,9 @@ const markPage = (page: Page) =>
   });
 const isSamePage = (page: Page) =>
   page.evaluate(() => (window as { __openPage?: boolean }).__openPage === true);
+// A reload loads the page twice, through 404.html, so give it longer than the
+// default under load (#89)
+const RELOAD_TIMEOUT = 15_000;
 const followUsersLink = (page: Page) =>
   page
     .getByRole('navigation', { name: 'Main' })
@@ -70,7 +73,7 @@ test('reloads once to load a page removed by a deploy', async ({
   await expect(page).toHaveURL('/users');
   await expect(
     page.getByRole('heading', { level: 1, name: 'Users' })
-  ).toBeVisible();
+  ).toBeVisible({ timeout: RELOAD_TIMEOUT });
   expect(await isSamePage(page)).toBe(false);
 
   removeExpectedErrors(pageErrors);
@@ -87,7 +90,7 @@ test('shows the error page if the reload does not help', async ({
   // error page unshown
   await expect(
     page.getByRole('heading', { level: 1, name: 'Something went wrong' })
-  ).toBeVisible();
+  ).toBeVisible({ timeout: RELOAD_TIMEOUT });
   expect(await isSamePage(page)).toBe(false);
 
   removeExpectedErrors(pageErrors);
