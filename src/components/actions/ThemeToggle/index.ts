@@ -14,9 +14,7 @@ const label = (light: boolean) =>
  * the site follows their system (see index.html).
  */
 export const ThemeToggle = () => {
-  addOnClick('theme-toggle', (event) => {
-    // Clicks are handled on the document, so this may be an icon inside
-    const button = event.target;
+  addOnClick('theme-toggle', (_event, toggle) => {
     const light = !isLight();
 
     document.documentElement.classList.toggle('theme--light', light);
@@ -27,12 +25,8 @@ export const ThemeToggle = () => {
       // Without storage, the choice lasts until the page reloads
     }
 
-    if (button instanceof Element) {
-      const toggle = button.closest('#theme-toggle');
-
-      toggle?.setAttribute('aria-label', label(light));
-      toggle?.setAttribute('title', label(light));
-    }
+    toggle.setAttribute('aria-label', label(light));
+    toggle.setAttribute('title', label(light));
   });
 
   const light = isLight();

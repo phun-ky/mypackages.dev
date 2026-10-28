@@ -1,4 +1,4 @@
-import { DiffDOM, nodeToObj, stringToObj } from 'diff-dom';
+import { DiffDOM, nodeToObj } from 'diff-dom';
 
 /**
  * A wrapper to be able to update DOM nodes, using the 3rd party library `diff-dom`.
@@ -35,8 +35,16 @@ import { DiffDOM, nodeToObj, stringToObj } from 'diff-dom';
  * ```
  */
 export const updateNodes = (root: HTMLElement, html: string): void => {
+  // Parsed by the browser, not diff-dom's own parser, which kept entities
+  // like &#39; as text and didn't close an end tag split over two lines,
+  // as Prettier writes them in long templates (#64). A template's content
+  // is inert: nothing in it loads or runs until it's applied.
+  const template = document.createElement('template');
+
+  template.innerHTML = `<div class="app">${html}</div>`;
+
   const currentDOM = nodeToObj(root);
-  const newDOM = stringToObj(`<div class="app">${html}</div>`);
+  const newDOM = nodeToObj(template.content.firstElementChild as HTMLElement);
   const dd = new DiffDOM({ valueDiffing: false });
   const diff = dd.diff(currentDOM, newDOM);
 

@@ -11,9 +11,6 @@
   cursor: pointer;
 
   & svg {
-    /* Clicks go to the button: the click handlers only see their own
-       element, not what's inside it (#71) */
-    pointer-events: none;
     width: 1.15rem;
     height: 1.15rem;
     fill: none;

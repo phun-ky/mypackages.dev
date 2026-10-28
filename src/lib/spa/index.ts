@@ -34,10 +34,8 @@ export const spa = (() => {
   let _templateCallback: AppPageType;
   let _page: RouterMatch;
   let clickEventArray: EventArray = [];
-
-  const keyupEventArray: EventArray = [];
-  const keydownEventArray: EventArray = [];
-
+  let keyupEventArray: EventArray = [];
+  let keydownEventArray: EventArray = [];
   let clickOutsideEventArray: EventArray = [];
   let inputEventArray: EventArray = [];
   let changeEventArray: EventArray = [];
@@ -81,6 +79,10 @@ export const spa = (() => {
 
     console.info(`trying to render "${page?.route?.name}"`);
     clickEventArray = [];
+    // Pages add their handlers again on every render, so the old ones go
+    // first: kept, they ran once more after each visit (#71)
+    keyupEventArray = [];
+    keydownEventArray = [];
     inputEventArray = [];
     changeEventArray = [];
     onRouteChangeEventArray = [];
@@ -207,89 +209,66 @@ export const spa = (() => {
 
       const targetElement = e.target;
 
-      if (!(targetElement instanceof HTMLElement)) return;
+      // Any element, so a click on an icon outside counts too (#71)
+      if (!(targetElement instanceof Element)) return;
 
       if (!el.contains(targetElement)) {
-        target.callback(e as any);
+        (target.callback as (e: Event, element: Element) => void)(e, el);
       }
     });
   };
   const handleOnRouteChangedListener = () => {
     onRouteChangeEventArray.forEach((callback) => callback());
   };
-  const handleClickListeners = (e: Event) => {
-    const targetElement = e.target;
+  /**
+   * The element an event is for: the element with that id, or the nearest
+   * one matching that selector, from the event's target outwards. A click on
+   * an icon inside a button is a click on the button (#71).
+   */
+  const findElement = (e: Event, id: string): Element | null => {
+    const target = e.target;
 
-    if (!(targetElement instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return null;
 
-    clickEventArray.forEach((target) => {
-      if (targetElement.id === target.id || targetElement.matches(target.id)) {
-        target.callback(e as any);
-      }
+    const byId = document.getElementById(id);
+
+    if (byId?.contains(target)) return byId;
+
+    try {
+      return target.closest(id);
+    } catch {
+      // An id that isn't a valid selector
+      return null;
+    }
+  };
+  /**
+   * Calls each handler whose element the event is for, with the event and
+   * that element.
+   */
+  const dispatch = (
+    handlers: EventArray,
+    e: Event,
+    { preventDefault = false } = {}
+  ) => {
+    handlers.forEach((target) => {
+      const element = findElement(e, target.id);
+
+      if (!element) return;
+
+      if (preventDefault) e.preventDefault();
+
+      (target.callback as (e: Event, element: Element) => void)(e, element);
     });
   };
-  const handleInputListeners = (e: Event) => {
-    const targetElement = e.target;
-
-    if (!(targetElement instanceof HTMLElement)) return;
-
-    inputEventArray.forEach((target) => {
-      if (targetElement.id === target.id || targetElement.matches(target.id)) {
-        e.preventDefault();
-        target.callback(e as any);
-      }
-    });
-  };
-  const handleChangeListeners = (e: Event) => {
-    const targetElement = e.target;
-
-    if (!(targetElement instanceof HTMLElement)) return;
-
-    changeEventArray.forEach((target) => {
-      if (targetElement.id === target.id || targetElement.matches(target.id)) {
-        e.preventDefault();
-        target.callback(e as any);
-      }
-    });
-  };
-  const handleKeydownListeners = (e: KeyboardEvent) => {
-    const targetElement = e.target;
-
-    if (!(targetElement instanceof HTMLElement)) return;
-
-    keydownEventArray.forEach((target) => {
-      if (targetElement.id === target.id) {
-        target.callback(e);
-      }
-    });
-  };
-  const handleKeyupListeners = (e: KeyboardEvent) => {
-    const targetElement = e.target;
-
-    if (!(targetElement instanceof HTMLElement)) return;
-
-    keyupEventArray.forEach((target) => {
-      if (targetElement.id === target.id) {
-        target.callback(e);
-      } else if (targetElement.matches(target.id)) {
-        target.callback(e);
-      } else if (targetElement.matches(`${target.id} *`)) {
-        const closest = targetElement.closest(target.id);
-        const currentTarget = e.target;
-
-        if (!(currentTarget instanceof HTMLElement)) return;
-
-        if (
-          (currentTarget.nodeType === Node.DOCUMENT_NODE
-            ? (currentTarget as unknown as Document).documentElement
-            : currentTarget
-          ).contains(closest)
-        ) {
-          target.callback(e);
-        }
-      }
-    });
-  };
+  const handleClickListeners = (e: Event) => dispatch(clickEventArray, e);
+  const handleInputListeners = (e: Event) =>
+    dispatch(inputEventArray, e, { preventDefault: true });
+  const handleChangeListeners = (e: Event) =>
+    dispatch(changeEventArray, e, { preventDefault: true });
+  const handleKeydownListeners = (e: KeyboardEvent) =>
+    dispatch(keydownEventArray, e);
+  const handleKeyupListeners = (e: KeyboardEvent) =>
+    dispatch(keyupEventArray, e);
   /**
    * To be able to add event listeners to the "string html" produced by the
    * components, we have to use "global" event handlers.
@@ -298,17 +277,26 @@ export const spa = (() => {
    * @param {string} id The id used for the event
    * @param {Function} callback The callback to use on the event
    */
-  const addOnClick = (id: string, callback: (e: Event) => void) => {
+  const addOnClick = (
+    id: string,
+    callback: (e: Event, element: Element) => void
+  ) => {
     clickEventArray.push({ id, callback });
   };
-  const addOnKeyup = (id: string, callback: (e: KeyboardEvent) => void) => {
+  const addOnKeyup = (
+    id: string,
+    callback: (e: KeyboardEvent, element: Element) => void
+  ) => {
     keyupEventArray.push({ id, callback });
   };
   const addClickOutside = (id: string, callback: (e: Event) => void) => {
     clickOutsideEventArray.push({ id, callback });
   };
-  const addOnKeydown = (id: string, callback: (e: KeyboardEvent) => void) => {
-    keyupEventArray.push({ id, callback });
+  const addOnKeydown = (
+    id: string,
+    callback: (e: KeyboardEvent, element: Element) => void
+  ) => {
+    keydownEventArray.push({ id, callback });
   };
   const addOnInput = (id: string, callback: FunctionType) => {
     inputEventArray.push({ id, callback });
