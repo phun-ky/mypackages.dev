@@ -18,6 +18,7 @@ import { addOnAfterAppRender } from './lib/spa';
 import { routes, type PageId } from './lib/spa/router/routes';
 import type { PagePropsType } from './lib/spa/types';
 import { getParams } from './lib/spa/utils/get-params';
+import { isReloadingForNewBuild } from './lib/spa/utils/reload-on-new-build';
 import { supabase } from './services/supabase';
 
 import './styles/app.css';
@@ -66,11 +67,22 @@ const App = async (initialProps: Partial<PagePropsType>) => {
 
   const resolvedProps: PagePropsType = { ..._resolvedPageProps, options };
   const load = pageLoaders[_pageId as PageId] ?? pageLoaders.PageNotFoundPage;
+  const loadPage = async () => {
+    try {
+      return await load();
+    } catch (error) {
+      // Once a reload for a new build has started, Vite gives the import
+      // nothing, so wait for the reload instead of rendering (#89)
+      if (isReloadingForNewBuild()) return new Promise<never>(() => {});
+
+      throw error;
+    }
+  };
   // Private pages fail without a session, so leave them out and let the auth
   // guard redirect to sign in
   const content = requiresSignIn({ match, session })
     ? ''
-    : await callPage(await load(), { props: resolvedProps, signal });
+    : await callPage(await loadPage(), { props: resolvedProps, signal });
   const isAuthed = Boolean(session);
 
   addOnAfterAppRender(createAuthGuard({ match, session }));

@@ -6,6 +6,9 @@ const WINDOW_MS = 10_000;
 // Set when this page has started reloading
 let reloading = false;
 
+/** Whether this page has started reloading for a new build. */
+export const isReloadingForNewBuild = () => reloading;
+
 /**
  * Reloads the page once when a page file can't be loaded, which happens to a
  * tab that was open during a deploy: GitHub Pages replaces the whole site, so
