@@ -15,7 +15,16 @@ const url = new URL(window.location.href);
 const redirectedPath = url.searchParams.get('p');
 
 if (redirectedPath) {
+  // Old links, from when 404.html redirected deep links to /?p=<path>
   history.replaceState(null, '', decodeURIComponent(redirectedPath));
+} else if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
+  // GitHub Pages redirects a page that is also a directory, like /help, to
+  // /help/ (#39); the routes have no trailing slash
+  history.replaceState(
+    null,
+    '',
+    url.pathname.replace(/\/+$/, '') + url.search + url.hash
+  );
 }
 
 // A page file from an older build is gone after a deploy
