@@ -1,6 +1,6 @@
 'section: tests':
   - any:
-      - head-branch: ['^test']
+      - head-branch: ['^test/']
       - changed-files:
           - any-glob-to-any-file:
               - 'tests/**'
@@ -8,7 +8,7 @@
 
 'section: workflows':
   - any:
-      - head-branch: ['^ci']
+      - head-branch: ['^ci/']
       - changed-files:
           - any-glob-to-any-file:
               - '.github/workflows/**'
@@ -36,7 +36,7 @@
 
 'mindless: ✏️ docs':
   - any:
-      - head-branch: ['^docs']
+      - head-branch: ['^docs/']
       - changed-files:
           - any-glob-to-any-file:
               - '**/*.md'
@@ -47,10 +47,10 @@
           - 'package-lock.json'
 
 '✨ feature':
-  - head-branch: ['^feat']
+  - head-branch: ['^feat/']
 
 'problems: 🐛 bug':
-  - head-branch: ['^fix']
+  - head-branch: ['^fix/']
 
 'mindless: 🤖 chore':
-  - head-branch: ['^chore']
+  - head-branch: ['^chore/']
