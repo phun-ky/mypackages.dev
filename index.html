@@ -3,28 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="author" content="Alexander Vassbotn Røyne-Helgesen" />
+    <!--
+      The Content Security Policy, as a meta tag since GitHub Pages can't send
+      headers; that also means it can't set frame-ancestors or reporting.
+      Scripts come only from the site; 'wasm-unsafe-eval' is for Shiki's
+      highlighter. Style attributes may be inline (the templates, Shiki and
+      Highcharts set them), style elements may not. connect-src lists the APIs
+      the browser calls, tested in tests/e2e/csp.e2e.ts. In development,
+      vite.config.ts allows the style elements Vite injects.
+    -->
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self';
     base-uri 'self';
-    block-all-mixed-content;
-    font-src 'self' https: data:;
-    img-src 'self' https: data:;
-    connect-src 'self'
-      https://registry.npmjs.org
-      https://api.npmjs.org
-      https://api.github.com
-      https://api.bitbucket.org
-      https://gitlab.com
-      https://api.osv.dev
-      https://zendzcuvkwbszzyjfefa.supabase.co
-      wss://zendzcuvkwbszzyjfefa.supabase.co;
+    form-action 'self';
     object-src 'none';
-    script-src https://code.highcharts.com https://static.getclicky.com https://in.getclicky.com 'self' 'unsafe-inline' 'wasm-unsafe-eval';
-    script-src-attr 'self' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline' https: 'unsafe-inline';
+    script-src 'self' 'wasm-unsafe-eval';
+    style-src 'self';
+    style-src-attr 'unsafe-inline';
+    font-src 'self';
+    img-src 'self' data: https://avatars.githubusercontent.com https://www.gravatar.com;
+    connect-src 'self'
+      https://zendzcuvkwbszzyjfefa.supabase.co
+      https://api.github.com
+      https://gitlab.com
+      https://api.bitbucket.org
+      https://dev.azure.com
+      https://api.osv.dev;
     upgrade-insecure-requests"
     />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="shortcut icon" href="/meta/favicon.ico?v2" />
     <link
       rel="icon"
@@ -42,17 +50,7 @@
     <link rel="manifest" href="/meta/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My packages</title>
-    <script>
-      if (
-        (localStorage.getItem('prefers-color-scheme') &&
-          localStorage.getItem('prefers-color-scheme') === 'light') ||
-        (!localStorage.getItem('prefers-color-scheme') &&
-          window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: light)').matches)
-      ) {
-        document.querySelector('html').classList.add('theme--light');
-      }
-    </script>
+    <script src="/theme.js"></script>
   </head>
   <body>
     <div id="app"></div>

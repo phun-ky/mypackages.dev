@@ -27,3 +27,10 @@ window.addEventListener('popstate', popstate);
 document.addEventListener('DOMContentLoaded', DOMContentLoaded);
 // Events that happens after every App render
 document.addEventListener('eventAfterAppRender', eventAfterAppRender);
+// Forms the app handles itself, on keydown and click: submitting one would
+// reload the page. An inline onsubmit would need 'unsafe-inline' (#38).
+document.addEventListener('submit', (event) => {
+  if ((event.target as Element).matches('form[data-no-submit]')) {
+    event.preventDefault();
+  }
+});

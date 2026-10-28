@@ -1,5 +1,6 @@
 import { routes } from '../../src/lib/spa/router/routes';
 
+import { ALLOWED_ORIGINS } from './data/origins';
 import { expect, test, waitForApp } from './fixtures';
 import { mockPackages, mockUser } from './mocks';
 
@@ -12,19 +13,9 @@ const PAGES = [
   '/users/phun-ky',
   '/this-does-not-exist'
 ];
-// The only other origins a page may contact: the APIs the site exists to show
-// data from, and its own Supabase project. Fonts, scripts, styles and images
-// come from the site itself, so visitors aren't tracked by anyone else.
-const ALLOWED = new Set([
-  'https://zendzcuvkwbszzyjfefa.supabase.co',
-  'https://registry.npmjs.org',
-  'https://api.npmjs.org',
-  'https://api.github.com',
-  'https://gitlab.com',
-  'https://api.bitbucket.org',
-  'https://dev.azure.com',
-  'https://api.osv.dev'
-]);
+// Fonts, scripts, styles and images come from the site itself, so visitors
+// aren't tracked by anyone else
+const ALLOWED = new Set(ALLOWED_ORIGINS);
 
 test.beforeEach(async ({ page }) => {
   await mockPackages(page, { '@phun-ky/speccer': {} });
