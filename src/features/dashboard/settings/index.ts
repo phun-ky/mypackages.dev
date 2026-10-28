@@ -44,7 +44,7 @@ export const Settings = (props: SettingsPropsType) => {
       </svg>
       Clear cache
     </button>
-    <form class="settings-controls" onsubmit="javascript:return false;">
+    <form class="settings-controls" data-no-submit>
       <div class="toggle-controls">
         Author or Maintainer?
         ${ToggleBox({

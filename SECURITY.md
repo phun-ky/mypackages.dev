@@ -69,10 +69,11 @@ What you can rely on:
 
 What you can't rely on yet:
 
-- **A strict Content Security Policy.** GitHub Pages can't send headers, so the
-  policy is a `<meta>` tag, which can't set `frame-ancestors` or reporting, and
-  today it still allows inline scripts and styles. Tightening it is tracked in
-  [#38](https://github.com/phun-ky/mypackages.dev/issues/38).
+- **A complete Content Security Policy.** GitHub Pages can't send headers, so
+  the policy is a `<meta>` tag, which can't set `frame-ancestors` (the site can
+  be framed) or reporting. It allows scripts only from the site, but inline
+  `style` attributes are allowed, because the templates, Shiki and Highcharts
+  set them.
 - **Availability.** The site depends on npm's public API and its rate limits.
   There is no rate limit of its own on the edge functions.
 

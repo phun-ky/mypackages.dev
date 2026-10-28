@@ -156,7 +156,7 @@ export const StartPage = async (
           maintain, on one page. Search any package or npm user, no account
           needed.
         </p>
-        <form class="hero-search" role="search" onsubmit="return false;">
+        <form class="hero-search" role="search" data-no-submit>
           <label for="query-term-to-use" class="visually-hidden">
             Package or npm username
           </label>
