@@ -1,11 +1,13 @@
 /**
  * Static file server for the Playwright tests.
  *
- * Serves the build in `dist/` the way GitHub Pages does: a file, then the
- * `index.html` in a directory, and otherwise `404.html` with status 404. The
- * site relies on that last step for deep links (`404.html` redirects to
- * `/?p=<path>`), so the tests go through the same redirect as visitors. No
- * dependencies, so CI doesn't have to download a server on every run.
+ * Serves the build in `dist/` the way GitHub Pages does, as measured on
+ * mypackages.dev (#39): the file, then `<path>.html` (`/404` serves
+ * `404.html`), then a directory without its trailing slash is redirected to
+ * it (`/meta` gives 301 to `/meta/`), then the `index.html` in a directory,
+ * and otherwise `404.html` with status 404. The build writes a page for every
+ * static route, and `404.html` is the app for the rest. No dependencies, so CI
+ * doesn't have to download a server on every run.
  *
  * Usage: node tests/e2e/server.mjs [port]
  */
@@ -34,12 +36,14 @@ const TYPES = {
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml; charset=utf-8'
 };
+const statOf = (file) => stat(file).catch(() => undefined);
 /**
- * Finds the file for a URL path in `dist/`: the file itself, or the
- * `index.html` in that directory.
+ * Finds what to answer for a URL path in `dist/`: a file, or a redirect to
+ * the path with a trailing slash when it names a directory.
  *
  * @param {string} urlPath - The decoded URL path.
- * @returns {Promise<string|undefined>} The file path, if any.
+ * @returns {Promise<{file?: string, redirect?: string}|undefined>} What to
+ *   answer, if anything.
  */
 const resolveFile = async (urlPath) => {
   const file = path.join(ROOT, urlPath);
@@ -47,10 +51,18 @@ const resolveFile = async (urlPath) => {
   // Don't serve anything outside dist/
   if (file !== ROOT && !file.startsWith(ROOT + path.sep)) return;
 
-  for (const candidate of [file, path.join(file, 'index.html')]) {
-    const stats = await stat(candidate).catch(() => undefined);
+  if ((await statOf(file))?.isFile()) return { file };
 
-    if (stats?.isFile()) return candidate;
+  if (!urlPath.endsWith('/') && (await statOf(`${file}.html`))?.isFile()) {
+    return { file: `${file}.html` };
+  }
+
+  if ((await statOf(file))?.isDirectory()) {
+    if (!urlPath.endsWith('/')) return { redirect: `${urlPath}/` };
+
+    const index = path.join(file, 'index.html');
+
+    if ((await statOf(index))?.isFile()) return { file: index };
   }
 };
 const send = (res, status, file) => {
@@ -62,19 +74,25 @@ const send = (res, status, file) => {
 };
 
 createServer(async (req, res) => {
-  const { pathname } = new URL(req.url ?? '/', 'http://localhost');
-  const file = await resolveFile(decodeURIComponent(pathname));
+  const { pathname, search } = new URL(req.url ?? '/', 'http://localhost');
+  const found = await resolveFile(decodeURIComponent(pathname));
 
-  if (file) {
-    send(res, 200, file);
+  if (found?.redirect) {
+    res.writeHead(301, { Location: encodeURI(found.redirect) + search }).end();
+
+    return;
+  }
+
+  if (found?.file) {
+    send(res, 200, found.file);
 
     return;
   }
 
   const notFound = await resolveFile('/404.html');
 
-  if (notFound) {
-    send(res, 404, notFound);
+  if (notFound?.file) {
+    send(res, 404, notFound.file);
 
     return;
   }

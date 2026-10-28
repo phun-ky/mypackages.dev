@@ -48,8 +48,8 @@ const markPage = (page: Page) =>
   });
 const isSamePage = (page: Page) =>
   page.evaluate(() => (window as { __openPage?: boolean }).__openPage === true);
-// A reload loads the page twice, through 404.html, so give it longer than the
-// default under load (#89)
+// A reload loads the whole app again, so give it longer than the default
+// under load (#89)
 const RELOAD_TIMEOUT = 15_000;
 const followUsersLink = (page: Page) =>
   page
