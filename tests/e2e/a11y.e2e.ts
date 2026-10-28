@@ -16,10 +16,7 @@ const PAGES = [
 ];
 // Known bugs, fixed on their own branch. A test marked here must fail, so
 // remove the entry when the bug is fixed.
-const KNOWN_BUGS: Record<string, string[]> = {
-  // Unlabelled charts, and no <h1>
-  '/users/phun-ky/packages': ['has no accessibility violations']
-};
+const KNOWN_BUGS: Record<string, string[]> = {};
 const knownBug = (path: string, title: string) =>
   test.fail(KNOWN_BUGS[path]?.includes(title) ?? false, 'Known bug');
 

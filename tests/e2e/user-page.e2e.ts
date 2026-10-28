@@ -115,3 +115,45 @@ test('fits a phone without scrolling sideways', async ({ page }) => {
     expect(scroll, `${view}: page width`).toBeLessThanOrEqual(inner);
   }
 });
+
+test.describe('only the packages', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/users/phun-ky/packages');
+    await waitForApp(page);
+  });
+
+  test('shows the packages, and links to the overview', async ({ page }) => {
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Packages by phun-ky'
+    );
+    await expect(page.locator('#packages-by-scope')).toBeVisible();
+    await expect(page.locator('.user-overview')).toHaveCount(0);
+    await expect(page.locator('.pkg-group-head').first()).toContainText(
+      '1 package'
+    );
+    await expect(page.locator('.pkg-group-head').first()).not.toContainText(
+      '1 packages'
+    );
+    await expect(
+      page.getByRole('link', { name: 'Users', exact: true })
+    ).toHaveAttribute('aria-current', 'page');
+
+    await page.getByRole('link', { name: 'Overview' }).click();
+    await expect(page).toHaveURL('/users/phun-ky');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('phun-ky');
+  });
+
+  test('switches to the table, and fits a phone', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole('button', { name: 'Table' }).click();
+
+    await expect(page.locator('#package-rows tr')).toHaveCount(2);
+
+    const { inner, scroll } = await page.evaluate(() => ({
+      inner: window.innerWidth,
+      scroll: document.documentElement.scrollWidth
+    }));
+
+    expect(scroll).toBeLessThanOrEqual(inner);
+  });
+});

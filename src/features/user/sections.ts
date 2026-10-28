@@ -17,6 +17,7 @@ const compact = new Intl.NumberFormat('en-US', {
 const full = new Intl.NumberFormat('en-US');
 const relative = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 const DAY_MS = 24 * 60 * 60 * 1000;
+const countPackages = (n: number) => `${n} ${n === 1 ? 'package' : 'packages'}`;
 
 export const formatChange = (pct: number | null) =>
   pct === null || !Number.isFinite(pct)
@@ -47,14 +48,22 @@ export const pageHead = ({
   username,
   portfolio,
   maintainer,
-  session
+  session,
+  packagesOnly = false
 }: {
   username: string;
   portfolio: Portfolio;
   maintainer: boolean;
   session: Session | null;
+  // For /users/:username/packages, which links back to the overview
+  packagesOnly?: boolean;
 }) => {
   const role = maintainer ? 'maintained' : 'authored';
+  const name = escapeHtml(username);
+  const title = packagesOnly ? `Packages by ${name}` : name;
+  const overviewLink = packagesOnly
+    ? ` · <a href="/users/${escapeAttr(username)}" data-link>Overview</a>`
+    : '';
   const notice = session
     ? 'npm limits how much the site can fetch without your npm token, so some numbers may be missing. <a href="/profile/secrets/new" data-link>Add an npm token</a>'
     : 'npm limits how much the site can fetch for signed-out visitors, so some numbers may be missing. <a href="/dashboard/signin" data-link>Sign in</a> and add an npm token for complete data.';
@@ -62,8 +71,8 @@ export const pageHead = ({
   return `<div class="user-head">
   <span class="user-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(username))}</span>
   <div class="user-title">
-    <h1>${escapeHtml(username)}</h1>
-    <p class="user-sub">${portfolio.packages.length} packages ${role} on npm · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
+    <h1>${title}</h1>
+    <p class="user-sub">${countPackages(portfolio.packages.length)} ${role} on npm${overviewLink} · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
   </div>
   <div class="user-controls">
     <div class="segmented" role="group" aria-label="Packages to show">
@@ -98,7 +107,7 @@ export const overview = (portfolio: Portfolio) => {
 
   return `<section class="user-overview" aria-label="Overview">
   <div class="user-card user-total">
-    <span class="user-label">Monthly downloads, all ${packages.length} packages</span>
+    <span class="user-label">Monthly downloads, all ${countPackages(packages.length)}</span>
     <span class="user-big">${compact.format(monthly)}</span>
     <span class="user-change ${changeClass(change)}">${formatChange(change)} month over month</span>
     ${areaChart(
@@ -144,7 +153,7 @@ export const atAGlance = (portfolio: Portfolio, now: number) => {
   <div class="glance">
     <div class="user-card glance-card"><h3><span class="tone is-down" aria-hidden="true"></span>Needs attention</h3><p class="glance-why">Still used but not released in a year, or falling fast</p>${glanceList(attention, 'Nothing needs attention.')}</div>
     <div class="user-card glance-card"><h3><span class="tone is-up" aria-hidden="true"></span>Doing well</h3><p class="glance-why">Growing since the month before</p>${glanceList(doingWell, 'Nothing grew this month.')}</div>
-    <div class="user-card glance-card"><h3><span class="tone is-dormant" aria-hidden="true"></span>Dormant</h3><p class="glance-why">${portfolio.dormant.length} packages with no release in a year</p>${glanceList(dormant, 'Every package had a release this year.')}</div>
+    <div class="user-card glance-card"><h3><span class="tone is-dormant" aria-hidden="true"></span>Dormant</h3><p class="glance-why">${countPackages(portfolio.dormant.length)} with no release in a year</p>${glanceList(dormant, 'Every package had a release this year.')}</div>
   </div>
 </section>`;
 };
@@ -188,7 +197,7 @@ export const packagesSection = (
   const groups = scopes
     .map(
       (group) => `<div class="pkg-group">
-  <div class="pkg-group-head"><h3>${escapeHtml(group.scope)}</h3><span class="muted">${group.packages.length} packages</span><span class="pkg-group-sum num">${full.format(group.monthly)} downloads a month</span></div>
+  <div class="pkg-group-head"><h3>${escapeHtml(group.scope)}</h3><span class="muted">${countPackages(group.packages.length)}</span><span class="pkg-group-sum num">${full.format(group.monthly)} downloads a month</span></div>
   <ul class="pkg-tiles">${group.packages.map((pkg) => tile(pkg, now)).join('')}</ul>
 </div>`
     )
