@@ -1,0 +1,228 @@
+/* The discovery pages in the showcase design (#62), on top of the user
+   page's cards, sections and resets */
+.discover-head {
+  max-width: 44rem;
+  padding: 2.5rem 0 1rem;
+
+  & h1 {
+    margin: 0.35rem 0 0.6rem;
+    font: 600 clamp(2rem, 4vw, 2.8rem) / 1.1 var(--font-family-heading);
+    letter-spacing: -0.02em;
+    color: rgb(var(--rgb-text-bright));
+  }
+}
+
+.discover-eyebrow {
+  font: 600 0.75rem var(--font-family-heading);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--rgb-brand));
+}
+
+.discover-lede {
+  margin-bottom: 1.25rem;
+  font-size: 1.02rem;
+}
+
+.discover-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 36rem;
+  padding: 0.35rem 0.35rem 0.35rem 1rem;
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: 999px;
+  background: rgb(var(--rgb-surface));
+
+  &:focus-within {
+    outline: 2px solid rgb(var(--rgb-brand));
+    outline-offset: 2px;
+  }
+
+  & .pill-button {
+    white-space: nowrap;
+  }
+}
+
+.discover-search-icon {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: rgb(var(--rgb-text-dim));
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* The site styles every input; this one is part of the pill */
+.discover-search input.discover-search-input {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5rem 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: rgb(var(--rgb-text-bright));
+  font: 400 1rem var(--font-family-body);
+  outline: none;
+}
+
+.discover-status {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+
+  /* Kept in the page, empty, so screen readers announce what's put in */
+  &:empty {
+    margin: 0;
+  }
+}
+
+.discover-trending {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.discover-trending-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: rgb(var(--rgb-text-dim));
+}
+
+.discover-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  gap: 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.discover-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 1rem 1.1rem;
+}
+
+.discover-tile-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.discover-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: 500 1rem var(--font-family-heading);
+  color: rgb(var(--rgb-text-bright));
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.discover-big {
+  font: 600 1.25rem var(--font-family-heading);
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--rgb-text-bright));
+}
+
+.discover-avatar {
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.75rem;
+}
+
+.discover-desc {
+  display: -webkit-box;
+  min-height: 2.7em;
+  overflow: hidden;
+  font-size: 0.85rem;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.discover-spark .sparkline {
+  display: block;
+  width: 100%;
+  height: 28px;
+}
+
+.discover-meta {
+  font-size: 0.8rem;
+  color: rgb(var(--rgb-text-dim));
+}
+
+.discover-tops,
+.discover-chips {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style: none;
+}
+
+.discover-tops {
+  gap: 0.35rem;
+
+  & a {
+    display: block;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+}
+
+.discover-chips {
+  gap: 0.5rem;
+
+  & li {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 100%;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+    border-radius: 999px;
+    background: rgb(var(--rgb-surface));
+    font-size: 0.85rem;
+  }
+
+  & a {
+    overflow: hidden;
+    font-weight: 500;
+    color: rgb(var(--rgb-text-bright));
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & span {
+    flex: none;
+    color: rgb(var(--rgb-text-dim));
+  }
+}
+
+.discover-empty {
+  padding: 1.25rem 1rem;
+  border: 1px dashed rgb(var(--rgb-line) / 0.6);
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+@media (width < 40rem) {
+  .discover-head {
+    padding-top: 1.5rem;
+  }
+
+  .discover-search .pill-button {
+    padding-inline: 0.9rem;
+  }
+}
