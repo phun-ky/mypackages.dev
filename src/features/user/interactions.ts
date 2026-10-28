@@ -117,15 +117,15 @@ export const attachUserPageEvents = (options: Config) => {
     window.location.reload();
   });
   addOnInput('package-filter', applyFilter);
-  addOnClick('.filter-chip', (event) => {
+  addOnClick('.filter-chip', (_event, pressed) => {
     for (const chip of document.querySelectorAll('.filter-chip')) {
-      chip.setAttribute('aria-pressed', String(chip === event.target));
+      chip.setAttribute('aria-pressed', String(chip === pressed));
     }
 
     applyFilter();
   });
-  addOnClick('.sort-button', (event) => {
-    const key = (event.target as HTMLElement).dataset.sort;
+  addOnClick('.sort-button', (_event, button) => {
+    const key = (button as HTMLElement).dataset.sort;
 
     if (key) sortRows(key);
   });
