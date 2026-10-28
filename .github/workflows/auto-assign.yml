@@ -4,6 +4,10 @@ on:
     types: [opened]
   pull_request:
     types: [opened]
+
+# Nothing by default; the job asks for what it needs
+permissions: {}
+
 jobs:
   run:
     # Dependabot PRs get a read-only GITHUB_TOKEN, so assigning would fail
@@ -14,7 +18,7 @@ jobs:
       pull-requests: write
     steps:
       - name: 'Auto-assign issue'
-        uses: pozil/auto-assign-issue@v4.0.1
+        uses: pozil/auto-assign-issue@af6beea6bdf1e8eb373f061c5bc168681fc6d011 # v4.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           assignees: phun-ky

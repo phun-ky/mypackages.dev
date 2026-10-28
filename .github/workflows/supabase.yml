@@ -26,8 +26,10 @@ jobs:
     # Holds SUPABASE_ACCESS_TOKEN. Limit it to main in the repository settings.
     environment: supabase
     steps:
-      - uses: actions/checkout@v7
-      - uses: supabase/setup-cli@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359 # v3.0.1
         with:
           version: 2.120.0
       # Deploys every function in supabase/functions, with the settings in
@@ -47,6 +49,8 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: drivendataorg/failed-build-issue-action@v1
+      - uses: drivendataorg/failed-build-issue-action@940568ce50eeef3f31a920614cefcc6102d2f930 # v1.3.0
         with:
           label-name: 'problems: 💔 build failed'
+          # Don't recreate the label if it's renamed or removed
+          create-label: false
