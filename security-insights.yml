@@ -1,0 +1,130 @@
+header:
+  schema-version: 2.2.0
+  last-updated: '2026-10-28'
+  last-reviewed: '2026-10-28'
+  url: https://raw.githubusercontent.com/phun-ky/mypackages.dev/main/security-insights.yml
+  comment: |
+    Security information for mypackages.dev, in the OpenSSF Security
+    Insights format. Keep it in step with SECURITY.md.
+
+project:
+  name: mypackages.dev
+  homepage: https://mypackages.dev
+  administrators:
+    - name: Alexander Vassbotn Røyne-Helgesen
+      social: https://github.com/phun-ky
+      primary: true
+  documentation:
+    support-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md#supported-versions
+  repositories:
+    - name: mypackages.dev
+      url: https://github.com/phun-ky/mypackages.dev
+      comment: |
+        The website, its Supabase edge functions and database migrations.
+  vulnerability-reporting:
+    reports-accepted: true
+    bug-bounty-available: false
+    policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md
+    comment: |
+      Report privately with GitHub's private vulnerability reporting
+      (https://github.com/phun-ky/mypackages.dev/security/advisories/new)
+      or by email to the contact below.
+    contact:
+      name: mypackages.dev security contact
+      email: security@phun-ky.net
+      primary: true
+
+repository:
+  url: https://github.com/phun-ky/mypackages.dev
+  status: active
+  accepts-change-request: true
+  accepts-automated-change-request: true
+  no-third-party-packages: false
+  core-team:
+    - name: Alexander Vassbotn Røyne-Helgesen
+      social: https://github.com/phun-ky
+      primary: true
+  documentation:
+    security-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md
+    dependency-management-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md#dependencies
+  license:
+    url: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE
+    expression: MIT
+  release:
+    automated-pipeline: true
+    distribution-points:
+      - uri: https://mypackages.dev
+        comment: |
+          The website, deployed to GitHub Pages from main by
+          .github/workflows/deploy.yml on every merge. There are no versions
+          or packages.
+  security:
+    assessments:
+      self:
+        comment: |
+          No self-assessment is published yet. SECURITY.md sets out what the
+          site guarantees and what it doesn't; an assurance case with the
+          threat model is planned in
+          https://github.com/phun-ky/mypackages.dev/issues/51.
+    tools:
+      - name: CodeQL
+        type: SAST
+        rulesets:
+          - default
+        integration:
+          adhoc: false
+          ci: true
+          release: false
+        results: {}
+        comment: |
+          GitHub default setup, scanning JavaScript/TypeScript and the GitHub
+          Actions workflows on every push to main and every pull request.
+      - name: Dependabot
+        type: SCA
+        rulesets:
+          - default
+        integration:
+          adhoc: true
+          ci: false
+          release: false
+        results: {}
+        comment: |
+          Weekly checks of the npm dependencies and GitHub Actions, with
+          update pull requests, and security updates as advisories appear.
+      - name: Dependency Review
+        type: SCA
+        rulesets:
+          - default
+        integration:
+          adhoc: false
+          ci: true
+          release: false
+        results: {}
+        comment: |
+          Fails pull requests that add a dependency with a known high or
+          critical vulnerability, or a licence outside the allow list.
+      - name: OpenSSF Scorecard
+        type: other
+        rulesets:
+          - default
+        integration:
+          adhoc: false
+          ci: true
+          release: false
+        results: {}
+        comment: |
+          Runs on every push to main and weekly; results at
+          https://scorecard.dev/viewer/?uri=github.com/phun-ky/mypackages.dev
+      - name: pgTAP
+        type: other
+        rulesets:
+          - default
+        integration:
+          adhoc: false
+          ci: true
+          release: false
+        results: {}
+        comment: |
+          Tests what the public anon key and signed-in users can do in the
+          database, on a local database in CI, with Supabase's security
+          advisors.
