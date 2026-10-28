@@ -23,7 +23,8 @@
     "typecheck": "tsc",
     "pretest:e2e": "vite build --mode e2e",
     "test:e2e": "playwright test",
-    "commit": "npx git-cz"
+    "commit": "npx git-cz",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "config": {
     "commitizen": {
