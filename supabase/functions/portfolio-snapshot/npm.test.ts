@@ -39,7 +39,9 @@ const limited = (retryAfter?: string) => () =>
     headers: retryAfter ? { "retry-after": retryAfter } : {},
   });
 const days = [{ day: "2026-09-01", downloads: 5 }];
-const range = (name: string) => `https://api.npmjs.org/downloads/range/last-year/${name}`;
+const YEAR = { start: "2025-10-01", end: "2026-09-30" };
+const range = (name: string, path = "2025-10-01:2026-09-30") =>
+  `https://api.npmjs.org/downloads/range/${path}/${name}`;
 
 Deno.test("retryAfterMs reads seconds and HTTP dates", () => {
   assertEquals(retryAfterMs("12", 0), 12_000);
@@ -81,14 +83,14 @@ Deno.test("getJson doesn't retry what can't succeed", async () => {
   assertEquals(npm.requests.length, 1);
 });
 
-Deno.test("lastYearDownloads asks for unscoped packages in bulk, scoped ones one by one", async () => {
+Deno.test("dailyDownloads asks for unscoped packages in bulk, scoped ones one by one", async () => {
   const npm = fakeNpm({
     [range("a,constructor")]: [ok({ a: { downloads: days }, constructor: { downloads: days } })],
     [range("%40s%2Fone")]: [ok({ downloads: days })],
     [range("%40s%2Ftwo")]: [limited(), ok({ downloads: days })],
   });
   const client = createNpmClient({ ...npm.options, deadline: 100_000, spacingMs: 1_000 });
-  const result = await client.lastYearDownloads(["@s/one", "a", "@s/two", "constructor"]);
+  const result = await client.dailyDownloads(["@s/one", "a", "@s/two", "constructor"], YEAR);
 
   assertEquals(npm.requests, [range("a,constructor"), range("%40s%2Fone"), range("%40s%2Ftwo"), range("%40s%2Ftwo")]);
   assertEquals([...result.keys()].sort(), ["@s/one", "@s/two", "a", "constructor"]);
@@ -97,16 +99,35 @@ Deno.test("lastYearDownloads asks for unscoped packages in bulk, scoped ones one
   assertEquals(npm.waits, [1_000, 1_000, 2_000]);
 });
 
-Deno.test("lastYearDownloads reads npm's answer for a single unscoped name", async () => {
+Deno.test("dailyDownloads reads npm's answer for a single unscoped name", async () => {
   const npm = fakeNpm({ [range("solo")]: [ok({ package: "solo", downloads: days })] });
   const client = createNpmClient({ ...npm.options, deadline: 100_000 });
 
-  assertEquals((await client.lastYearDownloads(["solo"])).get("solo"), days);
+  assertEquals((await client.dailyDownloads(["solo"], YEAR)).get("solo"), days);
 });
 
-Deno.test("lastYearDownloads leaves out a package npm doesn't know in bulk", async () => {
+Deno.test("dailyDownloads leaves out a package npm doesn't know in bulk", async () => {
   const npm = fakeNpm({ [range("a,b")]: [ok({ a: { downloads: days }, b: null })] });
   const client = createNpmClient({ ...npm.options, deadline: 100_000 });
 
-  assertEquals((await client.lastYearDownloads(["a", "b"])).get("b"), []);
+  assertEquals((await client.dailyDownloads(["a", "b"], YEAR)).get("b"), []);
+});
+
+// 12 months with a 29 February are 366 days, more than a bulk query takes
+Deno.test("dailyDownloads splits a bulk query over 365 days, and not a scoped one", async () => {
+  const leap = { start: "2027-03-01", end: "2028-02-29" };
+  const first = [{ day: "2027-03-01", downloads: 1 }];
+  const last = [{ day: "2028-02-29", downloads: 2 }];
+  const npm = fakeNpm({
+    [range("a,b", "2027-03-01:2028-02-28")]: [ok({ a: { downloads: first }, b: { downloads: first } })],
+    [range("a,b", "2028-02-29:2028-02-29")]: [ok({ a: { downloads: last }, b: null })],
+    [range("%40s%2Fone", "2027-03-01:2028-02-29")]: [ok({ downloads: [...first, ...last] })],
+  });
+  const client = createNpmClient({ ...npm.options, deadline: 100_000 });
+  const result = await client.dailyDownloads(["a", "b", "@s/one"], leap);
+
+  assertEquals(npm.requests.length, 3);
+  assertEquals(result.get("a"), [...first, ...last]);
+  assertEquals(result.get("b"), first);
+  assertEquals(result.get("@s/one"), [...first, ...last]);
 });

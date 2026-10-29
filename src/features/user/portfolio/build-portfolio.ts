@@ -1,8 +1,8 @@
 import { YEAR_MS } from '../../../constants/temporal';
 import type { FetchUserPackagesUnionItem } from '../../../types';
+import type { MonthlyTotals } from '../../../utils/complete-month-totals';
 
-/** Downloads per calendar month, like `{ '2026-09': 1234 }` */
-export type MonthlyTotals = Record<string, number>;
+export type { MonthlyTotals };
 
 export type PortfolioPackage = {
   name: string;

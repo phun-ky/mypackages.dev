@@ -4,6 +4,7 @@
 // job (see the migrations), with a shared secret.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+import { completeMonthsRange } from "../_shared/download-range.ts";
 import { computeSnapshot } from "./compute.ts";
 import { createNpmClient } from "./npm.ts";
 
@@ -59,10 +60,14 @@ Deno.serve(async (req) => {
   for (const { username, role } of PORTFOLIOS) {
     try {
       const found = await npm.searchPackages(username, role);
-      const daily = await npm.lastYearDownloads(found.map((pkg) => pkg.name));
+      const now = new Date();
+      const daily = await npm.dailyDownloads(
+        found.map((pkg) => pkg.name),
+        completeMonthsRange(now),
+      );
       const snapshot = computeSnapshot(
         found.map((pkg) => ({ ...pkg, daily: daily.get(pkg.name) ?? [] })),
-        new Date(),
+        now,
       );
       const { error } = await admin
         .from("portfolio_snapshots")

@@ -1,4 +1,5 @@
-import { expect, test, waitForApp } from './fixtures';
+import { lastYearDownloads } from './data/npm';
+import { expect, mockSupabaseFunction, test, waitForApp } from './fixtures';
 import { mockPackages, mockUser } from './mocks';
 
 // Each mocked package has 3,000 downloads a month and a release a month ago
@@ -25,6 +26,44 @@ test('shows the totals and the packages by scope', async ({ page }) => {
     byScope.getByRole('link', { name: '@phun-ky/speccer' })
   ).toHaveAttribute('href', '/packages/@phun-ky/speccer');
   await expect(page.locator('#packages-table')).toBeHidden();
+});
+
+test('charts the last 12 complete months', async ({ page }) => {
+  await expect(
+    page.getByRole('img', {
+      name: 'Monthly downloads for all packages, the last 12 complete months'
+    })
+  ).toBeVisible();
+});
+
+// npm's last-year starts mid-month, which charted a month of a few days
+// as a drop (#93)
+test('leaves out a month the downloads have only some days of', async ({
+  page
+}) => {
+  const now = new Date();
+  const from = Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 12, 15);
+
+  await mockSupabaseFunction(page, 'npm-downloads-last-year', ({ name }) => {
+    const data = lastYearDownloads(String(name));
+
+    return {
+      ok: true,
+      data: {
+        ...data,
+        downloads: data.downloads.filter(({ day }) => Date.parse(day) >= from)
+      }
+    };
+  });
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await waitForApp(page);
+
+  await expect(
+    page.getByRole('img', {
+      name: 'Monthly downloads for all packages, the last 11 complete months'
+    })
+  ).toBeVisible();
 });
 
 test('switches to the table and back, and remembers it', async ({ page }) => {

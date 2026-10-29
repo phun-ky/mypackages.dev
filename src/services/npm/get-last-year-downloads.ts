@@ -19,7 +19,9 @@ export const getLastYearDownloads = async (
   name: NpmPackageName,
   signal?: AbortSignal
 ): Promise<LastYearRangeResponse> => {
-  const key = `downloads:last-year:${name}`;
+  // The range starts on the first of a month (#93), so a new month, or data
+  // cached before that, asks again
+  const key = `downloads:${new Date().toISOString().slice(0, 7)}:${name}`;
 
   return cachedAsync(
     downloadLastYearHistoryCache,

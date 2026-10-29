@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+import { downloadRange, rangePath } from "../_shared/download-range.ts";
 import { readBody, responses } from "../_shared/http.ts";
 
 const NPM_REGISTRY_API = "https://api.npmjs.org";
@@ -54,8 +55,9 @@ Deno.serve(async (req) => {
     }
   }
 
+  // 12 complete months and this month so far, not npm's `last-year` (#93)
   const url =
-    `${NPM_REGISTRY_API}/downloads/range/last-year/` +
+    `${NPM_REGISTRY_API}/downloads/range/${rangePath(downloadRange(new Date()))}/` +
     encodeURIComponent(name);
 
   const headers: Record<string, string> = {

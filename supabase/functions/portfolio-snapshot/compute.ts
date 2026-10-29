@@ -8,7 +8,7 @@ export type PackageInput = {
   name: string;
   // Rolling 30 days, from the npm search, as the user page totals them
   monthly: number;
-  // Per day for the last year, from api.npmjs.org/downloads/range/last-year
+  // Per day for the last 12 complete months, from api.npmjs.org/downloads/range
   daily: DailyDownloads[];
 };
 
@@ -30,9 +30,16 @@ export type Snapshot = {
 
 const MONTH = /^\d{4}-\d{2}$/;
 
+const daysInMonth = (month: string) => {
+  const [year, m] = month.split("-").map(Number);
+
+  return new Date(Date.UTC(year, m, 0)).getUTCDate();
+};
+
 /**
- * Sums daily downloads per calendar month, leaving out `currentMonth`,
- * which isn't complete yet.
+ * Sums daily downloads per calendar month, keeping only the months the data
+ * has every day of (#93), and leaving out `currentMonth`, which isn't
+ * complete yet.
  */
 export const monthlyTotals = (
   daily: DailyDownloads[],
@@ -43,6 +50,7 @@ export const monthlyTotals = (
   }
 
   const totals: Record<string, number> = Object.create(null);
+  const days: Record<string, Set<string>> = Object.create(null);
 
   for (const { day, downloads } of daily) {
     const month = day.slice(0, 7);
@@ -50,6 +58,11 @@ export const monthlyTotals = (
     if (month === currentMonth || !MONTH.test(month)) continue;
 
     totals[month] = (totals[month] ?? 0) + downloads;
+    (days[month] ??= new Set()).add(day);
+  }
+
+  for (const month of Object.keys(totals)) {
+    if (days[month].size !== daysInMonth(month)) delete totals[month];
   }
 
   return totals;

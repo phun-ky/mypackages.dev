@@ -1,5 +1,6 @@
 import type { Config } from '../../types';
 import { uniqueStrings } from '../../utils';
+import { completeMonthTotals } from '../../utils/complete-month-totals';
 import { concurrentForEach } from '../../utils/concurrent-for-each';
 import { supabase } from '../supabase';
 
@@ -28,7 +29,6 @@ export const getUserDownloadsByMonth = async (
 
   const tracked = await getTrackedPackages(username, role, signal);
   const allNames = uniqueStrings([...fromSearch, ...tracked]);
-  const currentMonth = new Date().toISOString().slice(0, 7);
   const perPackageMonthly = new Map<string, Record<string, number>>();
 
   await concurrentForEach(
@@ -38,19 +38,10 @@ export const getUserDownloadsByMonth = async (
       const res = await getLastYearDownloadsResult(name, signal);
 
       if (res.ok) {
-        const { data } = res;
-        const { downloads } = data;
-        const local: Record<string, number> = {};
-
-        for (const { day, downloads: d } of downloads || []) {
-          const month = day.slice(0, 7);
-
-          if (month === currentMonth) continue;
-
-          local[month] = (local[month] || 0) + d;
-        }
-
-        perPackageMonthly.set(name, local);
+        perPackageMonthly.set(
+          name,
+          completeMonthTotals(res.data.downloads || [])
+        );
       }
     },
     { signal }

@@ -48,11 +48,19 @@ export const packument = (
   };
 };
 
-/** Daily downloads for the last year, in the npm downloads API shape */
+/**
+ * Daily downloads in the npm downloads API shape, for the range the
+ * `npm-downloads-last-year` function asks for: from the first day of the
+ * month 12 months back to yesterday
+ */
 export const lastYearDownloads = (name: string, perDay = 100) => {
-  const end = new Date();
-  const start = new Date(end.getTime() - 364 * DAY_MS);
-  const downloads = Array.from({ length: 365 }, (_, i) => ({
+  const now = new Date();
+  const start = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 12, 1)
+  );
+  const end = new Date(now.getTime() - DAY_MS);
+  const length = Math.round((end.getTime() - start.getTime()) / DAY_MS) + 1;
+  const downloads = Array.from({ length }, (_, i) => ({
     day: isoDay(new Date(start.getTime() + i * DAY_MS)),
     downloads: perDay
   }));

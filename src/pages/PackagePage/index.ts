@@ -72,9 +72,7 @@ export const PackagePage = async (
     pkg: details
   });
   const daily = await getLastYearDownloadsResult(packageName, signal);
-  const months = daily.ok
-    ? monthlyTotals(daily.data.downloads, new Date(now))
-    : [];
+  const months = daily.ok ? monthlyTotals(daily.data.downloads) : [];
   const weeks = daily.ok ? weeklyTotals(daily.data.downloads) : [];
   const monthRecord = Object.fromEntries(
     months.map((m) => [m.month, m.downloads])
