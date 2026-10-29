@@ -4,16 +4,6 @@ import { readBody, responses } from "../_shared/http.ts";
 
 const NPM_REGISTRY = "https://registry.npmjs.org";
 
-type Mode = "maintainer" | "author";
-
-const isValidEmail = (s: string) => {
-  // simple + safe; you already have one client-side, but we need server-side too
-  const v = (s ?? "").trim();
-  if (!v) return false;
-  if (v.length > 320) return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-};
-
 Deno.serve(async (req) => {
   const { json, preflight } = responses(req);
   const bad = (msg: string, status = 400) =>
@@ -29,16 +19,13 @@ Deno.serve(async (req) => {
   const authHeader =
     req.headers.get("authorization") ?? req.headers.get("Authorization");
 
-  let mode: Mode | null = null;
   let username = "";
 
   const body = await readBody(req);
   if (!body) return bad("Invalid JSON body", 400);
 
-  mode = (body.mode ?? null) as Mode | null;
   username = String(body.username ?? "").trim();
 
-  if (mode !== "maintainer" && mode !== "author") return bad("Invalid mode", 400);
   if (!username) return bad("Missing username", 400);
   if (username.length > 320) return bad("Username too long", 400);
 
@@ -64,13 +51,8 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Build query server-side (no arbitrary passthrough)
-  const query =
-    mode === "maintainer"
-      ? `maintainer:${username}`
-      : isValidEmail(username)
-        ? `author.email:${username}`
-        : `author:${username}`;
+  // Maintainers only (#95); a `mode` from pages loaded before that is ignored
+  const query = `maintainer:${username}`;
 
   const url =
     `${NPM_REGISTRY}/-/v1/search?text=` +

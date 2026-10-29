@@ -2,24 +2,23 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 import { DAY_MS } from '../../constants/temporal';
 import type { Config, NpmRegistrySearchResponse } from '../../types';
-import { isValidEmail } from '../../utils/is-valid-email';
 import { cachedAsync } from '../../utils/storage/cached-async';
 
 const searchCache = new Map();
 
+/**
+ * The packages a user maintains, from npm's search. Only maintainers: npm's
+ * `author:` matches whoever published the latest version, which trusted
+ * publishing records as GitHub Actions (#95).
+ */
 export const searchPackagesByUserRole = async (
   supabase: SupabaseClient,
   username: string,
   options: Config,
   signal?: AbortSignal
 ): Promise<NpmRegistrySearchResponse> => {
-  const { responseSize = 250, maintainer } = options;
-  const role = maintainer ? 'maintainer' : 'author';
-  const query =
-    isValidEmail(username) && role === 'author'
-      ? `author.email:${username}`
-      : `${role}:${username}`;
-  const key = `search:${query}:size:${responseSize}`;
+  const { responseSize = 250 } = options;
+  const key = `search:maintainer:${username}:size:${responseSize}`;
 
   return await cachedAsync(searchCache, key, { ttlMs: DAY_MS }, async () => {
     const {
@@ -39,7 +38,6 @@ export const searchPackagesByUserRole = async (
       {
         body: {
           username,
-          mode: role, // 'author' | 'maintainer'
           size: responseSize // edge clamps to <= 250
         },
         headers,

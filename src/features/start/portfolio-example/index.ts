@@ -78,7 +78,7 @@ const render = (snapshot: Snapshot) => {
       <div class="example-card">
         <span class="label">Packages</span>
         <span class="big">${snapshot.package_count}</span>
-        <span class="muted">authored or maintained</span>
+        <span class="muted">maintained</span>
       </div>
       <div class="example-card">
         <span class="label">Last 12 months</span>

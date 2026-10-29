@@ -4,10 +4,7 @@ export const DEFAULT_OPTIONS: Config = {
   cachePrefix: 'npmdash:',
 
   locale: 'en-GB',
-  defaultRole: 'author',
-  role: 'author',
-  responseSize: 250,
-  maintainer: true
+  responseSize: 250
 };
 
 export const isConfigKey = (key: string, obj: Config): key is keyof Config => {

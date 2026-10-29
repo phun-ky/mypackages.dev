@@ -13,8 +13,6 @@ export const getUserDownloadsByMonth = async (
   options: Config,
   signal: AbortSignal
 ) => {
-  const { maintainer } = options;
-  const role = maintainer ? 'maintainer' : 'author';
   const searchData = await searchPackagesByUserRole(
     supabase,
     username,
@@ -25,9 +23,9 @@ export const getUserDownloadsByMonth = async (
     .map((o) => o.package?.name)
     .filter(Boolean);
 
-  mergeIntoTracked(fromSearch, username, role, signal);
+  mergeIntoTracked(fromSearch, username, signal);
 
-  const tracked = await getTrackedPackages(username, role, signal);
+  const tracked = await getTrackedPackages(username, signal);
   const allNames = uniqueStrings([...fromSearch, ...tracked]);
   const perPackageMonthly = new Map<string, Record<string, number>>();
 

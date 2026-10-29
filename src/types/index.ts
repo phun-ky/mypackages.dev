@@ -32,17 +32,12 @@ export type PackageLicense =
 
 export type Username = string;
 
-export type Role = 'author' | 'maintainer';
-
 export type Config = {
   cachePrefix: string;
   username?: Username;
   // Maximum items in response
   responseSize?: number;
   locale: string;
-  defaultRole: Role;
-  role: Role;
-  maintainer: boolean;
   deprecatedPackages?: NpmPackageNames;
 };
 

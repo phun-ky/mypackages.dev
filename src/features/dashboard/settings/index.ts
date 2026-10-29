@@ -1,9 +1,4 @@
-import { ToggleBox } from '../../../components/input-fields/ToggleBox';
-import { isConfigKey } from '/config';
-import { addOnChange, addOnClick } from '../../../lib/spa';
-import type { ComponentBasePropsType } from '../../../lib/spa/types';
-import type { Config } from '../../../types';
-import { setOptions } from '../../../utils/set-options';
+import { addOnClick } from '../../../lib/spa';
 
 import { clearDashboardCache } from './utils/clear-dashboard-cache';
 
@@ -11,25 +6,10 @@ import './styles/settings.css';
 
 const html = String.raw;
 
-export type SettingsPropsType = ComponentBasePropsType & {
-  options: Config;
-};
-
-export const Settings = (props: SettingsPropsType) => {
-  const { options } = props;
-
+// The dashboard lists the packages a user maintains; there's no author mode
+// to choose (#95)
+export const Settings = () => {
   addOnClick('clear-cache', clearDashboardCache);
-
-  addOnChange('.settings-controls input[type="checkbox"]', (e: Event) => {
-    const targetElement = e.target;
-
-    if (!(targetElement instanceof HTMLInputElement)) return;
-
-    if (!isConfigKey(targetElement.id, options)) return; // ignore unknown ids
-
-    options.maintainer = targetElement.checked;
-    setOptions({ ...options });
-  });
 
   return html`<div class="settings">
     <button type="button" id="clear-cache" class="button">
@@ -44,16 +24,5 @@ export const Settings = (props: SettingsPropsType) => {
       </svg>
       Clear cache
     </button>
-    <form class="settings-controls" data-no-submit>
-      <div class="toggle-controls">
-        Author or Maintainer?
-        ${ToggleBox({
-          checked: options.maintainer,
-          name: 'role-toggle',
-          id: 'maintainer',
-          label: options.maintainer ? 'Maintainer' : 'Author'
-        })}
-      </div>
-    </form>
   </div>`;
 };

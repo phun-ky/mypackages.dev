@@ -58,7 +58,7 @@ test.describe('questions and answers', () => {
     ).toBeVisible();
     await expect(
       doc.getByRole('heading', {
-        name: 'What counts as an "authored" vs "maintained" package?'
+        name: 'Why are only the packages someone maintains shown, and not the ones they "authored"?'
       })
     ).toBeVisible();
     await expect(doc).not.toContainText('&#39;');

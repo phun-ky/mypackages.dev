@@ -88,7 +88,7 @@ const existsGitHubNpmPackage = async (
 };
 const invokeNpmUserHasPackages = async (
   supabase: SupabaseClient,
-  body: { mode: 'maintainer' | 'author'; username: string },
+  body: { username: string },
   signal?: AbortSignal
 ) => {
   const {
@@ -118,13 +118,7 @@ const invokeNpmUserHasPackages = async (
 export const checkMaintainerHasPackages = async (
   username: string,
   signal?: AbortSignal
-) =>
-  invokeNpmUserHasPackages(supabase, { mode: 'maintainer', username }, signal);
-
-export const checkAuthorHasPackages = async (
-  username: string,
-  signal?: AbortSignal
-) => invokeNpmUserHasPackages(supabase, { mode: 'author', username }, signal);
+) => invokeNpmUserHasPackages(supabase, { username }, signal);
 
 export type ResolveMode = 'auto' | 'package' | 'user';
 
@@ -156,10 +150,6 @@ export const resolveSearchTarget = async (
     if (isScopedPackage(q)) return null;
 
     if (await checkMaintainerHasPackages(q, signal)) {
-      return { kind: 'user', username: q };
-    }
-
-    if (await checkAuthorHasPackages(q, signal)) {
       return { kind: 'user', username: q };
     }
 

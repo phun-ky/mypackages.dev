@@ -17,8 +17,6 @@ export const resolveUserPackages = async (
 ): Promise<BuildUserPackagesReturn> => {
   if (!options) return [];
 
-  const { maintainer } = options;
-  const role = maintainer ? 'maintainer' : 'author';
   const searchData = await searchPackagesByUserRole(
     supabase,
     username,
@@ -29,9 +27,9 @@ export const resolveUserPackages = async (
     .map((o) => o.package?.name)
     .filter(Boolean);
 
-  await mergeIntoTracked(fromSearch, username, role, signal);
+  await mergeIntoTracked(fromSearch, username, signal);
 
-  const tracked = await getTrackedPackages(username, role, signal);
+  const tracked = await getTrackedPackages(username, signal);
   const allNames = uniqueStrings([...fromSearch, ...tracked]);
   const byName: Map<
     string,

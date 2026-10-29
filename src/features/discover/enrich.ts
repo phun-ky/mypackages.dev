@@ -81,7 +81,7 @@ export const getUserInfo = async (
         const res = await searchPackagesByUserRole(
           supabase,
           name,
-          { ...options, maintainer: true },
+          options,
           signal
         );
 
