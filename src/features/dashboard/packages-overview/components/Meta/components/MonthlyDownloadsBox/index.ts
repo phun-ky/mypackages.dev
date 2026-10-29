@@ -5,6 +5,7 @@ import type {
   Config,
   FetchUserPackagesUnionItem
 } from '../../../../../../../types';
+import { monthName } from '../../../../../../../utils/downloads';
 import { renderMonthlyDownloadsChart } from '../../../../../../monthly-downloads-chart';
 import './styles/monthlyDownloadsBox.css';
 
@@ -20,11 +21,7 @@ export const MonthlyDownloadsBox = async (
   props: MonthlyDownloadsBoxPropsType,
   signal: AbortSignal
 ) => {
-  const { packages, options, username } = props;
-  const totalDownloads = packages.reduce(
-    (sum, pkg) => sum + pkg.downloads.monthly,
-    0
-  );
+  const { options, username } = props;
   const numberFormat = new Intl.NumberFormat(navigator.language, {
     notation: 'compact',
     compactDisplay: 'short'
@@ -67,11 +64,12 @@ export const MonthlyDownloadsBox = async (
     await renderMonthlyDownloadsChart(monthly);
   });
 
-  const formattedTotalDownloads = numberFormat.format(totalDownloads);
+  // The month the change is for, not npm's search figure (#94)
+  const formattedTotalDownloads = numberFormat.format(lastMonthDownloads ?? 0);
 
   return EmphasizedCard({
     title: 'Downloads',
-    subTitle: 'Monthly',
+    subTitle: lastMonth ? monthName(lastMonth) : 'Monthly',
     className: 'monthly-downloads-box',
     children: html` <span class="big-number" id="total_downloads">
         ${formattedTotalDownloads}

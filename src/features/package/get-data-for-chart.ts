@@ -1,4 +1,4 @@
-import { completeMonthTotals } from '../../utils/complete-month-totals';
+import { completeMonthTotals } from '../../utils/downloads';
 
 export type IntervalDataItem<TInterval extends string | number = string> = {
   intervalRecord: Record<string, number>;

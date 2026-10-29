@@ -100,13 +100,13 @@ export const FAQ_TOPICS: FAQTopic[] = [
       {
         question: 'Where do download numbers come from, and what do they mean?',
         answer:
-          "<p>Download stats come from npm's downloads APIs and are aggregated into monthly and historical views. They represent npm download counts, which are a proxy for usage (but can include CI and automation).</p>"
+          "<p>Every download number on a package or user page comes from npm's downloads API, which counts how many times the package's tarball was downloaded each day. That includes installs by CI, mirrors and other automation, so it's a sign of use, not a count of people.</p><p>The big number is the downloads in the last complete calendar month, and is labelled with that month. The change compares it with the month before, and the charts show the last 12 complete months, so all three agree. The current month is left out until it's over. npm's data lags by a day or two, so each page says the day it runs to.</p><p>The one exception is the users on the discovery page, whose number is npm's search figure for the last 30 days, since the downloads API would take a request for every package of every user shown.</p>"
       },
       {
         question:
           'Why do my download numbers differ from what I see on npmjs.com?',
         answer:
-          '<p>Different pages may show different time windows (daily, weekly or monthly). We focus on longer history and normalized comparisons, which can make the numbers appear different depending on the selected interval.</p>'
+          "<p>npmjs.com shows the downloads for the last 7 days on a package's page, while this site shows calendar months, so the windows differ. Both come from npm's downloads API, so the downloads for the same days are the same.</p>"
       },
       {
         question: 'How do you check for vulnerabilities?',

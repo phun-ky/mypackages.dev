@@ -1,15 +1,23 @@
 import { YEAR_MS } from '../../../constants/temporal';
 import type { FetchUserPackagesUnionItem } from '../../../types';
-import type { MonthlyTotals } from '../../../utils/complete-month-totals';
-
-export type { MonthlyTotals };
+import {
+  changePct,
+  type DownloadSummary,
+  lastMonths,
+  latestMonth,
+  sumMonths
+} from '../../../utils/downloads';
 
 export type PortfolioPackage = {
   name: string;
   description: string;
   version: string | null;
   keywords: string[];
-  /** Rolling 30 days, as npm reports them */
+  /**
+   * Downloads in the portfolio's latest complete month, the last of
+   * `series`. npm's search figure, a rolling 30 days, only when the package's
+   * downloads couldn't be fetched
+   */
   monthly: number;
   /** From the month before to the latest complete month, in percent */
   change: number | null;
@@ -26,6 +34,10 @@ export type PortfolioPackage = {
 
 export type Portfolio = {
   packages: PortfolioPackage[];
+  /** The latest complete month, like `2026-09`, that `monthly` counts */
+  month: string | null;
+  /** The last day npm's data has, like `2026-10-28` */
+  dataEnd: string | null;
   monthly: number;
   change: number | null;
   months: { month: string; downloads: number }[];
@@ -43,24 +55,6 @@ export const UNSCOPED = 'Unscoped';
 // when dormant if it's still used this much
 const FALLING_PCT = -70;
 const STILL_USED = 1000;
-
-/**
- * The change from the month before to the latest month, in percent. `null`
- * with fewer than two months, or from zero to more than zero.
- */
-export const changePct = (totals: MonthlyTotals): number | null => {
-  const months = Object.keys(totals).sort();
-
-  if (months.length < 2) return null;
-
-  const last = totals[months[months.length - 1]];
-  const previous = totals[months[months.length - 2]];
-
-  if (previous === 0) return last === 0 ? 0 : null;
-
-  return ((last - previous) / previous) * 100;
-};
-
 const scopeOf = (name: string) =>
   name.startsWith('@') ? name.slice(0, name.indexOf('/')) : UNSCOPED;
 
@@ -70,13 +64,22 @@ const scopeOf = (name: string) =>
  */
 export const buildPortfolio = (
   items: FetchUserPackagesUnionItem[],
-  monthlyByName: Map<string, MonthlyTotals>,
+  summaries: Map<string, DownloadSummary>,
   now = Date.now(),
   { monthCount = 12, topCount = 4, listCount = 4, topicCount = 16 } = {}
 ): Portfolio => {
+  const total = sumMonths([...summaries.values()].map((s) => s.totals));
+  const month = latestMonth(total)?.month ?? null;
+  const dataEnd =
+    [...summaries.values()]
+      .map((s) => s.end)
+      .filter((end) => end !== null)
+      .sort()
+      .at(-1) ?? null;
   const packages: PortfolioPackage[] = items.map((item) => {
     const { package: pkg, downloads } = item;
-    const totals = monthlyByName.get(pkg.name) ?? {};
+    const summary = summaries.get(pkg.name);
+    const totals = summary?.totals ?? {};
     const health = pkg.releaseHealth;
     const lastPublishMs = health?.lastPublishMs ?? null;
 
@@ -87,17 +90,16 @@ export const buildPortfolio = (
         health?.latestVersion ??
         (typeof pkg.version === 'string' ? pkg.version : null),
       keywords: Array.isArray(pkg.keywords) ? pkg.keywords : [],
-      monthly: downloads.monthly,
-      // No downloads in any complete month, but some now: published this
+      monthly: summary ? (month ? (totals[month] ?? 0) : 0) : downloads.monthly,
+      // No downloads in any complete month, but some since: published this
       // month, so there's nothing to compare with yet
       change:
-        downloads.monthly > 0 && Object.values(totals).every((n) => n === 0)
+        summary &&
+        summary.sinceLastMonth > 0 &&
+        Object.values(totals).every((n) => n === 0)
           ? null
           : changePct(totals),
-      series: Object.keys(totals)
-        .sort()
-        .slice(-monthCount)
-        .map((month) => totals[month]),
+      series: lastMonths(totals, monthCount).map((m) => m.downloads),
       scope: scopeOf(pkg.name),
       lastPublishMs,
       releasesLastYear: health?.releasesLastYear ?? 0,
@@ -110,14 +112,6 @@ export const buildPortfolio = (
   packages.sort(
     (a, b) => b.monthly - a.monthly || a.name.localeCompare(b.name)
   );
-
-  const total: MonthlyTotals = {};
-
-  for (const totals of monthlyByName.values()) {
-    for (const [month, n] of Object.entries(totals)) {
-      total[month] = (total[month] ?? 0) + n;
-    }
-  }
 
   const monthly = packages.reduce((sum, pkg) => sum + pkg.monthly, 0);
   const top = packages.slice(0, topCount);
@@ -166,12 +160,11 @@ export const buildPortfolio = (
 
   return {
     packages,
+    month,
+    dataEnd,
     monthly,
     change: changePct(total),
-    months: Object.keys(total)
-      .sort()
-      .slice(-monthCount)
-      .map((month) => ({ month, downloads: total[month] })),
+    months: lastMonths(total, monthCount),
     share,
     attention,
     doingWell,

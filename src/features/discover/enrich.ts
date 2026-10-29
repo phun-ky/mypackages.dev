@@ -3,13 +3,15 @@ import { searchPackagesByUserRole } from '../../services/npm/search-packages-by-
 import { supabase } from '../../services/supabase';
 import type { Config } from '../../types';
 import { concurrentForEach } from '../../utils/concurrent-for-each';
-import { getMonthlyDownloads } from '../user/portfolio/get-monthly-downloads';
+import { lastMonths } from '../../utils/downloads';
+import { getDownloadSummaries } from '../user/portfolio/get-download-summaries';
 
 export type PackageInfo = {
   name: string;
   description: string;
   version: string;
-  // Downloads in the last complete month, and in each of the 12 before it
+  // Downloads in the last complete month, `month`, and in the 12 up to it
+  month: string | null;
   monthly: number;
   series: number[];
 };
@@ -17,6 +19,8 @@ export type PackageInfo = {
 export type UserInfo = {
   name: string;
   packages: number;
+  // From npm's search: a rolling 30 days. The downloads API would take a
+  // request per package, for every user shown
   monthly: number;
   top: string[];
 };
@@ -31,7 +35,7 @@ export const getPackageInfo = async (
   signal: AbortSignal
 ): Promise<Map<string, PackageInfo>> => {
   const info = new Map<string, PackageInfo>();
-  const monthly = await getMonthlyDownloads(names, signal);
+  const summaries = await getDownloadSummaries(names, signal);
 
   await concurrentForEach(
     names,
@@ -41,18 +45,15 @@ export const getPackageInfo = async (
 
       if (!res.ok) return;
 
-      const totals = monthly.get(name) ?? {};
-      const series = Object.keys(totals)
-        .sort()
-        .slice(-12)
-        .map((month) => totals[month]);
+      const months = lastMonths(summaries.get(name)?.totals ?? {});
 
       info.set(name, {
         name,
         description: res.data.description ?? '',
         version: res.data['dist-tags']?.latest ?? '',
-        monthly: series.at(-1) ?? 0,
-        series
+        month: months.at(-1)?.month ?? null,
+        monthly: months.at(-1)?.downloads ?? 0,
+        series: months.map((m) => m.downloads)
       });
     },
     { signal }

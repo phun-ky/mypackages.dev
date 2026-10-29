@@ -59,15 +59,10 @@ Deno.serve(async (req) => {
 
   for (const { username, role } of PORTFOLIOS) {
     try {
-      const found = await npm.searchPackages(username, role);
-      const now = new Date();
-      const daily = await npm.dailyDownloads(
-        found.map((pkg) => pkg.name),
-        completeMonthsRange(now),
-      );
+      const names = await npm.searchPackages(username, role);
+      const daily = await npm.dailyDownloads(names, completeMonthsRange(new Date()));
       const snapshot = computeSnapshot(
-        found.map((pkg) => ({ ...pkg, daily: daily.get(pkg.name) ?? [] })),
-        now,
+        names.map((name) => ({ name, daily: daily.get(name) ?? [] })),
       );
       const { error } = await admin
         .from("portfolio_snapshots")

@@ -2,6 +2,7 @@ import type { Session } from '@supabase/supabase-js';
 
 import { areaChart, sparkline } from '../../components/media/Charts';
 import { getInitialsForUser } from '../../components/page-section/Header/utils/get-initials-for-user';
+import { dayName, monthName } from '../../utils/downloads';
 import { escapeAttr, escapeHtml } from '../../utils/escape-html';
 
 import type { Portfolio, PortfolioPackage } from './portfolio/build-portfolio';
@@ -89,9 +90,13 @@ const monthLabel = (month: string) =>
     month: 'short',
     timeZone: 'UTC'
   });
+/** "Downloads in September 2026" */
+const downloadsIn = (month: string | null) =>
+  month ? `Downloads in ${monthName(month)}` : 'Downloads last month';
 
 export const overview = (portfolio: Portfolio) => {
-  const { monthly, change, months, share, packages } = portfolio;
+  const { monthly, change, months, share, packages, month, dataEnd } =
+    portfolio;
   const shareRows = share
     .map(
       (s, i) =>
@@ -107,7 +112,7 @@ export const overview = (portfolio: Portfolio) => {
 
   return `<section class="user-overview" aria-label="Overview">
   <div class="user-card user-total">
-    <span class="user-label">Monthly downloads, all ${countPackages(packages.length)}</span>
+    <span class="user-label">${downloadsIn(month)}, all ${countPackages(packages.length)}</span>
     <span class="user-big">${compact.format(monthly)}</span>
     <span class="user-change ${changeClass(change)}">${formatChange(change)} month over month</span>
     ${areaChart(
@@ -117,6 +122,7 @@ export const overview = (portfolio: Portfolio) => {
         label: `Monthly downloads for all packages, the last ${months.length} complete months`
       }
     )}
+    ${dataEnd ? `<span class="user-label user-data-end">From npm, up to ${dayName(dataEnd)}</span>` : ''}
   </div>
   <div class="user-card user-share">
     <h2>Where the downloads come from</h2>
@@ -158,9 +164,9 @@ export const atAGlance = (portfolio: Portfolio, now: number) => {
 </section>`;
 };
 
-const tile = (pkg: PortfolioPackage, now: number) =>
+const tile = (pkg: PortfolioPackage, now: number, month: string | null) =>
   `<li class="user-card pkg-tile">
-  <span class="pkg-tile-name">${link(pkg.name)}</span><span class="pkg-tile-downloads num">${compact.format(pkg.monthly)}</span>
+  <span class="pkg-tile-name">${link(pkg.name)}</span><span class="pkg-tile-downloads num" title="${downloadsIn(month)}">${compact.format(pkg.monthly)}</span>
   <span class="pkg-tile-meta">${pkg.version ? `v${escapeHtml(pkg.version)} · ` : ''}${ago(pkg.lastPublishMs, now)} ${flags(pkg)}</span><span class="pkg-tile-change ${changeClass(pkg.change)}">${formatChange(pkg.change)}</span>
   <span class="pkg-tile-spark">${sparkline(pkg.series, { label: `${pkg.name}, monthly downloads`, down: (pkg.change ?? 0) < 0 })}</span>
 </li>`;
@@ -191,14 +197,14 @@ export const packagesSection = (
   now: number,
   view: 'scope' | 'table'
 ) => {
-  const { packages, scopes } = portfolio;
+  const { packages, scopes, month } = portfolio;
   const count = (s: string) =>
     packages.filter((pkg) => state(pkg).split(' ').includes(s)).length;
   const groups = scopes
     .map(
       (group) => `<div class="pkg-group">
-  <div class="pkg-group-head"><h3>${escapeHtml(group.scope)}</h3><span class="muted">${countPackages(group.packages.length)}</span><span class="pkg-group-sum num">${full.format(group.monthly)} downloads a month</span></div>
-  <ul class="pkg-tiles">${group.packages.map((pkg) => tile(pkg, now)).join('')}</ul>
+  <div class="pkg-group-head"><h3>${escapeHtml(group.scope)}</h3><span class="muted">${countPackages(group.packages.length)}</span><span class="pkg-group-sum num">${full.format(group.monthly)} ${month ? `in ${monthName(month)}` : 'last month'}</span></div>
+  <ul class="pkg-tiles">${group.packages.map((pkg) => tile(pkg, now, month)).join('')}</ul>
 </div>`
     )
     .join('');
