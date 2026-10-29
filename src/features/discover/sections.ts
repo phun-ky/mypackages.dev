@@ -1,5 +1,6 @@
 import { sparkline } from '../../components/media/Charts';
 import { getInitialsForUser } from '../../components/page-section/Header/utils/get-initials-for-user';
+import { monthName } from '../../utils/downloads';
 import { escapeAttr, escapeHtml } from '../../utils/escape-html';
 import { ago } from '../user/sections';
 
@@ -71,7 +72,7 @@ const packageTile = (
     pkg && pkg.series.length > 1 && pkg.series.at(-1)! < pkg.series.at(-2)!;
 
   return `<li class="user-card discover-tile">
-  <div class="discover-tile-top"><a href="${href('package', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${pkg ? `<span class="discover-big" title="Downloads last month">${compact.format(pkg.monthly)}</span>` : ''}</div>
+  <div class="discover-tile-top"><a href="${href('package', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${pkg ? `<span class="discover-big" title="Downloads in ${pkg.month ? monthName(pkg.month) : 'the last complete month'}">${compact.format(pkg.monthly)}</span>` : ''}</div>
   <p class="discover-desc">${escapeHtml(pkg?.description ?? '')}</p>
   ${pkg ? `<span class="discover-spark">${sparkline(pkg.series, { label: `${term}, monthly downloads`, down })}</span>` : ''}
   <span class="discover-meta">${pkg?.version ? `v${escapeHtml(pkg.version)} · ` : ''}looked up by ${people(peopleCount)}</span>
@@ -82,8 +83,8 @@ const userTile = (
   peopleCount: number,
   user: UserInfo | undefined
 ) => `<li class="user-card discover-tile">
-  <div class="discover-tile-top"><span class="user-avatar discover-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(term))}</span><a href="${href('user', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${user ? `<span class="discover-big" title="Downloads last month, all packages">${compact.format(user.monthly)}</span>` : ''}</div>
-  ${user ? `<p class="discover-meta">${user.packages} ${user.packages === 1 ? 'package' : 'packages'}, ${compact.format(user.monthly)} downloads a month</p><ul class="discover-tops" aria-label="Top packages">${user.top.map((name) => `<li><a href="${href('package', name)}" data-link>${escapeHtml(name)}</a></li>`).join('')}</ul>` : ''}
+  <div class="discover-tile-top"><span class="user-avatar discover-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(term))}</span><a href="${href('user', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${user ? `<span class="discover-big" title="Downloads in the last 30 days, all packages, from npm's search">${compact.format(user.monthly)}</span>` : ''}</div>
+  ${user ? `<p class="discover-meta">${user.packages} ${user.packages === 1 ? 'package' : 'packages'}, ${compact.format(user.monthly)} downloads in 30 days</p><ul class="discover-tops" aria-label="Top packages">${user.top.map((name) => `<li><a href="${href('package', name)}" data-link>${escapeHtml(name)}</a></li>`).join('')}</ul>` : ''}
   <span class="discover-meta">looked up by ${people(peopleCount)}</span>
 </li>`;
 

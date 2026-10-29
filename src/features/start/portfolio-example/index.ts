@@ -1,6 +1,7 @@
 import { Link } from '../../../components/actions/Link';
 import { addOnAfterAppRender } from '../../../lib/spa';
 import { supabase } from '../../../services/supabase';
+import { monthName } from '../../../utils/downloads';
 import { escapeAttr, escapeHtml } from '../../../utils/escape-html';
 import './styles/portfolioExample.css';
 
@@ -11,6 +12,7 @@ const EXAMPLE_USER = 'phun-ky';
 type Snapshot = {
   computed_at: string;
   package_count: number;
+  // Downloads in the last of `months`
   monthly_downloads: number;
   change_pct: number | null;
   months: { month: string; downloads: number }[];
@@ -61,10 +63,15 @@ const sparkline = (values: number[]) => {
     <polyline class="sparkline-line" points="${line.join(' ')}" />
   </svg>`;
 };
-const render = (snapshot: Snapshot) =>
-  html`<div class="example-grid">
+const render = (snapshot: Snapshot) => {
+  const month = snapshot.months.at(-1)?.month;
+  const label = month
+    ? `Downloads in ${monthName(month)}`
+    : 'Downloads last month';
+
+  return html`<div class="example-grid">
       <div class="example-card">
-        <span class="label">Monthly downloads, all packages</span>
+        <span class="label">${label}, all packages</span>
         <span class="big">${compact.format(snapshot.monthly_downloads)}</span>
         ${change(snapshot.change_pct)}
       </div>
@@ -97,6 +104,7 @@ const render = (snapshot: Snapshot) =>
     <p class="example-note">
       Numbers from ${day.format(new Date(snapshot.computed_at))}, updated daily.
     </p>`;
+};
 
 /**
  * "What one search gets you": a real portfolio, read from one row instead

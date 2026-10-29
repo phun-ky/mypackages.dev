@@ -4,7 +4,7 @@ import {
   getStoredView
 } from '../../features/user/interactions';
 import { buildPortfolio } from '../../features/user/portfolio/build-portfolio';
-import { getMonthlyDownloads } from '../../features/user/portfolio/get-monthly-downloads';
+import { getDownloadSummaries } from '../../features/user/portfolio/get-download-summaries';
 import {
   atAGlance,
   overview,
@@ -44,12 +44,12 @@ export const UserPage = async (
   attachUserPageEvents(options);
 
   const items = await getUserPackages(username, signal, options);
-  const monthly = await getMonthlyDownloads(
+  const summaries = await getDownloadSummaries(
     items.map((item) => item.package.name),
     signal
   );
   const now = Date.now();
-  const portfolio = buildPortfolio(items, monthly, now);
+  const portfolio = buildPortfolio(items, summaries, now);
   const head = pageHead({
     username,
     portfolio,

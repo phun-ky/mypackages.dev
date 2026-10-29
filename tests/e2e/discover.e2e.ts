@@ -143,7 +143,7 @@ test.describe('/users', () => {
     const tile = page.locator('.discover-tile');
 
     await expect(tile).toHaveCount(1);
-    await expect(tile).toContainText('2 packages, 6K downloads a month');
+    await expect(tile).toContainText('2 packages, 6K downloads in 30 days');
     await expect(
       tile.getByRole('list', { name: 'Top packages' }).getByRole('link')
     ).toHaveText(['speccer', '@phun-ky/speccer']);

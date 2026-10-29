@@ -2,7 +2,7 @@ import { lastYearDownloads } from './data/npm';
 import { expect, mockSupabaseFunction, test, waitForApp } from './fixtures';
 import { mockPackages, mockUser } from './mocks';
 
-// Each mocked package has 3,000 downloads a month and a release a month ago
+// Each mocked package has 100 downloads a day and a release a month ago
 test.beforeEach(async ({ page }) => {
   await mockPackages(page, { speccer: {}, '@phun-ky/speccer': {} });
   await mockUser(page, 'phun-ky', ['speccer', '@phun-ky/speccer']);
@@ -10,9 +10,32 @@ test.beforeEach(async ({ page }) => {
   await waitForApp(page);
 });
 
+// The last complete month, and the day npm's data runs to: yesterday
+const now = new Date();
+const lastMonth = new Date(
+  Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1)
+);
+const daysInLastMonth = new Date(
+  Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 0)
+).getUTCDate();
+const lastMonthName = lastMonth.toLocaleString('en-GB', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC'
+});
+const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toLocaleString(
+  'en-GB',
+  { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }
+);
+// Two packages, 100 downloads a day each
+const total = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  maximumFractionDigits: 1
+}).format(2 * 100 * daysInLastMonth);
+
 test('shows the totals and the packages by scope', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('phun-ky');
-  await expect(page.locator('.user-total')).toContainText('6K');
+  await expect(page.locator('.user-total')).toContainText(total);
   await expect(page.locator('.user-share')).toContainText('@phun-ky/speccer');
 
   const byScope = page.locator('#packages-by-scope');
@@ -26,6 +49,22 @@ test('shows the totals and the packages by scope', async ({ page }) => {
     byScope.getByRole('link', { name: '@phun-ky/speccer' })
   ).toHaveAttribute('href', '/packages/@phun-ky/speccer');
   await expect(page.locator('#packages-table')).toBeHidden();
+});
+
+// The headline was npm's search figure, a rolling 30 days, next to a change
+// and a chart in calendar months (#94)
+test('says which month the headline is, and the day the data runs to', async ({
+  page
+}) => {
+  const card = page.locator('.user-total');
+
+  await expect(card.locator('.user-label').first()).toHaveText(
+    `Downloads in ${lastMonthName}, all 2 packages`
+  );
+  await expect(card.locator('.user-big')).toHaveText(total);
+  await expect(card.locator('.user-data-end')).toHaveText(
+    `From npm, up to ${yesterday}`
+  );
 });
 
 test('charts the last 12 complete months', async ({ page }) => {

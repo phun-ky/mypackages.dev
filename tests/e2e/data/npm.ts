@@ -58,8 +58,10 @@ export const lastYearDownloads = (name: string, perDay = 100) => {
   const start = new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 12, 1)
   );
-  const end = new Date(now.getTime() - DAY_MS);
-  const length = Math.round((end.getTime() - start.getTime()) / DAY_MS) + 1;
+  const end = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)
+  );
+  const length = (end.getTime() - start.getTime()) / DAY_MS + 1;
   const downloads = Array.from({ length }, (_, i) => ({
     day: isoDay(new Date(start.getTime() + i * DAY_MS)),
     downloads: perDay

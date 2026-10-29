@@ -1,6 +1,7 @@
 import { areaChart, releaseHeatmap, ring } from '../../components/media/Charts';
 import { getInitialsForUser } from '../../components/page-section/Header/utils/get-initials-for-user';
 import type { Health } from '../../services/package/health';
+import { dayName, monthName } from '../../utils/downloads';
 import { escapeAttr, escapeHtml } from '../../utils/escape-html';
 
 import { ago, type SignalRow } from './report';
@@ -30,10 +31,13 @@ export type ReportData = {
   health: Health | null;
   rows: SignalRow[];
   verdict: string;
+  // Downloads in the last of `months`
   lastMonth: number;
   change: number | null;
   months: { month: string; downloads: number }[];
   weeks: { start: string; downloads: number }[];
+  /** The last day npm's data has, like `2026-10-28` */
+  dataEnd: string | null;
   releases: { version: string; ms: number }[];
   releasesLastYear: number[];
   links: { repository?: string; homepage?: string; bugs?: string };
@@ -153,8 +157,8 @@ export const usage = (d: ReportData) => {
 
   return `<section class="report-section" aria-labelledby="usage-title">
   <h2 id="usage-title">Usage</h2>
-  <p class="report-lead">Downloads from npm, the last ${d.months.length} complete months</p>
-  <div class="usage-top"><span class="report-big">${compact.format(d.lastMonth)}</span>${change}<span class="muted">Best month ${compact.format(best)}</span>
+  <p class="report-lead">Downloads from npm, the last ${d.months.length} complete months${d.dataEnd ? `, with data up to ${dayName(d.dataEnd)}` : ''}</p>
+  <div class="usage-top"><span class="report-big" title="Downloads in ${monthName(d.months.at(-1)!.month)}">${compact.format(d.lastMonth)}</span><span class="muted">in ${monthName(d.months.at(-1)!.month)}</span>${change}<span class="muted">Best month ${compact.format(best)}</span>
     <div class="segmented" role="group" aria-label="Downloads per"><button type="button" id="chart-month" aria-pressed="true">Month</button><button type="button" id="chart-week" aria-pressed="false">Week</button></div>
   </div>
   <div class="report-card report-chart">

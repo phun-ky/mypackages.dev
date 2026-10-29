@@ -2,7 +2,7 @@
 // requests as possible, one at a time, patient with 429s, and within a time
 // budget. `fetch`, `sleep` and the clock are passed in, so tests can play npm.
 import { type DayRange, rangePath, splitRange } from "../_shared/download-range.ts";
-import type { DailyDownloads } from "./compute.ts";
+import type { DailyDownloads } from "../_shared/downloads.ts";
 
 const NPM_REGISTRY = "https://registry.npmjs.org";
 const NPM_API = "https://api.npmjs.org";
@@ -83,7 +83,7 @@ export const createNpmClient = ({
     }
   };
 
-  /** The names of a user's packages, with their rolling 30-day downloads. */
+  /** The names of a user's packages. */
   const searchPackages = async (username: string, role: string, size = 250) => {
     const query = encodeURIComponent(`${role}:${username}`);
     const data = await getJson(`${NPM_REGISTRY}/-/v1/search?text=${query}&size=${size}`);
@@ -93,11 +93,8 @@ export const createNpmClient = ({
 
     return objects.flatMap((object) => {
       const name = object?.package?.name;
-      const monthly = Number(object?.downloads?.monthly);
 
-      return typeof name === "string" && name
-        ? [{ name, monthly: Number.isFinite(monthly) && monthly > 0 ? monthly : 0 }]
-        : [];
+      return typeof name === "string" && name ? [name] : [];
     });
   };
 

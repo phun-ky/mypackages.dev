@@ -171,6 +171,7 @@ export const PackagePage = async (
     change: signals.maintenance?.changePct ?? null,
     months,
     weeks,
+    dataEnd: daily.ok ? (daily.data.downloads.at(-1)?.day ?? null) : null,
     releases: allReleases,
     releasesLastYear: releasesInLastYear(allReleases, now).map((r) => r.ms),
     links: {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": ".",
     "paths": {
       "/*": ["./src/*"],
       "/app/*": ["./src/app/*"],

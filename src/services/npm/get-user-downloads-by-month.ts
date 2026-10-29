@@ -1,7 +1,7 @@
 import type { Config } from '../../types';
 import { uniqueStrings } from '../../utils';
-import { completeMonthTotals } from '../../utils/complete-month-totals';
 import { concurrentForEach } from '../../utils/concurrent-for-each';
+import { completeMonthTotals } from '../../utils/downloads';
 import { supabase } from '../supabase';
 
 import { getLastYearDownloadsResult } from './get-last-year-downloads-result';
