@@ -1,12 +1,14 @@
 // Fetching from npm the way a shared-IP function has to (#69): as few
 // requests as possible, one at a time, patient with 429s, and within a time
 // budget. `fetch`, `sleep` and the clock are passed in, so tests can play npm.
+import { type DayRange, rangePath, splitRange } from "../_shared/download-range.ts";
 import type { DailyDownloads } from "./compute.ts";
 
 const NPM_REGISTRY = "https://registry.npmjs.org";
 const NPM_API = "https://api.npmjs.org";
-// npm's limit for bulk download queries, which only take unscoped names
+// npm's limits for bulk download queries, which only take unscoped names
 const BULK_MAX = 128;
+const BULK_MAX_DAYS = 365;
 
 export type NpmClientOptions = {
   fetch?: typeof fetch;
@@ -100,10 +102,11 @@ export const createNpmClient = ({
   };
 
   /**
-   * Last-year daily downloads per package: unscoped packages in bulk
-   * requests, scoped ones one at a time, `spacingMs` apart.
+   * Daily downloads per package over `range`: unscoped packages in bulk
+   * requests of at most 365 days each, scoped ones one at a time for the
+   * whole range, `spacingMs` apart.
    */
-  const lastYearDownloads = async (names: string[]) => {
+  const dailyDownloads = async (names: string[], range: DayRange) => {
     const result = new Map<string, DailyDownloads[]>();
     const unscoped = names.filter((name) => !name.startsWith("@"));
     const scoped = names.filter((name) => name.startsWith("@"));
@@ -114,24 +117,29 @@ export const createNpmClient = ({
       first = false;
     };
 
+    const add = (name: string, daily: DailyDownloads[]) =>
+      result.set(name, [...(result.get(name) ?? []), ...daily]);
+
     for (let i = 0; i < unscoped.length; i += BULK_MAX) {
       const chunk = unscoped.slice(i, i + BULK_MAX);
 
-      await pause();
+      for (const part of splitRange(range, BULK_MAX_DAYS)) {
+        await pause();
 
-      const data = await getJson(
-        `${NPM_API}/downloads/range/last-year/${chunk.map(encodeURIComponent).join(",")}`,
-      );
+        const data = await getJson(
+          `${NPM_API}/downloads/range/${rangePath(part)}/${chunk.map(encodeURIComponent).join(",")}`,
+        );
 
-      // npm answers a single name with its result, and several with a map
-      if (chunk.length === 1) {
-        result.set(chunk[0], parseDaily(data));
-      } else {
-        const byName = (data ?? {}) as Record<string, unknown>;
+        // npm answers a single name with its result, and several with a map
+        if (chunk.length === 1) {
+          add(chunk[0], parseDaily(data));
+        } else {
+          const byName = (data ?? {}) as Record<string, unknown>;
 
-        // Own keys only: a package can be called `constructor`
-        for (const name of chunk) {
-          result.set(name, parseDaily(Object.hasOwn(byName, name) ? byName[name] : null));
+          // Own keys only: a package can be called `constructor`
+          for (const name of chunk) {
+            add(name, parseDaily(Object.hasOwn(byName, name) ? byName[name] : null));
+          }
         }
       }
     }
@@ -140,12 +148,14 @@ export const createNpmClient = ({
       await pause();
       result.set(
         name,
-        parseDaily(await getJson(`${NPM_API}/downloads/range/last-year/${encodeURIComponent(name)}`)),
+        parseDaily(
+          await getJson(`${NPM_API}/downloads/range/${rangePath(range)}/${encodeURIComponent(name)}`),
+        ),
       );
     }
 
     return result;
   };
 
-  return { getJson, searchPackages, lastYearDownloads };
+  return { getJson, searchPackages, dailyDownloads };
 };

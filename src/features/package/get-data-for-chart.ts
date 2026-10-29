@@ -1,3 +1,5 @@
+import { completeMonthTotals } from '../../utils/complete-month-totals';
+
 export type IntervalDataItem<TInterval extends string | number = string> = {
   intervalRecord: Record<string, number>;
   intervals: TInterval[];
@@ -19,17 +21,7 @@ export const getDataForChart = (
     monthly: { intervalRecord: {}, intervals: [], series: [] },
     weekly: { intervalRecord: {}, intervals: [], series: [] }
   };
-  const intervalRecordMonth: Record<string, number> = {};
-  const currentMonth = new Date().toISOString().slice(0, 7);
-
-  for (const { day, downloads } of data) {
-    const month = day.slice(0, 7);
-
-    if (month === currentMonth) continue;
-
-    intervalRecordMonth[month] = (intervalRecordMonth[month] || 0) + downloads;
-  }
-
+  const intervalRecordMonth = completeMonthTotals(data);
   const intervalsMonth = Object.keys(intervalRecordMonth).sort();
   const seriesMonth: [number, number][] = intervalsMonth.map((m) => {
     const [y, mth] = m.split('-').map(Number);

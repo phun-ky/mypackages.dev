@@ -4,6 +4,7 @@ import type { PopularityResult } from '../../services/package/popularity';
 import type { ProvenanceResult } from '../../services/package/provenance';
 import type { QualityResult } from '../../services/package/quality';
 import type { SecurityResult } from '../../services/package/security';
+import { completeMonthTotals } from '../../utils/complete-month-totals';
 
 // The words on the package report card (#61): a verdict, and the reason for
 // each signal, from the same results that make up the health score. Pure, so
@@ -201,18 +202,8 @@ export const verdict = (signals: Signals, dependencies: number) => {
 };
 
 /** Downloads per complete calendar month, oldest first, the last 12 */
-export const monthlyTotals = (
-  daily: { day: string; downloads: number }[],
-  now = new Date()
-) => {
-  const current = now.toISOString().slice(0, 7);
-  const totals: Record<string, number> = {};
-
-  for (const { day, downloads } of daily) {
-    const month = day.slice(0, 7);
-
-    if (month !== current) totals[month] = (totals[month] ?? 0) + downloads;
-  }
+export const monthlyTotals = (daily: { day: string; downloads: number }[]) => {
+  const totals = completeMonthTotals(daily);
 
   return Object.keys(totals)
     .sort()
