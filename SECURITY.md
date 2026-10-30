@@ -58,11 +58,12 @@ What you can rely on:
   the example portfolio, and log a search through a function that validates it.
   Visitors and signed-in users have no `TRUNCATE`, `TRIGGER` or `REFERENCES` on
   any table, and new tables start with no grants.
-- **Searches are logged with little attached.** A search from the start page
-  logs the term, whether it was a package or a user, a random id kept in your
-  browser, and your account id if you're signed in. Only what was looked up and
-  when are public, in the lists of trending, popular and latest lookups. Emails
-  and other terms that can't be npm usernames are never logged as users.
+- **Searches are logged with little attached, for 90 days.** A search from a
+  search box logs the term, whether it was a package or a user, a random id kept
+  in your browser, and your account id if you're signed in. Only what was looked
+  up and when are public, in the lists of trending, popular and latest lookups.
+  Emails and other terms that can't be npm usernames are never logged as users.
+  A daily job deletes lookups older than 90 days; see [privacy](PRIVACY.md).
 - **The edge functions answer the site only.** They allow only
   `https://mypackages.dev` in CORS, refuse callers without the site's key,
   validate what they're sent, and answer database errors with a generic message.
@@ -72,8 +73,7 @@ What you can't rely on yet:
 - **A complete Content Security Policy.** GitHub Pages can't send headers, so
   the policy is a `<meta>` tag, which can't set `frame-ancestors` (the site can
   be framed) or reporting. It allows scripts only from the site, but inline
-  `style` attributes are allowed, because the templates, Shiki and Highcharts
-  set them.
+  `style` attributes are allowed, because the templates and Highcharts set them.
 - **Availability.** The site depends on npm's public API and its rate limits.
   There is no rate limit of its own on the edge functions.
 

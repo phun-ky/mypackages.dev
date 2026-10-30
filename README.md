@@ -145,6 +145,10 @@ For a new Supabase project:
 - [Contributing](CONTRIBUTING.md): how to propose a change, and the checks it
   needs
 - [Security policy](SECURITY.md): how to report a vulnerability
+- [Privacy](PRIVACY.md): what the site stores, for how long, and how to delete
+  it
+- [Assurance case](ASSURANCE.md): the threat model, and how the site is
+  protected and tested
 - [Governance](GOVERNANCE.md) and [roadmap](ROADMAP.md)
 
 ## Licence
