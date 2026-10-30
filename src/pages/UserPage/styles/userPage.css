@@ -75,13 +75,6 @@
   padding: 0 var(--nebula-gutter) 4rem;
 }
 
-.user-card {
-  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
-  border-radius: var(--nebula-radius);
-  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
-  backdrop-filter: blur(14px);
-}
-
 .user-label {
   font-size: 0.8rem;
   color: rgb(var(--rgb-text-dim));

@@ -1,5 +1,5 @@
 import { addOnClick, addOnInput } from '../../lib/spa';
-import { clearDashboardCache } from '../dashboard/settings/utils/clear-dashboard-cache';
+import { clearCache } from '../../utils/storage/clear-cache';
 
 // Which view of the packages a visitor last picked, for this browser
 const VIEW_KEY = 'user-page:view';
@@ -105,7 +105,7 @@ export const attachUserPageEvents = () => {
   addOnClick('view-scope', () => showView('scope'));
   addOnClick('view-table', () => showView('table'));
   addOnClick('refresh-data', () => {
-    clearDashboardCache();
+    clearCache();
     window.location.reload();
   });
   addOnInput('package-filter', applyFilter);

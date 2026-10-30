@@ -162,7 +162,7 @@ stores about people is in the [privacy notice](PRIVACY.md).
 - **No rate limit of its own** on the edge functions; npm's limits are the only
   limit.
 - **Inline styles are allowed** (`style-src-attr 'unsafe-inline'`), because the
-  templates and Highcharts set `style` attributes.
+  templates set `style` attributes (bar widths and the like).
 - **An administrator can decrypt stored tokens**, as with any Vault the project
   can read.
 - **One maintainer:** pull requests are reviewed by their author's own checks,

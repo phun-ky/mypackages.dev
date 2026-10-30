@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Container } from '../../../../components/layout/Container';
 import { deleteProviderToken } from '../../../../features/profile/secrets/utils/delete-provider-token';
 import { getActiveProviderTokenMeta } from '../../../../features/profile/secrets/utils/get-active-provider-token-meta';
 import { listProviderTokens } from '../../../../features/profile/secrets/utils/list-provider-tokens';
@@ -9,7 +8,7 @@ import type { PagePropsType } from '../../../../lib/spa/types';
 import { supabase } from '../../../../services/supabase';
 import { escapeAttr, escapeHtml } from '../../../../utils/escape-html';
 
-const html = String.raw;
+import '../../styles/profilePage.css';
 
 export type SecretsPagePropsType = PagePropsType;
 
@@ -32,78 +31,41 @@ export const SecretsPage = async (
     SecretsPage_bind(root, { signal });
   });
 
-  return html`<section class="secrets-page" data-secrets-page>
-    ${Container({
-      size: 'small',
-      children: html`<h1>Secrets</h1>`
-    })}
-    ${Container({
-      size: 'small',
-      children: html`
-        <table>
-          <thead>
-            <th class="string">Label</th>
-            <th class="string">Provider</th>
-            <th class="string">Updated at</th>
-            <th class="string"></th>
-          </thead>
-          <tbody>
-            ${items
-              .map((item) => {
-                const { id, label, provider, updated_at } = item as any;
-                const isActive =
-                  provider === 'npm' && activeNpm?.token_id === id;
+  const rows = items
+    .map((item) => {
+      const { id, label, provider, updated_at } = item as any;
+      const isActive = provider === 'npm' && activeNpm?.token_id === id;
+      const name = escapeHtml(label ?? provider);
 
-                return html`<tr
-                  data-row
-                  data-id="${id}"
-                  data-provider="${provider}"
-                >
-                  <td>
-                    ${escapeHtml(label)}
-                    ${
-                      isActive
-                        ? html` <span class="badge" data-active>Active</span>`
-                        : ''
-                    }
-                  </td>
-                  <td>${provider}</td>
-                  <td>${updated_at}</td>
-                  <td>
-                    ${
-                      provider === 'npm'
-                        ? html`<button
-                            type="button"
-                            class="button"
-                            data-make-active
-                            data-token-id="${id}"
-                            ${isActive ? 'disabled' : ''}
-                          >
-                            ${isActive ? 'Active' : 'Use for npm'}
-                          </button>`
-                        : ''
-                    }
-                    <button
-                      type="button"
-                      class="button danger"
-                      data-delete
-                      data-token-id="${id}"
-                      data-label="${escapeAttr(label ?? '')}"
-                      aria-label="Delete ${escapeAttr(label ?? provider)}"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>`;
-              })
-              .join('\n')}
-          </tbody>
-        </table>
+      return `<tr data-row data-id="${escapeAttr(id)}" data-provider="${escapeAttr(provider)}">
+  <td>${name}${isActive ? ' <span class="account-badge" data-active>Active</span>' : ''}</td>
+  <td>${escapeHtml(provider)}</td>
+  <td>${escapeHtml(new Date(updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))}</td>
+  <td><div class="account-row">${
+    provider === 'npm' && !isActive
+      ? `<button type="button" class="pill-button" data-make-active data-token-id="${escapeAttr(id)}">Use for npm</button>`
+      : ''
+  }<button type="button" class="pill-button is-danger" data-delete data-token-id="${escapeAttr(id)}" data-label="${escapeAttr(label ?? '')}" aria-label="Delete ${escapeAttr(label ?? provider)}">Delete</button></div></td>
+</tr>`;
+    })
+    .join('');
 
-        <div class="status" aria-live="polite" data-status></div>
-      `
-    })}
-  </section>`;
+  return `<div class="account-page secrets-page nebula-page" data-secrets-page>
+  <div class="account-wrap">
+    <h1>npm tokens</h1>
+    <section class="user-card account-card" aria-labelledby="tokens-title">
+      <h2 id="tokens-title">Your tokens</h2>
+      <p>The active npm token is the one the site uses to ask npm as you. Deleting a token deletes it from the database.</p>
+      ${
+        items.length
+          ? `<table class="account-table"><caption class="visually-hidden">Your stored tokens</caption><thead><tr><th scope="col">Label</th><th scope="col">Provider</th><th scope="col">Updated</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody>${rows}</tbody></table>`
+          : "<p>You haven't stored a token yet.</p>"
+      }
+      <div class="account-row"><a class="pill-button is-primary" href="/profile/secrets/new" data-link>Add a token</a><a class="pill-button" href="/profile" data-link>Back to your profile</a></div>
+      <div class="status" aria-live="polite" data-status></div>
+    </section>
+  </div>
+</div>`;
 };
 
 export const SecretsPage_bind = (

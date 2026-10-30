@@ -72,6 +72,7 @@ const renderExistingRow = (row: EnsuredRow) => {
   input.type = 'text';
   input.value = row.package_name;
   input.disabled = true;
+  input.setAttribute('aria-label', 'npm package name');
 
   // remove button
   const btn = document.createElement('button');

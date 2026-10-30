@@ -72,71 +72,77 @@ export const TokenSettings = async (props: TokenSettingsPropsType) => {
   const label = props.defaultLabel ?? 'default';
 
   addOnAfterAppRender(() => {
-    const root = document.querySelector('.profile-page');
+    const root = document.querySelector('.new-secret-page');
 
     if (!(root instanceof HTMLElement)) return;
 
     TokenSettings_bind(root, { supabase }, signal);
   });
 
-  return html`<section class="token-settings" data-token-settings>
-    <h1>Secrets</h1>
-
-    <p class="hint">
-      Your secret is stored encrypted (Vault) and only used server-side via
-      Supabase Edge Functions.
+  return html`<section
+    class="user-card account-card token-settings"
+    data-token-settings
+    aria-labelledby="new-token-title"
+  >
+    <h2 id="new-token-title">Add a token</h2>
+    <p>
+      Create a read-only token on npmjs.com (Access Tokens, then a granular
+      token with read access). It's stored encrypted in Supabase Vault, only
+      used by the site's edge functions for your own requests, and never sent
+      back to the browser.
     </p>
 
-    <form class="form" data-token-form>
-      <div
-        style="width: 100%;display:flex; gap: 1rem; justify-content: flex-start; align-items: flex-start;"
-      >
-        <div class="input-group" style="max-width: 320px;">
-          <select name="provider" class="input" data-provider>
-            <option value="npm" ${provider === 'npm' ? 'selected' : ''}>
-              npm
-            </option>
-            <option value="github" ${provider === 'github' ? 'selected' : ''}>
-              GitHub
-            </option>
-          </select>
-          <label class="field"> Provider </label>
-        </div>
-
-        <div class="input-group">
-          <input
-            name="label"
-            class="input"
-            data-label
-            maxlength="64"
-            autocomplete="off"
-            spellcheck="false"
-            value="${escapeAttr(label)}"
-            placeholder="e.g. default, work, personal"
-          />
-          <label class="field"> Label (optional) </label>
-        </div>
+    <form class="account-form" data-token-form>
+      <div class="account-field">
+        <label for="token-provider">Provider</label>
+        <select id="token-provider" name="provider" data-provider>
+          <option value="npm" ${provider === 'npm' ? 'selected' : ''}>
+            npm
+          </option>
+          <option value="github" ${provider === 'github' ? 'selected' : ''}>
+            GitHub
+          </option>
+        </select>
       </div>
 
-      <div class="input-group" style="width: 100%;">
+      <div class="account-field">
+        <label for="token-label">Label</label>
+        <input
+          id="token-label"
+          type="text"
+          name="label"
+          data-label
+          maxlength="64"
+          autocomplete="off"
+          spellcheck="false"
+          value="${escapeAttr(label)}"
+          aria-describedby="token-label-help"
+        />
+        <p id="token-label-help">
+          To tell your tokens apart, like laptop or work. Optional.
+        </p>
+      </div>
+
+      <div class="account-field">
+        <label for="token-secret">Token</label>
         <textarea
+          id="token-secret"
           name="token"
           aria-required="true"
-          rows="9"
+          rows="4"
           data-token
           maxlength="512"
           autocomplete="off"
           spellcheck="false"
-          placeholder="Paste secret here"
         ></textarea>
-        <label class="field"> Secret </label>
       </div>
 
-      <button type="submit" class="button primary" data-submit>
-        Save secret
-      </button>
-
-      <div class="status" aria-live="polite" data-status></div>
+      <div class="account-row">
+        <button type="submit" class="pill-button is-primary" data-submit>
+          Save token
+        </button>
+        <div class="status" aria-live="polite" data-status></div>
+      </div>
     </form>
   </section>`;
 };
