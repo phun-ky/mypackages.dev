@@ -21,6 +21,7 @@
     "preview": "vite preview",
     "lint": "eslint . --max-warnings 0 && node scripts/check-colours.mjs",
     "format:check": "prettier --check .",
+    "check:bestpractices": "node scripts/check-bestpractices.mjs",
     "check:metadata": "node scripts/check-metadata.mjs",
     "images:logo": "node scripts/logo/render.mjs",
     "images:og": "node scripts/og/render.mjs",
