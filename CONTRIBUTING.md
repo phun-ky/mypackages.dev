@@ -3,6 +3,12 @@
 Thanks for taking the time to help. This guide covers how to ask, report,
 suggest and change things, and what a pull request needs before it's merged.
 
+## Code of conduct
+
+Everyone taking part is expected to follow the
+[Code of Conduct](CODE_OF_CONDUCT.md). Report unacceptable behaviour to
+<code-of-conduct@phun-ky.net>.
+
 ## Asking a question
 
 Read the [FAQ](https://mypackages.dev/help/faq) first, and search the

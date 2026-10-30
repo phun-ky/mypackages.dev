@@ -39,6 +39,10 @@ jobs:
         run: npm run lint
       - name: Check formatting
         run: npm run format:check
+      # Every status in .bestpractices.json has a justification, and every
+      # file and heading it and security-insights.yml link to exists (#52)
+      - name: Check the OpenSSF Best Practices answers
+        run: npm run check:bestpractices
       - name: Typecheck # Source and tests, see tsconfig.json
         run: npm run typecheck
       # actionlint checks the workflows, and their run: blocks with the

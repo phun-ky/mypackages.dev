@@ -1,7 +1,7 @@
 header:
   schema-version: 2.2.0
-  last-updated: '2026-10-28'
-  last-reviewed: '2026-10-28'
+  last-updated: '2026-10-30'
+  last-reviewed: '2026-10-30'
   url: https://raw.githubusercontent.com/phun-ky/mypackages.dev/main/security-insights.yml
   comment: |
     Security information for mypackages.dev, in the OpenSSF Security
@@ -61,11 +61,12 @@ repository:
   security:
     assessments:
       self:
+        evidence: https://github.com/phun-ky/mypackages.dev/blob/main/ASSURANCE.md
+        date: '2026-10-30'
         comment: |
-          No self-assessment is published yet. SECURITY.md sets out what the
-          site guarantees and what it doesn't; an assurance case with the
-          threat model is planned in
-          https://github.com/phun-ky/mypackages.dev/issues/51.
+          The assurance case covers what is protected, the threat model, the
+          trust boundaries, each control with the tests behind it, the secure
+          design principles applied and the known gaps.
     tools:
       - name: CodeQL
         type: SAST
