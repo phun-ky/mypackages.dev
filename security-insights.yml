@@ -48,8 +48,8 @@ repository:
     security-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md
     dependency-management-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md#dependencies
   license:
-    url: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE
-    expression: MIT
+    url: https://github.com/phun-ky/mypackages.dev/blob/main/README.md#licence
+    expression: MIT AND CC-BY-NC-SA-4.0
   release:
     automated-pipeline: true
     distribution-points:

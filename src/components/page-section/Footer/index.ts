@@ -57,8 +57,14 @@ export const Footer = ({ page }: FooterPropsType) => {
           'license noopener noreferrer'
         )}
         <span>
-          This work, and all assets created by Alexander Vassbotn
-          Røyne-Helgesen, is licensed under a
+          The code is
+          ${external(
+            'https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE',
+            'MIT licensed',
+            'license noopener noreferrer'
+          )}.
+          The logo, icons and images, by Alexander Vassbotn Røyne-Helgesen, are
+          licensed under a
           ${external(
             LICENSE,
             'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License',

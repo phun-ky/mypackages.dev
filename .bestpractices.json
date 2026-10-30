@@ -258,7 +258,7 @@
   "osps_le_02_01_status": "Met",
   "osps_le_02_01_justification": "The source code is under the MIT licence, which is OSI-approved: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE",
   "osps_le_02_02_status": "Met",
-  "osps_le_02_02_justification": "The deployed site is built from this MIT-licensed repository. The footer of the signed-in pages shows a Creative Commons BY-NC-SA 4.0 badge for the site's content, which is being reconciled with the code's licence: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE",
+  "osps_le_02_02_justification": "The code of the deployed site is under the MIT licence: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE. The logo, icons and images are under CC BY-NC-SA 4.0, and the README says which files: https://github.com/phun-ky/mypackages.dev/blob/main/README.md#licence",
   "osps_le_03_01_status": "Met",
   "osps_le_03_01_justification": "The licence is in the LICENSE file at the repository root: https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE",
   "osps_le_03_02_status": "N/A",
