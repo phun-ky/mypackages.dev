@@ -35,10 +35,10 @@ const escape = (text) =>
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
-const mark = readFileSync(join(ROOT, 'public/logo.svg'), 'utf8').replace(
-  '<svg ',
-  '<svg class="mark" '
-);
+const mark = readFileSync(
+  join(ROOT, 'public/logo/mark-dark.svg'),
+  'utf8'
+).replace('<svg ', '<svg class="mark" ');
 const title = CONTENT.title
   .map((part) =>
     typeof part === 'string'
