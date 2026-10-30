@@ -63,3 +63,6 @@ verify_jwt = true
 
 [functions.set-active-token]
 verify_jwt = true
+
+[functions.delete-secret]
+verify_jwt = true

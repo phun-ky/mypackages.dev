@@ -4,6 +4,7 @@ import { loadFunction, SITE_ORIGIN } from "./test-utils.ts";
 
 // Every function the site calls; portfolio-snapshot is called by a cron job
 const FUNCTIONS = [
+  "delete-secret",
   "ensure_package",
   "get-active-token-meta",
   "list-secrets",

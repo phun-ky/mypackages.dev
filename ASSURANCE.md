@@ -101,9 +101,15 @@ stores about people is in the [privacy notice](PRIVACY.md).
   functions, reads them.
 - **Nothing comes back:** the site only gets a token's provider, label and
   dates. Functions answer database errors with a generic message.
+- **Deleting means deleting:** a user deletes their own tokens through the
+  `delete-secret` function, and a trigger deletes a token's Vault secret
+  whenever its row is deleted, also when the account is, or the row gets a new
+  secret (#125).
 - **Tested by:** `public_access.test.sql` (neither role can read stored tokens,
   by its own id or another user's, create Vault secrets or call the token
-  functions; each user gets only their own token through the service role) and
+  functions; each user gets only their own token through the service role),
+  `delete_provider_tokens.test.sql` (a user deletes only their own token, and
+  every way a row goes or changes deletes its Vault secret, but no other), and
   the Deno tests of the token functions.
 
 ### The edge functions
@@ -157,9 +163,6 @@ stores about people is in the [privacy notice](PRIVACY.md).
   limit.
 - **Inline styles are allowed** (`style-src-attr 'unsafe-inline'`), because the
   templates and Highcharts set `style` attributes.
-- **Tokens can't be deleted by their owner yet**, and deleting a token record
-  leaves its encrypted copy in Vault
-  ([#125](https://github.com/phun-ky/mypackages.dev/issues/125)).
 - **An administrator can decrypt stored tokens**, as with any Vault the project
   can read.
 - **One maintainer:** pull requests are reviewed by their author's own checks,

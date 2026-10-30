@@ -49,7 +49,8 @@ What you can rely on:
   by the `save-secret` function. Only the service role, used inside the edge
   functions, can read it; signed-in users can't read their own token back, and
   the site only ever gets its provider, label and dates. The functions use it to
-  call npm for that user's own requests.
+  call npm for that user's own requests. Deleting a token, on the profile's
+  Secrets page or with the account, deletes it from Vault too.
 - **Your data is yours.** Settings and tracked packages are protected by row
   level security: a signed-in user reads and changes only their own rows.
   Visitors without an account can't read either.
