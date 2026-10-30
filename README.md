@@ -156,4 +156,14 @@ For a new Supabase project:
 
 ## Licence
 
-[MIT](LICENSE) © Alexander Vassbotn Røyne-Helgesen
+© Alexander Vassbotn Røyne-Helgesen
+
+- **The code**, everything not listed below: [MIT](LICENSE).
+- **The logo, icons and images**:
+  [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). That is
+  `public/logo.svg` and the files in `public/logo`, `public/meta` and
+  `public/images`, and `public/nebula*`. You may share and adapt them, not
+  commercially, with credit, and under the same licence.
+
+The Creative Commons badge in `public/meta/cc-by-nc-sa-4.0-88x31.png` is
+Creative Commons' own.
