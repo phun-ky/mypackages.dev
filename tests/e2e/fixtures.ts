@@ -14,6 +14,12 @@ const fulfillJson = (route: Route, body: unknown, status = 200) =>
     contentType: 'application/json',
     body: JSON.stringify(body)
   });
+// Firefox reports a font download that leaving the page cancels as failed,
+// with NS_BINDING_ABORTED (0x804B0002) as the status (#56). A font that's
+// missing is still caught, as a failed local response
+const isCancelledFont = (text: string) =>
+  text.includes('downloadable font: download failed') &&
+  text.includes('status=2152398850');
 
 /**
  * Playwright `test` with two automatic additions for every test:
@@ -50,7 +56,8 @@ export const test = base.extend<{ pageErrors: string[] }>({
         // resource"; local ones are checked through the responses below
         if (
           message.type() === 'error' &&
-          !message.text().startsWith('Failed to load resource')
+          !message.text().startsWith('Failed to load resource') &&
+          !isCancelledFont(message.text())
         )
           errors.push(`console.error: ${message.text()}`);
       });
