@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import fc from "https://esm.sh/fast-check@4";
+import fc from "npm:fast-check@4";
 
 import {
   changePct,
