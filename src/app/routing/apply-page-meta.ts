@@ -19,17 +19,20 @@ const meta = (attr: 'name' | 'property', key: string, content: string) => {
  * router renders after the first.
  */
 export const applyPageMeta = (page: PageMeta) => {
-  const url = `${ORIGIN}${page.path}`;
+  const url = page.path === null ? null : `${ORIGIN}${page.path}`;
 
   document.title = page.title;
   meta('name', 'description', page.description);
   meta('property', 'og:title', page.title);
   meta('property', 'og:description', page.description);
-  meta('property', 'og:url', url);
+
+  if (url) meta('property', 'og:url', url);
+  else document.head.querySelector('meta[property="og:url"]')?.remove();
+
   meta('name', 'twitter:title', page.title);
   meta('name', 'twitter:description', page.description);
 
-  if (page.noindex) {
+  if (page.noindex || !url) {
     meta('name', 'robots', 'noindex');
     document.head.querySelector('link[rel="canonical"]')?.remove();
   } else {

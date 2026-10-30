@@ -71,6 +71,25 @@ for (const [path, title] of [
   });
 }
 
+// What a link preview shows: crawlers read the HTML without running the app,
+// and every package and user page is 404.html (#39)
+for (const path of ['/packages/@phun-ky/speccer', '/users/phun-ky']) {
+  test(`${path} previews as the site, not "Page not found"`, async ({
+    request
+  }) => {
+    const res = await request.get(path);
+    const html = await res.text();
+
+    expect(res.status()).toBe(404);
+    expect(html).toContain('<title>My packages</title>');
+    expect(html).toContain(
+      '<meta property="og:title" content="My packages" />'
+    );
+    expect(html).not.toContain('Page not found');
+    expect(html).not.toContain('og:url');
+  });
+}
+
 test('changes the title and canonical URL on navigation', async ({ page }) => {
   await page.goto('/help');
   await waitForApp(page);

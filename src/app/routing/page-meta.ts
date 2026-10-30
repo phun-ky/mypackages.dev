@@ -16,8 +16,8 @@ export const SOCIAL_IMAGE = '/meta/web-app-manifest-512x512.png';
 export type PageMeta = {
   title: string;
   description: string;
-  /** Canonical path, like `/packages/speccer` */
-  path: string;
+  /** Canonical path, like `/packages/speccer`; null for no address */
+  path: string | null;
   /** Kept out of search engines and the sitemap */
   noindex: boolean;
 };
@@ -96,6 +96,20 @@ const NOT_FOUND: PageMeta = {
   noindex: true
 };
 
+/**
+ * For 404.html, which GitHub Pages serves for every package and user page
+ * (#39): what a link preview shows, since crawlers don't run the app. The
+ * site's name, not "Page not found", and no address, so a preview doesn't
+ * point every package at one URL. The app sets the page's own on render.
+ */
+export const APP_SHELL: PageMeta = {
+  title: SITE_NAME,
+  description:
+    'Downloads, releases and health of npm packages and the people who maintain them, month by month, from npm’s own data.',
+  path: null,
+  noindex: true
+};
+
 /** The title, description and canonical path for a path on the site. */
 export const pageMeta = (pathname: string): PageMeta => {
   for (const route of routes) {
@@ -147,11 +161,11 @@ export const sitemapPaths = () =>
 
 /** The head tags for a page, for the prerendered HTML. */
 export const metaTags = (meta: PageMeta) => {
-  const url = `${ORIGIN}${meta.path === '/' ? '/' : meta.path}`;
+  const url = meta.path === null ? null : `${ORIGIN}${meta.path}`;
   const tags = [
     `<title>${escapeHtml(meta.title)}</title>`,
     `<meta name="description" content="${escapeAttr(meta.description)}" />`,
-    meta.noindex
+    meta.noindex || !url
       ? '<meta name="robots" content="noindex" />'
       : `<link rel="canonical" href="${escapeAttr(url)}" />`,
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
@@ -159,7 +173,7 @@ export const metaTags = (meta: PageMeta) => {
     '<meta property="og:locale" content="en_GB" />',
     `<meta property="og:title" content="${escapeAttr(meta.title)}" />`,
     `<meta property="og:description" content="${escapeAttr(meta.description)}" />`,
-    `<meta property="og:url" content="${escapeAttr(url)}" />`,
+    ...(url ? [`<meta property="og:url" content="${escapeAttr(url)}" />`] : []),
     `<meta property="og:image" content="${ORIGIN}${SOCIAL_IMAGE}" />`,
     '<meta property="og:image:width" content="512" />',
     '<meta property="og:image:height" content="512" />',

@@ -5,6 +5,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 
 import {
+  APP_SHELL,
   metaTags,
   ORIGIN,
   pageMeta,
@@ -69,7 +70,8 @@ const writeRoutePages = (): Plugin => {
         }
       }
 
-      await write('404.html', withMeta('/404'));
+      // Package and user pages too (#39): a link preview of one shows this
+      await write('404.html', html.replace(startTags, metaTags(APP_SHELL)));
       await write(
         'sitemap.xml',
         [
