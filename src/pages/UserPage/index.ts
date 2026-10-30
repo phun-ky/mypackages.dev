@@ -1,4 +1,3 @@
-import { SiteHeader } from '../../components/page-section/SiteHeader';
 import {
   attachUserPageEvents,
   getStoredView
@@ -33,11 +32,9 @@ export const UserPage = async (
   signal: AbortSignal
 ) => {
   const { username, options, session = null } = props;
-  const header = SiteHeader({ session, current: 'users' });
 
   if (!username) {
     return html`<div class="user-page nebula-page">
-      ${header}
       <div class="user-content"><h1>No user given</h1></div>
     </div>`;
   }
@@ -60,7 +57,6 @@ export const UserPage = async (
 
   if (!portfolio.packages.length) {
     return html`<div class="user-page nebula-page">
-      ${header}
       <div class="user-content">
         ${head}
         <p class="user-empty">
@@ -71,7 +67,6 @@ export const UserPage = async (
   }
 
   return html`<div class="user-page nebula-page">
-    ${header}
     <div class="user-content">
       ${head} ${overview(portfolio)} ${atAGlance(portfolio, now)}
       ${packagesSection(portfolio, now, getStoredView())} ${topics(portfolio)}

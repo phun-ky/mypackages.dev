@@ -1,4 +1,3 @@
-import { SiteHeader } from '../../../../components/page-section/SiteHeader';
 import {
   FAQ_TOPICS,
   SCORE_QUESTION,
@@ -11,7 +10,6 @@ import {
   helpSidebar,
   onThisPage
 } from '../../../../features/help/topics';
-import type { PagePropsType } from '../../../../lib/spa/types';
 
 import '../../styles/helpPage.css';
 
@@ -32,11 +30,10 @@ const topics = () =>
  * Questions and answers (#63), as docs: every answer is open, so the
  * browser's find works, and each question has its own link.
  */
-export const FAQPage = async ({ session = null }: PagePropsType) => {
+export const FAQPage = async () => {
   attachFaqEvents();
 
   return html`<div class="help-page nebula-page">
-    ${SiteHeader({ session })}
     <div class="help-docs">
       ${helpSidebar()}
       <div class="help-doc">

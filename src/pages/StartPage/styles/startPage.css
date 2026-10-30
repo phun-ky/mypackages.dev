@@ -36,8 +36,17 @@
   }
 }
 
-/* The nebula only behind the header and hero, and only in dark */
+/* The nebula only behind the header and hero, and only in dark. The header
+   is outside <main> (issue 116), so the hero reaches up under it */
+.app:has(.start-page) > .site-header {
+  position: relative;
+  z-index: 1;
+  line-height: 1.65;
+}
+
 .start-hero {
+  margin-top: -4.25rem;
+  padding-top: 4.25rem;
   background:
     linear-gradient(
       to bottom,

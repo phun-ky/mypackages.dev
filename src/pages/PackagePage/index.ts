@@ -1,4 +1,3 @@
-import { SiteHeader } from '../../components/page-section/SiteHeader';
 import { attachPackageReportEvents } from '../../features/package-report/interactions';
 import {
   monthlyTotals,
@@ -53,11 +52,9 @@ export const PackagePage = async (
   signal: AbortSignal
 ) => {
   const { packageName, session = null } = props;
-  const header = SiteHeader({ session, current: 'packages' });
 
   if (!packageName) {
     return html`<div class="package-page nebula-page">
-      ${header}
       <div class="report"><h1>No package given</h1></div>
     </div>`;
   }
@@ -186,7 +183,6 @@ export const PackagePage = async (
   };
 
   return html`<div class="package-page nebula-page">
-    ${header}
     <div class="report">
       ${reportHead(data, now)} ${notice(Boolean(session))} ${verdictCard(data)}
       ${usage(data)} ${releasesSection(data, now)} ${needs(data)}

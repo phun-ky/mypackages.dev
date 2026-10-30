@@ -1,10 +1,13 @@
 /* The user page in the Nebula, refined design, Insights direction (#62).
    The site-wide rules for text, links, lists, tables and inputs are reset
    here: they're for prose and the older pages. */
-.user-page {
-  /* A wider column than the front page, for the table; the header follows */
+/* A wider column than the front page, for the table. Set on the app, so the
+   header, outside the page since issue 116, follows */
+.app:has(.user-page) {
   --nebula-max: 80rem;
+}
 
+.user-page {
   color: rgb(var(--rgb-text));
   font-family: var(--font-family-body);
   font-size: 0.95rem;

@@ -66,6 +66,19 @@ for (const path of PAGES) {
       });
     }
 
+    // The site header is the banner landmark only outside <main> (#116).
+    // The sign-in pages have no header.
+    test('has the site header as its only banner, outside main', async ({
+      page
+    }) => {
+      await expect(page.locator('main header.site-header')).toHaveCount(0);
+      expect(await page.getByRole('banner').count()).toBeLessThanOrEqual(1);
+
+      if (await page.locator('header.site-header').count()) {
+        await expect(page.getByRole('banner')).toHaveCount(1);
+      }
+    });
+
     test('labels every form field', async ({ page }) => {
       knownBug(path, 'labels every form field');
 

@@ -1,10 +1,8 @@
-import { SiteHeader } from '../../../../components/page-section/SiteHeader';
 import {
   faqLink,
   sourceCards,
   weightsBar
 } from '../../../../features/help/sections';
-import type { PagePropsType } from '../../../../lib/spa/types';
 
 import '../../styles/helpPage.css';
 
@@ -65,9 +63,8 @@ const limits = `<section class="help-block" aria-labelledby="limits-title">
  * the score is up front, then why the site exists and who makes it. What the
  * site does and doesn't do is on the front page, so it isn't repeated here.
  */
-export const AboutPage = async ({ session = null }: PagePropsType) =>
+export const AboutPage = async () =>
   `<div class="help-page nebula-page">
-  ${SiteHeader({ session, current: 'about' })}
   <div class="help-wrap">
     ${hero}
     <section class="help-block" aria-labelledby="sources-title"><h2 id="sources-title">Where the data comes from</h2>${sourceCards()}</section>

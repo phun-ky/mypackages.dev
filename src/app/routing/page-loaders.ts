@@ -63,7 +63,7 @@ export const pageLoaders = {
   AboutPage: async () => {
     const { AboutPage } = await import('/pages/HelpPage/subpages/AboutPage');
 
-    return ({ props }: PageCtx) => AboutPage(props);
+    return () => AboutPage();
   },
   FeedbackPage: async () => {
     const { FeedbackPage } =
@@ -79,12 +79,12 @@ export const pageLoaders = {
   HelpPage: async () => {
     const { HelpPage } = await import('/pages/HelpPage');
 
-    return ({ props }: PageCtx) => HelpPage(props);
+    return () => HelpPage();
   },
   FAQPage: async () => {
     const { FAQPage } = await import('/pages/HelpPage/subpages/FAQPage');
 
-    return ({ props }: PageCtx) => FAQPage(props);
+    return () => FAQPage();
   },
   UsersPage: async () => {
     const { UsersPage } = await import('/pages/UsersPage');
