@@ -66,6 +66,23 @@ describe('ttlLocalStorage', () => {
     assert.equal(ttlLocalStorage.get('npmdash:old'), null);
   });
 
+  test('drops entries it can’t read, and values it can’t store', () => {
+    storage.setItem('npmdash:no-exp', JSON.stringify({ v: 1 }));
+    storage.setItem('npmdash:corrupt', '{');
+    storage.setItem('npmdash:not-object', '42');
+
+    assert.equal(ttlLocalStorage.get('npmdash:no-exp'), null);
+    assert.equal(ttlLocalStorage.get('npmdash:corrupt'), null);
+    assert.equal(ttlLocalStorage.get('npmdash:not-object'), null);
+    assert.equal(ttlLocalStorage.get('npmdash:missing'), null);
+    assert.deepEqual(storage.keys(), ['npmdash:not-object']);
+
+    const circular: Record<string, unknown> = {};
+
+    circular.self = circular;
+    assert.equal(ttlLocalStorage.set('npmdash:circular', circular), false);
+  });
+
   test('keeps an entry over the cap out of storage', () => {
     install(10 * MAX_ENTRY_CHARS);
     storage.setItem('npmdash:big', entry(Date.now() + 1000));
@@ -161,6 +178,12 @@ describe('trimPackument', () => {
     assert.equal(Object.keys(trimmed.time!).length, 4);
     assert.equal(trimmed.readme?.length, README_CHARS);
     assert.equal('users' in trimmed, false);
+  });
+
+  test('leaves a packument without versions, tags or README alone', () => {
+    const bare = { name: 'pkg' } as unknown as NpmRegistryPackument;
+
+    assert.deepEqual(trimPackument(bare), { name: 'pkg', versions: {} });
   });
 
   test('keeps the last version without a latest tag', () => {
