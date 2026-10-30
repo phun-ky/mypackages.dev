@@ -1,77 +1,121 @@
+/* The error and page not found pages in the Nebula, refined design (#109).
+   The site-wide rules for text and lists are reset here: they're for prose
+   and the older pages. */
 .error-page {
+  color: rgb(var(--rgb-text));
+  font-family: var(--font-family-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.6;
+
+  & :where(h1, p, dl, dd, pre) {
+    margin: 0;
+    max-width: none;
+  }
+
+  & :where(code)::before,
+  & :where(code)::after {
+    content: none;
+  }
+}
+
+.error-wrap {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
+  gap: 1rem;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 8vw, 5rem) var(--nebula-gutter) 4rem;
 
-  header {
-    width: 100%;
-    gap: 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: unset;
-    position: relative;
-    box-shadow: inset 0 0 40px 0 rgb(var(--rgb-shadow) / 0.7);
-    background-attachment: fixed;
-    background-image:
-      linear-gradient(
-        175deg,
-        rgb(var(--rgb-canvas)) 20%,
-        rgb(var(--rgb-canvas) / 0) 60%
-      ),
-      linear-gradient(
-        -90deg,
-        rgb(var(--rgb-canvas) / 0) 0%,
-        rgb(var(--rgb-canvas)) 70%
-      ),
-      var(--bg-url);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    padding: 4rem;
+  & h1 {
+    font: 600 clamp(2rem, 4.5vw, 2.9rem) / 1.1 var(--font-family-heading);
+    letter-spacing: -0.02em;
+    color: rgb(var(--rgb-text-bright));
+  }
+}
 
-    box-shadow: none;
-    .inner {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 2rem;
+.error-label {
+  font: 500 0.8rem var(--font-family-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--rgb-brand));
+}
 
-      p,
-      ul,
-      h1 {
-        margin-bottom: 0;
-      }
-      p,
-      ul {
-        margin-top: 0;
-      }
-    }
+.error-lede {
+  font-size: 1.12rem;
+  color: rgb(var(--rgb-text-dim));
+
+  & code {
+    overflow-wrap: anywhere;
+    color: rgb(var(--rgb-text-bright));
+  }
+}
+
+.error-what {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: var(--nebula-radius);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+  overflow-wrap: anywhere;
+  color: rgb(var(--rgb-text-bright));
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.error-details {
+  width: 100%;
+  margin-top: 1rem;
+  border-top: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  padding-top: 1rem;
+
+  & summary {
+    cursor: pointer;
+    color: rgb(var(--rgb-text-bright));
   }
 
-  .inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 2rem;
-    .alert {
-      flex-shrink: 0;
-      width: 100%;
-    }
+  & dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.3rem 1rem;
+    margin-top: 0.8rem;
   }
-  pre {
-    width: 100%;
+
+  & dt {
+    color: rgb(var(--rgb-text-dim));
+  }
+
+  & dd {
+    overflow-wrap: anywhere;
+    color: rgb(var(--rgb-text-bright));
+  }
+
+  & pre {
+    margin-top: 0.8rem;
     overflow-x: auto;
-    border: 1px solid var(--nebula-line-alpha);
+    border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
     border-radius: 12px;
-    background: var(--nebula-card-alpha);
+    background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
     padding: 1rem;
-    font-size: var(--text-size-100);
+    font-size: var(--text-size-90);
     font-family: var(--font-family-mono);
+  }
+}
+
+.error-report {
+  color: rgb(var(--rgb-text-dim));
+
+  & a {
+    color: rgb(var(--rgb-text-bright));
+    text-decoration: underline;
   }
 }

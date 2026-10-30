@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint no-console:0 */
+import { normalizeError } from '../../utils/error/normalize-error';
+
 import type {
   FunctionType,
   EventArray,
@@ -107,14 +109,14 @@ export const spa = (() => {
     try {
       _html = await _templateCallback({ match: page });
     } catch (e: unknown) {
-      if ((e as Error).message.indexOf('404') !== -1) {
+      // Anything can be thrown, not only an Error (#109)
+      if (normalizeError(e).message.includes('404')) {
         setTitle('404, page not found');
-        _html = '<h1>404, page not found</h1>';
+        _html = await _templateCallback({ match: 'PageNotFoundPage' });
       } else {
         _html = await _templateCallback({
           match: 'ErrorPage',
-
-          error: e as Error
+          error: e
         });
 
         console.error(e);

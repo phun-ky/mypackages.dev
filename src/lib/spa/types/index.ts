@@ -6,7 +6,8 @@ export type PagePropsType = {
   match?: RouterMatch | string;
   username?: string;
   session?: Session | null;
-  error?: Error;
+  /** Whatever was thrown, read with normalizeError */
+  error?: unknown;
   returnTo?: string;
   options: Config;
   packageName?: string;
