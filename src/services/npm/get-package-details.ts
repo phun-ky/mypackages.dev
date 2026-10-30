@@ -5,6 +5,8 @@ import type { NpmRegistryPackument, NpmPackageName } from '../../types';
 import { HttpError } from '../../utils/error/HttpError.class';
 import { cachedAsync } from '../../utils/storage/cached-async';
 
+import { trimPackument } from './trim-packument';
+
 const registryCache = new Map();
 
 export const getPackageDetails = async (
@@ -66,7 +68,8 @@ export const getPackageDetails = async (
         });
       }
 
-      return data.data as NpmRegistryPackument;
+      // Cached for a day, so only what the site reads (#112)
+      return trimPackument(data.data as NpmRegistryPackument);
     } catch (e) {
       if (e instanceof DOMException && e.name === 'AbortError') throw e;
 

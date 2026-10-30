@@ -1,4 +1,5 @@
 import { supabase } from '../../../services/supabase';
+import { forgetUserSettings } from '../../../services/supabase/utils/user-settings';
 
 export type UserSettingsRow = {
   user_id: string;
@@ -101,6 +102,9 @@ export const mountNpmSettings = async (
     const { error: upsertError } = await supabase
       .from('user_settings')
       .upsert(payload, { onConflict: 'user_id' });
+
+    // The npm username decides whose tracked packages are whose (#113)
+    forgetUserSettings(userId);
 
     if (upsertError) {
       setStatus(`Save failed: ${upsertError.message}`);
