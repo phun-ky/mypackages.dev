@@ -1,5 +1,11 @@
 import { lastYearDownloads } from './data/npm';
-import { expect, mockSupabaseFunction, test, waitForApp } from './fixtures';
+import {
+  expect,
+  mockJson,
+  mockSupabaseFunction,
+  test,
+  waitForApp
+} from './fixtures';
 import { mockPackages, mockUser } from './mocks';
 
 // Each mocked package has 100 downloads a day and a release a month ago
@@ -233,6 +239,34 @@ test('says it shows only some when npm has more than it loads', async ({
   await expect(page.locator('.user-total svg')).toHaveAttribute(
     'aria-label',
     /^Monthly downloads for the 2 packages shown/
+  );
+});
+
+// Signed-out visitors may not read ensured_packages since the grants of #54,
+// and the page failed with "permission denied for table ensured_packages"
+test('shows the page to a signed-out visitor who may not read tracked packages', async ({
+  page
+}) => {
+  await mockUser(page, 'many', ['speccer', '@phun-ky/speccer']);
+  await mockJson(
+    page,
+    '**/rest/v1/ensured_packages?*',
+    {
+      code: '42501',
+      details: null,
+      hint: null,
+      message: 'permission denied for table ensured_packages'
+    },
+    401
+  );
+  // A new visitor: nothing cached from the page opened before the test
+  await page.evaluate(() => localStorage.clear());
+  await page.goto('/users/many');
+  await waitForApp(page);
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('many');
+  await expect(page.locator('.user-sub')).toContainText(
+    '2 packages maintained on npm'
   );
 });
 
