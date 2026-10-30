@@ -13,5 +13,7 @@ export const NEBULA_PAGES: ReadonlySet<string> = new Set([
   'PackagePage',
   'HelpPage',
   'AboutPage',
-  'FAQPage'
+  'FAQPage',
+  'ErrorPage',
+  'PageNotFoundPage'
 ]);

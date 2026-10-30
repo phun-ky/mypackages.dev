@@ -9,3 +9,8 @@ export const navigateTo = async (url: string) => {
 
   await init(App, routeDetails);
 };
+
+/** Renders the current page again, without a new history entry. */
+export const renderCurrentRoute = async () => {
+  await init(App, router());
+};

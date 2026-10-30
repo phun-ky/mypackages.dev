@@ -70,7 +70,8 @@ const App = async (initialProps: Partial<PagePropsType>) => {
 
   if (typeof match === 'string') {
     _resolvedPageProps = { ...initialProps, session };
-    _pageId = 'ErrorPage';
+    // Rendered by the router when a page fails
+    _pageId = match === 'PageNotFoundPage' ? 'PageNotFoundPage' : 'ErrorPage';
   } else {
     if (match) {
       const { route } = match;
