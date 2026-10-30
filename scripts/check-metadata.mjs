@@ -100,6 +100,42 @@ if (!existsSync(sitemapFile)) {
   }
 }
 
+// The link preview images (#108), at the sizes their names promise, and
+// every page's og:image is one of them
+const IMAGES = {
+  'images/mypackages-og.png': [1200, 630],
+  'images/mypackages-og@2x.png': [2400, 1260],
+  'images/mypackages-portrait.png': [1080, 1350],
+  'images/mypackages-portrait@2x.png': [2160, 2700]
+};
+
+for (const [image, [width, height]] of Object.entries(IMAGES)) {
+  const file = join(DIST, image);
+
+  if (!existsSync(file)) {
+    problems.push(`${image} is missing: run npm run images:og`);
+    continue;
+  }
+
+  // A PNG's size is in its IHDR chunk, 16 bytes in
+  const png = readFileSync(file);
+  const size = [png.readUInt32BE(16), png.readUInt32BE(20)];
+
+  if (size[0] !== width || size[1] !== height) {
+    problems.push(`${image} is ${size.join('x')}, not ${width}x${height}`);
+  }
+}
+
+for (const file of pages) {
+  const image = readFileSync(file, 'utf8').match(
+    /<meta property="og:image" content="([^"]+)"/
+  )?.[1];
+
+  if (image && !existsSync(join(DIST, image.slice(`${ORIGIN}/`.length)))) {
+    problems.push(`${relative(DIST, file)}: og:image ${image} isn't in dist/`);
+  }
+}
+
 const robots = join(DIST, 'robots.txt');
 
 if (
