@@ -74,12 +74,21 @@ export const mockUser = async (
 };
 
 /**
- * Signs `user` in, as supabase-js keeps the session, with the "Show profile
- * pictures" setting (#37) as given.
+ * Signs `user` in, as supabase-js keeps the session, with the settings from
+ * the profile page as given: the npm username, the packages added there,
+ * and "Show profile pictures" (#37).
  */
 export const signIn = async (
   page: Page,
-  { showProfilePictures = false } = {}
+  {
+    npmUsername = null,
+    ensuredPackages = [],
+    showProfilePictures = false
+  }: {
+    npmUsername?: string | null;
+    ensuredPackages?: string[];
+    showProfilePictures?: boolean;
+  } = {}
 ): Promise<void> => {
   await page.addInitScript(
     ({ key, value }) => localStorage.setItem(key, value),
@@ -87,6 +96,19 @@ export const signIn = async (
   );
   await page.route('**/auth/v1/user', (route) => route.fulfill({ json: user }));
   await mockSupabaseTable(page, 'user_settings', [
-    { user_id: user.id, show_profile_pictures: showProfilePictures }
+    {
+      user_id: user.id,
+      npm_username: npmUsername,
+      show_profile_pictures: showProfilePictures
+    }
   ]);
+  await mockSupabaseTable(
+    page,
+    'ensured_packages',
+    ensuredPackages.map((name, i) => ({
+      id: i + 1,
+      package_name: name,
+      registry: 'npm'
+    }))
+  );
 };

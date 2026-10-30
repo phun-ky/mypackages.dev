@@ -27,7 +27,7 @@ export const resolveUserPackages = async (
     .map((o) => o.package?.name)
     .filter(Boolean);
 
-  await mergeIntoTracked(fromSearch, username, signal);
+  mergeIntoTracked(fromSearch, username);
 
   const tracked = await getTrackedPackages(username, signal);
   const allNames = uniqueStrings([...fromSearch, ...tracked]);

@@ -23,7 +23,7 @@ export const getUserDownloadsByMonth = async (
     .map((o) => o.package?.name)
     .filter(Boolean);
 
-  mergeIntoTracked(fromSearch, username, signal);
+  mergeIntoTracked(fromSearch, username);
 
   const tracked = await getTrackedPackages(username, signal);
   const allNames = uniqueStrings([...fromSearch, ...tracked]);
