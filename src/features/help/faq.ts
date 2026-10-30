@@ -21,7 +21,6 @@ export const FAQ_TOPICS: FAQTopic[] = [
 <p>I originally created the first version just for myself because I needed a better way to understand <strong>usage and downloads</strong> across my packages. I couldn't find a good alternative, and the npmjs.com profile page felt limited: you often have to click into each package just to see a simple weekly downloads graph.</p>
 <p>With this site, you can quickly get an overview of:</p>
 <ul>
-  <li>Packages you've <strong>authored</strong></li>
   <li>Packages you <strong>maintain</strong></li>
 </ul>
 <p>After that proved useful, I turned it into a standalone site and added features like:</p>
@@ -35,7 +34,7 @@ export const FAQ_TOPICS: FAQTopic[] = [
       {
         question: 'What is this site?',
         answer:
-          '<p>This site gives you a single place to track how npm packages you author or maintain are doing, including downloads, trends, and package health signals.</p>'
+          '<p>This site gives you a single place to track how npm packages you maintain are doing, including downloads, trends, and package health signals.</p>'
       },
       {
         question: 'Why should I use this site instead of npmjs.com?',
@@ -45,7 +44,7 @@ export const FAQ_TOPICS: FAQTopic[] = [
       {
         question: 'What is included in the dashboard?',
         answer:
-          '<p>The dashboard aggregates your packages (authored or maintained) and surfaces key metrics like downloads over time, changes, and health and security signals in one view.</p>'
+          '<p>The dashboard aggregates the packages you maintain and surfaces key metrics like downloads over time, changes, and health and security signals in one view.</p>'
       },
       {
         question: 'What data sources do you use?',
@@ -93,9 +92,10 @@ export const FAQ_TOPICS: FAQTopic[] = [
     title: 'Downloads and vulnerabilities',
     items: [
       {
-        question: 'What counts as an "authored" vs "maintained" package?',
+        question:
+          'Why are only the packages someone maintains shown, and not the ones they "authored"?',
         answer:
-          '<p>"Authored" typically means you\'re listed as the package author or publisher in npm metadata, while "maintained" means you\'re listed as a maintainer for that package.</p>'
+          "<p>The site lists the packages a user is a maintainer of on npm, which is who can publish them. There used to be an author mode too, but npm's search matches an author by whoever published a package's latest version, not by the <code>author</code> field in its package.json.</p><p>With trusted publishing from GitHub Actions, which npm recommends, npm records the publisher as GitHub Actions, so every release made that way took a package off its author's list. A package someone wrote but no longer maintains isn't shown.</p>"
       },
       {
         question: 'Where do download numbers come from, and what do they mean?',
@@ -181,7 +181,7 @@ export const FAQ_TOPICS: FAQTopic[] = [
       {
         question: 'Why do I need to log in?',
         answer:
-          "<p>You don't, to look up packages and users. Logging in gives you a personal dashboard where you can track your authored and maintained packages, save settings, and use account-specific features.</p>"
+          "<p>You don't, to look up packages and users. Logging in gives you a personal dashboard where you can track the packages you maintain, save settings, and use account-specific features.</p>"
       },
       {
         question: 'How does GitHub login work?',

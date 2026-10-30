@@ -1,7 +1,5 @@
 import { Button } from '../../components/actions/Button';
 import { Alert } from '../../components/feedback/Alert';
-import { Checkbox } from '../../components/input-fields/Checkbox';
-import { Label } from '../../components/input-fields/Label';
 import { Container } from '../../components/layout/Container';
 import { mountEnsuredPackages } from '../../features/profile/ensured-packages';
 import { mountNpmSettings } from '../../features/profile/npm-settings/mount';
@@ -97,42 +95,6 @@ export const ProfilePage = async (
               <input type="text" id="npmemail" />
             </div>
           </div>
-          <div class="input-group horizontal">
-            <div class="label-container">
-              Lookup packages where user is maintainer?
-
-              <p>
-                Should we look for packages where the user is the author or the
-                maintainer? When toggled, we check for packages where the user
-                is a maintainer.
-              </p>
-            </div>
-            <div class="input-container">
-              ${Checkbox({
-                name: 'role-toggle',
-                id: 'author-maintainer',
-                className: 'toggle '
-              })}
-              ${Label({
-                labelFor: 'author-maintainer',
-                label: 'Author or maintainer?'
-              })}
-            </div>
-          </div>
-
-          <div class="input-group horizontal">
-            ${Alert({
-              title: 'Issues with package lookup',
-              description: html`<p>
-                Ever since GitHub and npmjs started to use Trusted Publishing,
-                there are some discrepancies when looking up packages by author
-                and maintainer. With this option, you can toggle between them
-                when looking up user packages to find the best fit.
-              </p>`,
-              type: 'important'
-            })}
-          </div>
-
           <div class="input-group horizontal">
             <div class="label-container">
               <label for="npm-query-size">Query size</label>

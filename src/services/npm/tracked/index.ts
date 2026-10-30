@@ -1,40 +1,37 @@
 import { YEAR_MS } from '../../../constants/temporal';
-import type { NpmPackageNames, Role, Username } from '../../../types';
+import type { NpmPackageNames, Username } from '../../../types';
 import { lsKey } from '../../../utils/storage/ls-key';
 import { ttlLocalStorage } from '../../../utils/storage/ttl-local-storage';
 import { getEnsuredPackageNames } from '../../supabase/utils/fetch-ensured-package';
 
-const trackedKey = (role: Role, username: Username) =>
-  lsKey(`tracked-packages:${username}:${role}`);
+// `maintainer` in the key as before, when there was an author mode too (#95),
+// so what's been learned is kept
+const trackedKey = (username: Username) =>
+  lsKey(`tracked-packages:${username}:maintainer`);
 
 export const getTrackedPackages = async (
   username: Username,
-  role: Role,
   signal: AbortSignal
 ) => {
   const u = (username ?? '').trim();
 
   if (!u) return [];
 
-  const v = ttlLocalStorage.get(trackedKey(role, u));
+  const v = ttlLocalStorage.get(trackedKey(u));
 
   if (Array.isArray(v)) return v.filter(Boolean) as string[];
 
   return await getEnsuredPackageNames(signal);
 };
 
-const setTrackedPackages = (
-  names: NpmPackageNames,
-  username: Username,
-  role: Role
-) => {
+const setTrackedPackages = (names: NpmPackageNames, username: Username) => {
   const u = (username ?? '').trim();
 
   if (!u) return [];
 
   const unique = [...new Set(names.map(String).filter(Boolean))].sort();
 
-  ttlLocalStorage.set(trackedKey(role, u), unique, YEAR_MS);
+  ttlLocalStorage.set(trackedKey(u), unique, YEAR_MS);
 
   return unique;
 };
@@ -43,14 +40,13 @@ const setTrackedPackages = (
 export const mergeIntoTracked = async (
   names: NpmPackageNames,
   username: Username,
-  role: Role,
   signal: AbortSignal
 ) => {
   const u = (username ?? '').trim();
 
   if (!u) return [];
 
-  const current = await getTrackedPackages(u, role, signal);
+  const current = await getTrackedPackages(u, signal);
 
-  return setTrackedPackages([...current, ...names], u, role);
+  return setTrackedPackages([...current, ...names], u);
 };

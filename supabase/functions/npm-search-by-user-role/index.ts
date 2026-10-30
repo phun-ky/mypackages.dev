@@ -2,16 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 import { readBody, responses } from "../_shared/http.ts";
 
-type Mode = "maintainer" | "author";
-
 const NPM_REGISTRY = "https://registry.npmjs.org";
-
-const isValidEmail = (s: string) => {
-  const v = (s ?? "").trim();
-  if (!v) return false;
-  if (v.length > 320) return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-};
 
 const clampSize = (n: unknown) => {
   const x = Number(n);
@@ -37,19 +28,16 @@ Deno.serve(async (req) => {
     req.headers.get("authorization") ?? req.headers.get("Authorization");
 
   let username = "";
-  let mode: Mode | null = null;
   let size = 50;
 
   const body = await readBody(req);
   if (!body) return bad("Invalid JSON body", 400);
 
   username = String(body.username ?? "").trim();
-  mode = (body.mode ?? null) as Mode | null;
   size = clampSize(body.size);
 
   if (!username) return bad("Missing username", 400);
   if (username.length > 320) return bad("Username too long", 400);
-  if (mode !== "maintainer" && mode !== "author") return bad("Invalid mode", 400);
 
   // If logged in, try to get active npm token
   let npmToken: string | null = null;
@@ -76,11 +64,10 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Build query safely server-side
-  const query =
-    mode === "author" && isValidEmail(username)
-      ? `author.email:${username}`
-      : `${mode}:${username}`;
+  // Maintainers only: npm's `author:` matches whoever published the latest
+  // version, which trusted publishing records as GitHub Actions (#95). A
+  // `mode` from pages loaded before that is ignored
+  const query = `maintainer:${username}`;
 
   const searchUrl =
     `${NPM_REGISTRY}/-/v1/search?text=` +

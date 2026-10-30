@@ -4,7 +4,6 @@ export type UserSettingsRow = {
   user_id: string;
   npm_username: string | null;
   npm_email: string | null;
-  lookup_as_maintainer: boolean;
   npm_query_size: number;
 };
 
@@ -26,9 +25,6 @@ export const mountNpmSettings = async (
     '#npmusername'
   ) as HTMLInputElement | null;
   const npmEmail = root.querySelector('#npmemail') as HTMLInputElement | null;
-  const roleToggle = root.querySelector(
-    '#author-maintainer'
-  ) as HTMLInputElement | null;
   const querySize = root.querySelector(
     '#npm-query-size'
   ) as HTMLInputElement | null;
@@ -39,7 +35,7 @@ export const mountNpmSettings = async (
     if (status) status.textContent = msg;
   };
 
-  if (!npmUsername || !npmEmail || !roleToggle || !querySize) return;
+  if (!npmUsername || !npmEmail || !querySize) return;
 
   // Get logged-in user
   const { data: session, error: authErr } = await supabase.auth.getUser();
@@ -57,9 +53,7 @@ export const mountNpmSettings = async (
 
   const { data, error } = await supabase
     .from('user_settings')
-    .select(
-      'user_id,npm_username,npm_email,lookup_as_maintainer,npm_query_size'
-    )
+    .select('user_id,npm_username,npm_email,npm_query_size')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -74,13 +68,11 @@ export const mountNpmSettings = async (
 
     npmUsername.value = row.npm_username ?? '';
     npmEmail.value = row.npm_email ?? '';
-    roleToggle.checked = Boolean(row.lookup_as_maintainer);
     querySize.value = String(row.npm_query_size ?? 50);
     setStatus('');
   } else {
     // No row yet
     querySize.value = '50';
-    roleToggle.checked = false;
     setStatus('');
   }
 
@@ -104,7 +96,6 @@ export const mountNpmSettings = async (
       user_id: userId,
       npm_username: npmUsername.value.trim() || null,
       npm_email: npmEmail.value.trim() || null,
-      lookup_as_maintainer: Boolean(roleToggle.checked),
       npm_query_size
     };
     const { error: upsertError } = await supabase

@@ -1,6 +1,4 @@
 import { addOnClick, addOnInput } from '../../lib/spa';
-import type { Config } from '../../types';
-import { setOptions } from '../../utils/set-options';
 import { clearDashboardCache } from '../dashboard/settings/utils/clear-dashboard-cache';
 
 // Which view of the packages a visitor last picked, for this browser
@@ -103,15 +101,9 @@ const sortRows = (key: string) => {
 };
 
 /** Wires the controls on the user page, for one render. */
-export const attachUserPageEvents = (options: Config) => {
+export const attachUserPageEvents = () => {
   addOnClick('view-scope', () => showView('scope'));
   addOnClick('view-table', () => showView('table'));
-  addOnClick('role-maintainer', () =>
-    setOptions({ ...options, maintainer: true })
-  );
-  addOnClick('role-author', () =>
-    setOptions({ ...options, maintainer: false })
-  );
   addOnClick('refresh-data', () => {
     clearDashboardCache();
     window.location.reload();

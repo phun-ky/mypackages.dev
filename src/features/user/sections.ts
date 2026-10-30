@@ -48,18 +48,15 @@ const flags = (pkg: PortfolioPackage) =>
 export const pageHead = ({
   username,
   portfolio,
-  maintainer,
   session,
   packagesOnly = false
 }: {
   username: string;
   portfolio: Portfolio;
-  maintainer: boolean;
   session: Session | null;
   // For /users/:username/packages, which links back to the overview
   packagesOnly?: boolean;
 }) => {
-  const role = maintainer ? 'maintained' : 'authored';
   const name = escapeHtml(username);
   const title = packagesOnly ? `Packages by ${name}` : name;
   const overviewLink = packagesOnly
@@ -73,12 +70,9 @@ export const pageHead = ({
   <span class="user-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(username))}</span>
   <div class="user-title">
     <h1>${title}</h1>
-    <p class="user-sub">${countPackages(portfolio.packages.length)} ${role} on npm${overviewLink} · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
+    <p class="user-sub">${countPackages(portfolio.packages.length)} maintained on npm${overviewLink} · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
   </div>
   <div class="user-controls">
-    <div class="segmented" role="group" aria-label="Packages to show">
-      <button type="button" id="role-maintainer" aria-pressed="${maintainer}">Maintainer</button><button type="button" id="role-author" aria-pressed="${!maintainer}">Author</button>
-    </div>
     <button type="button" id="refresh-data" class="pill-button"><span aria-hidden="true">↻</span> Refresh data</button>
   </div>
 </div>

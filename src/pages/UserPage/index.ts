@@ -41,7 +41,7 @@ export const UserPage = async (
     </div>`;
   }
 
-  attachUserPageEvents(options);
+  attachUserPageEvents();
 
   const items = await getUserPackages(username, signal, options);
   const summaries = await getDownloadSummaries(
@@ -53,20 +53,16 @@ export const UserPage = async (
   const head = pageHead({
     username,
     portfolio,
-    maintainer: options.maintainer,
     session
   });
 
   if (!portfolio.packages.length) {
-    const role = options.maintainer ? 'maintains' : 'authored';
-
     return html`<div class="user-page nebula-page">
       ${header}
       <div class="user-content">
         ${head}
         <p class="user-empty">
-          No packages found that ${escapeHtml(username)} ${role}. Try switching
-          between maintainer and author above.
+          ${escapeHtml(username)} doesn't maintain any packages on npm.
         </p>
       </div>
     </div>`;

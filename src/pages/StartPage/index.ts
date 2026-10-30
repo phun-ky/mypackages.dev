@@ -152,9 +152,8 @@ export const StartPage = async (
           <span class="gradient-text">really doing</span>
         </h1>
         <p class="lede">
-          Downloads, trends, health and security for every package you author or
-          maintain, on one page. Search any package or npm user, no account
-          needed.
+          Downloads, trends, health and security for every package you maintain,
+          on one page. Search any package or npm user, no account needed.
         </p>
         <form class="hero-search" role="search" data-no-submit>
           <label for="query-term-to-use" class="visually-hidden">

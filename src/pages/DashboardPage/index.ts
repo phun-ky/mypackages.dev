@@ -24,9 +24,7 @@ export const DashboardPage = async (
   const userId = session.user.id;
   const { data } = await supabase
     .from('user_settings')
-    .select(
-      'user_id,npm_username,npm_email,lookup_as_maintainer,npm_query_size'
-    )
+    .select('user_id,npm_username,npm_email,npm_query_size')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -55,8 +53,7 @@ export const DashboardPage = async (
   const packages = await getUserPackages(username, signal, options);
 
   return html`<section class="dashboard-page">
-    ${Settings({ options })}
-    ${Container({ children: html` <h1>Dashboard</h1>` })}
+    ${Settings()} ${Container({ children: html` <h1>Dashboard</h1>` })}
     ${Container({
       children: html`${await PackagesOverview(
         {

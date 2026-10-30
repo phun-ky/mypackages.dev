@@ -37,7 +37,9 @@ test('the FAQ shows quotes and apostrophes as typed', async ({ page }) => {
   await waitForApp(page);
 
   await expect(
-    page.getByText('What counts as an "authored" vs "maintained" package?')
+    page.getByText(
+      'Why are only the packages someone maintains shown, and not the ones they "authored"?'
+    )
   ).toBeVisible();
 });
 

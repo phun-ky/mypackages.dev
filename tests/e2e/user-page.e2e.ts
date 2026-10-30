@@ -159,24 +159,32 @@ test('sorts the table by name, both ways', async ({ page }) => {
   await expect(names).toHaveText(['speccer', '@phun-ky/speccer']);
 });
 
-test('switches between maintained and authored packages', async ({ page }) => {
-  await expect(
-    page.getByRole('button', { name: 'Maintainer' })
-  ).toHaveAttribute('aria-pressed', 'true');
-
-  await page.getByRole('button', { name: 'Author' }).click();
-
-  await expect(page.getByRole('button', { name: 'Author' })).toHaveAttribute(
-    'aria-pressed',
-    'true'
+// npm's author search matches the latest publisher, which trusted publishing
+// records as GitHub Actions, so there's no author mode (#95)
+test('lists the packages the user maintains, with no author mode', async ({
+  page
+}) => {
+  await expect(page.locator('.user-sub')).toContainText(
+    '2 packages maintained on npm'
   );
-  expect(
-    await page.evaluate(
-      () =>
-        JSON.parse(atob(window.location.hash.replace('#options=', '')))
-          .maintainer
-    )
-  ).toBe(false);
+  await expect(page.getByRole('button', { name: 'Author' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Maintainer' })).toHaveCount(0);
+});
+
+test('ignores the author mode in an old link', async ({ page }) => {
+  const options = btoa(JSON.stringify({ maintainer: false }));
+  const [request] = await Promise.all([
+    page.waitForRequest('**/functions/v1/npm-search-by-user-role'),
+    page.goto(`/users/someone-else#options=${options}`)
+  ]);
+
+  expect(request.postDataJSON()).not.toHaveProperty('mode');
+
+  await page.goto(`/users/phun-ky#options=${options}`);
+  await waitForApp(page);
+  await expect(page.locator('.user-sub')).toContainText(
+    '2 packages maintained on npm'
+  );
 });
 
 test('fits a phone without scrolling sideways', async ({ page }) => {
