@@ -73,7 +73,12 @@ export const lastYearDownloads = (name: string, perDay = 100) => {
 /**
  * An npm search response listing `names`, as the user search returns it
  */
-export const searchResponse = (username: string, names: string[]) => {
+// `total` is how many npm has, when the search returned only some (#96)
+export const searchResponse = (
+  username: string,
+  names: string[],
+  total = names.length
+) => {
   const updated = new Date(Date.now() - 30 * DAY_MS).toISOString();
 
   return {
@@ -100,7 +105,7 @@ export const searchResponse = (username: string, names: string[]) => {
         detail: { quality: 0.5, popularity: 0.5, maintenance: 0.5 }
       }
     })),
-    total: names.length,
+    total,
     time: new Date().toISOString()
   };
 };

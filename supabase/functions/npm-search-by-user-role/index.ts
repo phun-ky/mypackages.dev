@@ -2,14 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 import { readBody, responses } from "../_shared/http.ts";
 
-const NPM_REGISTRY = "https://registry.npmjs.org";
-
-const clampSize = (n: unknown) => {
-  const x = Number(n);
-  if (!Number.isFinite(x)) return 50;
-  // npm allows up to 250; you also enforce max 250 in your UI
-  return Math.max(1, Math.min(250, Math.floor(x)));
-};
+import { clampSize, searchAll, SearchError } from "./search.ts";
 
 Deno.serve(async (req) => {
   const { json, preflight } = responses(req);
@@ -69,24 +62,22 @@ Deno.serve(async (req) => {
   // `mode` from pages loaded before that is ignored
   const query = `maintainer:${username}`;
 
-  const searchUrl =
-    `${NPM_REGISTRY}/-/v1/search?text=` +
-    encodeURIComponent(query) +
-    `&size=${size}`;
-
   const headers: Record<string, string> = {
     Accept: "application/json",
   };
 
   if (npmToken) headers.Authorization = `Bearer ${npmToken}`;
 
-  const res = await fetch(searchUrl, { headers });
+  // Up to 500, a page of 250 at a time; `total` says how many there are
+  let data;
 
-  if (!res.ok) {
-    return bad(`Search failed: ${res.status}`, 502);
+  try {
+    data = await searchAll(query, size, { headers });
+  } catch (e) {
+    if (e instanceof SearchError) return bad(e.message, 502);
+
+    throw e;
   }
-
-  const data = await res.json().catch(() => null);
 
   return json(
     {

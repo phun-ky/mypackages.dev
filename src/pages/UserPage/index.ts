@@ -13,6 +13,7 @@ import {
   topics
 } from '../../features/user/sections';
 import type { PagePropsType } from '../../lib/spa/types';
+import { countUserPackages } from '../../services/npm/packages/count-user-packages';
 import { getUserPackages } from '../../services/npm/packages/get-user-packages';
 import { escapeHtml } from '../../utils/escape-html';
 
@@ -48,8 +49,9 @@ export const UserPage = async (
     items.map((item) => item.package.name),
     signal
   );
+  const found = await countUserPackages(username, signal, options);
   const now = Date.now();
-  const portfolio = buildPortfolio(items, summaries, now);
+  const portfolio = buildPortfolio(items, summaries, now, { found });
   const head = pageHead({
     username,
     portfolio,

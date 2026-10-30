@@ -34,6 +34,11 @@ export type PortfolioPackage = {
 
 export type Portfolio = {
   packages: PortfolioPackage[];
+  /**
+   * How many packages npm has for the user: more than `packages` when the
+   * site loaded only some of them (#96)
+   */
+  found: number;
   /** The latest complete month, like `2026-09`, that `monthly` counts */
   month: string | null;
   /** The last day npm's data has, like `2026-10-28` */
@@ -66,7 +71,13 @@ export const buildPortfolio = (
   items: FetchUserPackagesUnionItem[],
   summaries: Map<string, DownloadSummary>,
   now = Date.now(),
-  { monthCount = 12, topCount = 4, listCount = 4, topicCount = 16 } = {}
+  {
+    monthCount = 12,
+    topCount = 4,
+    listCount = 4,
+    topicCount = 16,
+    found = 0
+  } = {}
 ): Portfolio => {
   const total = sumMonths([...summaries.values()].map((s) => s.totals));
   const month = latestMonth(total)?.month ?? null;
@@ -160,6 +171,7 @@ export const buildPortfolio = (
 
   return {
     packages,
+    found: Math.max(found, packages.length),
     month,
     dataEnd,
     monthly,

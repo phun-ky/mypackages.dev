@@ -18,7 +18,10 @@ export type PackageInfo = {
 
 export type UserInfo = {
   name: string;
+  // How many npm has, and how many the site loaded: up to 500, as on the
+  // user page (#96)
   packages: number;
+  shown: number;
   // From npm's search: a rolling 30 days. The downloads API would take a
   // request per package, for every user shown
   monthly: number;
@@ -94,7 +97,8 @@ export const getUserInfo = async (
 
         info.set(name, {
           name,
-          packages: res.total,
+          packages: Math.max(res.total, res.objects.length),
+          shown: res.objects.length,
           monthly: byDownloads.reduce(
             (sum, item) => sum + (item.downloads?.monthly ?? 0),
             0

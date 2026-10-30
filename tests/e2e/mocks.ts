@@ -51,15 +51,20 @@ export const mockPackages = async (
 /**
  * Mocks the npm search so `username` maintains `names`, and no one else
  * maintains anything. Mock the packages themselves with `mockPackages`.
+ * With `total`, npm has that many, and the search returned only `names`.
  */
 export const mockUser = async (
   page: Page,
   username: string,
-  names: string[]
+  names: string[],
+  { total = names.length } = {}
 ): Promise<void> => {
   await mockSupabaseFunction(page, 'npm-search-by-user-role', (body) => ({
     ok: true,
-    data: searchResponse(username, body.username === username ? names : [])
+    data:
+      body.username === username
+        ? searchResponse(username, names, total)
+        : searchResponse(username, [])
   }));
   await mockSupabaseFunction(page, 'npm-user-has-packages', (body) => ({
     ok: true,

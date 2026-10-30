@@ -18,7 +18,17 @@ const compact = new Intl.NumberFormat('en-US', {
 const full = new Intl.NumberFormat('en-US');
 const relative = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 const DAY_MS = 24 * 60 * 60 * 1000;
-const countPackages = (n: number) => `${n} ${n === 1 ? 'package' : 'packages'}`;
+const countPackages = (n: number) =>
+  `${full.format(n)} ${n === 1 ? 'package' : 'packages'}`;
+// The site loads up to 500 of a user's packages (#96); above that, every
+// number says it covers the ones shown
+const isPartial = (portfolio: Portfolio) =>
+  portfolio.found > portfolio.packages.length;
+/** "all 12 packages", or "the 500 packages shown" */
+const coverage = (portfolio: Portfolio) =>
+  isPartial(portfolio)
+    ? `the ${countPackages(portfolio.packages.length)} shown`
+    : `all ${countPackages(portfolio.packages.length)}`;
 
 export const formatChange = (pct: number | null) =>
   pct === null || !Number.isFinite(pct)
@@ -70,7 +80,7 @@ export const pageHead = ({
   <span class="user-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(username))}</span>
   <div class="user-title">
     <h1>${title}</h1>
-    <p class="user-sub">${countPackages(portfolio.packages.length)} maintained on npm${overviewLink} · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
+    <p class="user-sub">${isPartial(portfolio) ? `Showing ${full.format(portfolio.packages.length)} of ${countPackages(portfolio.found)}` : countPackages(portfolio.packages.length)} maintained on npm${overviewLink} · <a href="https://www.npmjs.com/~${escapeAttr(username)}" target="_blank" rel="noopener noreferrer">npm profile</a></p>
   </div>
   <div class="user-controls">
     <button type="button" id="refresh-data" class="pill-button"><span aria-hidden="true">↻</span> Refresh data</button>
@@ -89,8 +99,7 @@ const downloadsIn = (month: string | null) =>
   month ? `Downloads in ${monthName(month)}` : 'Downloads last month';
 
 export const overview = (portfolio: Portfolio) => {
-  const { monthly, change, months, share, packages, month, dataEnd } =
-    portfolio;
+  const { monthly, change, months, share, month, dataEnd } = portfolio;
   const shareRows = share
     .map(
       (s, i) =>
@@ -106,14 +115,14 @@ export const overview = (portfolio: Portfolio) => {
 
   return `<section class="user-overview" aria-label="Overview">
   <div class="user-card user-total">
-    <span class="user-label">${downloadsIn(month)}, all ${countPackages(packages.length)}</span>
+    <span class="user-label">${downloadsIn(month)}, ${coverage(portfolio)}</span>
     <span class="user-big">${compact.format(monthly)}</span>
     <span class="user-change ${changeClass(change)}">${formatChange(change)} month over month</span>
     ${areaChart(
       months.map((m) => m.downloads),
       months.map((m) => monthLabel(m.month)),
       {
-        label: `Monthly downloads for all packages, the last ${months.length} complete months`
+        label: `Monthly downloads for ${isPartial(portfolio) ? coverage(portfolio) : 'all packages'}, the last ${months.length} complete months`
       }
     )}
     ${dataEnd ? `<span class="user-label user-data-end">From npm, up to ${dayName(dataEnd)}</span>` : ''}

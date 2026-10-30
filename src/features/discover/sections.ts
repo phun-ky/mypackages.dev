@@ -11,6 +11,7 @@ import type { LookupKind, Lookups } from './lookups';
 // not `html`, so Prettier never splits an end tag over two lines, which
 // diff-dom can't read (#64). Everything from npm and the lookups is escaped.
 
+const full = new Intl.NumberFormat('en-US');
 const compact = new Intl.NumberFormat('en-US', {
   notation: 'compact',
   maximumFractionDigits: 1
@@ -78,13 +79,20 @@ const packageTile = (
   <span class="discover-meta">${pkg?.version ? `v${escapeHtml(pkg.version)} · ` : ''}looked up by ${people(peopleCount)}</span>
 </li>`;
 };
+const countPackages = (n: number) =>
+  `${full.format(n)} ${n === 1 ? 'package' : 'packages'}`;
+// Like the user page, which loads up to 500 packages (#96)
+const userPackages = (user: UserInfo) =>
+  user.shown < user.packages
+    ? `${full.format(user.shown)} of ${countPackages(user.packages)}`
+    : countPackages(user.packages);
 const userTile = (
   term: string,
   peopleCount: number,
   user: UserInfo | undefined
 ) => `<li class="user-card discover-tile">
-  <div class="discover-tile-top"><span class="user-avatar discover-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(term))}</span><a href="${href('user', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${user ? `<span class="discover-big" title="Downloads in the last 30 days, all packages, from npm's search">${compact.format(user.monthly)}</span>` : ''}</div>
-  ${user ? `<p class="discover-meta">${user.packages} ${user.packages === 1 ? 'package' : 'packages'}, ${compact.format(user.monthly)} downloads in 30 days</p><ul class="discover-tops" aria-label="Top packages">${user.top.map((name) => `<li><a href="${href('package', name)}" data-link>${escapeHtml(name)}</a></li>`).join('')}</ul>` : ''}
+  <div class="discover-tile-top"><span class="user-avatar discover-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(term))}</span><a href="${href('user', term)}" data-link class="discover-name">${escapeHtml(term)}</a>${user ? `<span class="discover-big" title="Downloads in the last 30 days, ${user.shown < user.packages ? userPackages(user) : 'all packages'}, from npm's search">${compact.format(user.monthly)}</span>` : ''}</div>
+  ${user ? `<p class="discover-meta">${userPackages(user)}, ${compact.format(user.monthly)} downloads in 30 days${user.shown < user.packages ? ' for those' : ''}</p><ul class="discover-tops" aria-label="Top packages">${user.top.map((name) => `<li><a href="${href('package', name)}" data-link>${escapeHtml(name)}</a></li>`).join('')}</ul>` : ''}
   <span class="discover-meta">looked up by ${people(peopleCount)}</span>
 </li>`;
 
