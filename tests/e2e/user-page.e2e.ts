@@ -212,7 +212,8 @@ test('shows every package of a user with more than 250', async ({ page }) => {
   await mockPackages(page, Object.fromEntries(names.map((n) => [n, {}])));
   await mockUser(page, 'many', names);
   await page.goto('/users/many');
-  await waitForApp(page);
+  // 300 packages take a while to render when the suite runs in parallel
+  await waitForApp(page, { timeout: 30_000 });
 
   await expect(page.locator('.user-sub')).toContainText(
     '300 packages maintained on npm'

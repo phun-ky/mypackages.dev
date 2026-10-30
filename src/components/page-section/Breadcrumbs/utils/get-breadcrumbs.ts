@@ -131,7 +131,14 @@ export const getBreadcrumbsFromRoutes = (args: {
 
     if (!resolvable && skipUnresolvable) continue;
 
-    const href = resolvable ? interpolate(r.path!, params) : r.path!;
+    // The page not found route's `/404` isn't a page: its crumb links to the
+    // address that wasn't found (#42)
+    const href =
+      r.page === 'PageNotFoundPage'
+        ? location.pathname
+        : resolvable
+          ? interpolate(r.path!, params)
+          : r.path!;
     const label = resolveLabel(r, params);
 
     let icon;

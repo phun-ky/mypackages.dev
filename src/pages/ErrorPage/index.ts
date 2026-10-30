@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { codeToHtml } from 'shiki';
-
 import { Link } from '../../components/actions/Link';
 import { Alert } from '../../components/feedback/Alert';
 import { Container } from '../../components/layout/Container';
@@ -103,10 +101,6 @@ export const ErrorPage = async (props: PagePropsType) => {
       </svg>
       Report bug`
   });
-  const highlighted = await codeToHtml(code, {
-    lang: 'plain',
-    theme: 'material-theme-ocean'
-  });
 
   return html`<section class="error-page">
     <header class="error-hero">
@@ -126,7 +120,8 @@ export const ErrorPage = async (props: PagePropsType) => {
           description: escapeHtml(error.toString())
         })}
         <h2>Stacktrace</h2>
-        ${highlighted} ${button}
+        <pre><code>${escapeHtml(code)}</code></pre>
+        ${button}
       </div> `
     })}
   </section>`;

@@ -66,7 +66,7 @@ export const SignUpPage = async () => {
                 />
               </svg>
               Continue with GitHub`,
-            className: 'login-button button primary cta'
+            className: 'login-button primary cta'
           })}
           <p>
             Have an account?

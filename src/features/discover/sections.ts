@@ -53,7 +53,7 @@ export const discoverHead = (kind: LookupKind, query = '') => {
     <label class="visually-hidden" for="discover-query">${text.label}</label>
     <svg class="discover-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
     <input type="search" id="discover-query" class="discover-search-input" value="${escapeAttr(query)}" placeholder="${text.placeholder}" autocomplete="off" data-lpignore="true">
-    <button type="button" id="discover-submit" class="pill-button is-primary">Show me</button>
+    <button type="submit" id="discover-submit" class="pill-button is-primary">Show me</button>
   </form>
   <p id="discover-status" class="discover-status" role="status">${escapeHtml(notFoundText(kind, query))}</p>
 </div>`;

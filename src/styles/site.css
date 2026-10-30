@@ -4,6 +4,49 @@
 html {
   font-size: 100%;
 }
+
+/* Every control shows where focus is, also where a component forgets to */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* The first stop for keyboard users, shown only when focused (#44) */
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  transform: translateY(-200%);
+  border-radius: 999px;
+  background-color: rgb(var(--rgb-canvas));
+  padding: 0.5rem 1rem;
+  color: var(--color-text);
+  font-weight: 600;
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+/* Where the skip link moves focus to, without a ring */
+main:focus,
+main h1:focus {
+  outline: none;
+}
+
+/* No animations, transitions or smooth scrolling for visitors who ask for
+   less motion (#44) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 body {
   font-family: var(--font-family-body);
   font-weight: 500;

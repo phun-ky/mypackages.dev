@@ -168,7 +168,7 @@ export const StartPage = async (
               autocomplete="off"
               data-lpignore="true"
             />
-            <button type="button" id="show-me" class="pill-button is-primary">
+            <button type="submit" id="show-me" class="pill-button is-primary">
               Show me
             </button>
           </div>

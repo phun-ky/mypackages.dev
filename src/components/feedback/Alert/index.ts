@@ -25,10 +25,12 @@ export const Alert = (props: AlertPropsType) => {
   const classNames = cx(`alert ${type} ${className}`, {
     [`${size}`]: Boolean(size)
   });
-  const landmark = label ? ` role="region" aria-label="${label}"` : '';
+  // A labelled section is a region landmark, without role="region"
+  const tag = label ? 'section' : 'div';
+  const landmark = label ? ` aria-label="${label}"` : '';
 
-  return html`<div class="${classNames}" ${landmark}>
+  return html`<${tag} class="${classNames}"${landmark}>
     ${title && title !== '' ? `<span class="title">${title}</span>` : ''}
     ${description}
-  </div>`;
+  </${tag}>`;
 };

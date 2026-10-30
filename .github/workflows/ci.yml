@@ -77,6 +77,8 @@ jobs:
           for file in index.html 404.html; do
             test -f "dist/$file" || { echo "dist/$file is missing"; exit 1; }
           done
+      - name: Check page metadata and the sitemap
+        run: npm run check:metadata
 
   # Unit and property tests of the site's pure code, with coverage of the
   # files they load. The thresholds are in the test:coverage script.

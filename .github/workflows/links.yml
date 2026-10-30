@@ -1,0 +1,74 @@
+name: External links
+
+# The site's links to other sites, once a week and not on pull requests: they
+# break without a change here, and a slow site shouldn't block a merge (#42).
+# Internal links, anchors and assets are checked on every pull request, in
+# tests/e2e/links-and-markup.e2e.ts. A broken link opens an issue, or
+# comments on the one already open.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Check external links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Dependabot doesn't update lychee: bump the version and checksum by
+      # hand, from the release's .sha256 file
+      - name: Install lychee
+        env:
+          LYCHEE_VERSION: 0.24.2
+          LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+        run: |
+          curl -sSfL -o lychee.tar.gz \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          echo "${LYCHEE_SHA256}  lychee.tar.gz" | sha256sum -c -
+          tar xzf lychee.tar.gz
+          find . -name lychee -type f -exec install {} /usr/local/bin/lychee \;
+      # Left out: URLs built in templates (`${...}`), APIs, which answer 404
+      # at their root, local and example addresses, and XML namespaces
+      - name: Check links
+        id: lychee
+        continue-on-error: true
+        run: |
+          lychee --no-progress --max-retries 3 --timeout 30 \
+            --accept '200..=299,403,429' \
+            --exclude '\$\{' \
+            --exclude '^https://api\.' \
+            --exclude '^https://registry\.npmjs\.org' \
+            --exclude '\.supabase\.co' \
+            --exclude '^https?://(localhost|127\.0\.0\.1)' \
+            --exclude 'example\.(com|org)' \
+            --exclude '^https?://www\.w3\.org/' \
+            --exclude '^https?://www\.sitemaps\.org/' \
+            --format markdown --output lychee.md \
+            'src/**/*.ts' index.html README.md SECURITY.md
+      - name: Open or update the issue
+        if: steps.lychee.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: 'Broken external links'
+          RUN_URL:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{
+            github.run_id }}
+        run: |
+          printf '\nFound by [the weekly link check](%s).\n' "$RUN_URL" >> lychee.md
+          number=$(gh issue list --state open --search "in:title \"$TITLE\"" \
+            --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file lychee.md
+          else
+            gh issue create --title "$TITLE" --body-file lychee.md
+          fi

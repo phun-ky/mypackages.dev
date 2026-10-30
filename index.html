@@ -6,9 +6,8 @@
     <!--
       The Content Security Policy, as a meta tag since GitHub Pages can't send
       headers; that also means it can't set frame-ancestors or reporting.
-      Scripts come only from the site; 'wasm-unsafe-eval' is for Shiki's
-      highlighter. Style attributes may be inline (the templates, Shiki and
-      Highcharts set them), style elements may not. connect-src lists the APIs
+      Scripts come only from the site. Style attributes may be inline (the
+      templates and Highcharts set them), style elements may not. connect-src lists the APIs
       the browser calls, tested in tests/e2e/csp.e2e.ts. In development,
       vite.config.ts allows the style elements Vite injects.
     -->
@@ -18,7 +17,7 @@
     base-uri 'self';
     form-action 'self';
     object-src 'none';
-    script-src 'self' 'wasm-unsafe-eval';
+    script-src 'self';
     style-src 'self';
     style-src-attr 'unsafe-inline';
     font-src 'self';

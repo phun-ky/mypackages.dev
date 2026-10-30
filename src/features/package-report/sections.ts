@@ -238,7 +238,12 @@ const shortUrl = (url?: string) => {
   }
 };
 
-export const linksAndMaintainers = (d: ReportData) => {
+export const linksAndMaintainers = (
+  d: ReportData,
+  // GitHub avatars by npm username: opt-in, since they contact GitHub and
+  // can show someone else with the same username (#37)
+  { pictures = false }: { pictures?: boolean } = {}
+) => {
   const links = [
     linkRow('Repository', d.links.repository, shortUrl(d.links.repository)),
     linkRow('Homepage', d.links.homepage, shortUrl(d.links.homepage)),
@@ -257,7 +262,7 @@ export const linksAndMaintainers = (d: ReportData) => {
   const people = d.maintainers
     .map(
       (name) =>
-        `<li><span class="report-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(name))}</span>${userLink(name)}</li>`
+        `<li>${pictures ? `<img class="report-avatar" src="https://avatars.githubusercontent.com/${encodeURIComponent(name)}?s=72" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer" />` : `<span class="report-avatar" aria-hidden="true">${escapeHtml(getInitialsForUser(name))}</span>`}${userLink(name)}</li>`
     )
     .join('');
   const stars =

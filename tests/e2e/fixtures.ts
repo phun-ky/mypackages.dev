@@ -135,7 +135,15 @@ export const mockJson = async (
  * The renderer replaces `<div id="app">` with `<div class="app">` on the first
  * render, so wait for the class rather than the id.
  */
-export const waitForApp = async (page: Page): Promise<void> => {
-  await expect(page.locator('body > .app > *').first()).toBeAttached();
-  await expect(page.locator('#loader-container')).not.toHaveClass(/is-visible/);
+export const waitForApp = async (
+  page: Page,
+  { timeout }: { timeout?: number } = {}
+): Promise<void> => {
+  await expect(page.locator('body > .app > *').first()).toBeAttached({
+    timeout
+  });
+  await expect(page.locator('#loader-container')).not.toHaveClass(
+    /is-visible/,
+    { timeout }
+  );
 };

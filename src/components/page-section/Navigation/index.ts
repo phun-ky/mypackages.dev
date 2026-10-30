@@ -113,7 +113,7 @@ export const Navigation = (props: NavigationPropsType) => {
     }
   ];
 
-  return html`<nav class="navigation">
+  return html`<nav class="navigation" aria-label="Site">
     ${printMenu(navigationItems, currentPath)}
   </nav>`;
 };
