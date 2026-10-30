@@ -78,6 +78,24 @@ jobs:
             test -f "dist/$file" || { echo "dist/$file is missing"; exit 1; }
           done
 
+  # Unit and property tests of the site's pure code, with coverage of the
+  # files they load. The thresholds are in the test:coverage script.
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+
   e2e:
     name: E2E tests (${{ matrix.browser }})
     runs-on: ubuntu-24.04
@@ -169,7 +187,7 @@ jobs:
     name: check
     # Not always(): a run cancelled by a newer push shouldn't report a failure
     if: ${{ !cancelled() }}
-    needs: [lint, build, e2e, functions, database]
+    needs: [lint, build, unit, e2e, functions, database]
     runs-on: ubuntu-24.04
     steps:
       - name: Check that all jobs passed
@@ -179,8 +197,9 @@ jobs:
             'cancelled') || contains(needs.*.result, 'skipped') }}
           RESULTS:
             lint=${{ needs.lint.result }} build=${{ needs.build.result }}
-            e2e=${{ needs.e2e.result }} functions=${{ needs.functions.result }}
-            database=${{ needs.database.result }}
+            unit=${{ needs.unit.result }} e2e=${{ needs.e2e.result }}
+            functions=${{ needs.functions.result }} database=${{
+            needs.database.result }}
         run: |
           echo "$RESULTS"
           [ "$FAILED" = "false" ]
