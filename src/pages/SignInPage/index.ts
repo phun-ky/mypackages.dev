@@ -73,7 +73,7 @@ export const SignInPage = async (props: SignInPagePropsType) => {
                 />
               </svg>
               Continue with GitHub`,
-            className: 'login-button button primary cta'
+            className: 'login-button primary cta'
           })}
           <p>
             Don't have an account?

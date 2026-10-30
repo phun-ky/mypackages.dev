@@ -35,6 +35,7 @@ import { packagePopularity } from '../../services/package/popularity';
 import { packageProvenance } from '../../services/package/provenance';
 import { packageQuality } from '../../services/package/quality';
 import { packageSecurity } from '../../services/package/security';
+import { getShowProfilePictures } from '../../services/supabase/utils/profile-pictures';
 import type { NpmRepository } from '../../types';
 import { safeUrl } from '../../utils/escape-html';
 import { normalizeKnownRepoUrl } from '../../utils/normalize';
@@ -189,7 +190,10 @@ export const PackagePage = async (
     <div class="report">
       ${reportHead(data, now)} ${notice(Boolean(session))} ${verdictCard(data)}
       ${usage(data)} ${releasesSection(data, now)} ${needs(data)}
-      ${linksAndMaintainers(data)} ${keywords(data)}
+      ${linksAndMaintainers(data, {
+        pictures: await getShowProfilePictures(session)
+      })}
+      ${keywords(data)}
     </div>
   </div>`;
 };

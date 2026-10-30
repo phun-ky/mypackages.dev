@@ -66,7 +66,10 @@
   }
   pre {
     width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--nebula-line-alpha);
     border-radius: 12px;
+    background: var(--nebula-card-alpha);
     padding: 1rem;
     font-size: var(--text-size-100);
     font-family: var(--font-family-mono);

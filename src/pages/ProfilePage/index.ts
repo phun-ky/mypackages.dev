@@ -3,6 +3,7 @@ import { Alert } from '../../components/feedback/Alert';
 import { Container } from '../../components/layout/Container';
 import { mountEnsuredPackages } from '../../features/profile/ensured-packages';
 import { mountNpmSettings } from '../../features/profile/npm-settings/mount';
+import { mountPictureSetting } from '../../features/profile/picture-setting';
 import { addOnAfterAppRender } from '../../lib/spa';
 import type { PagePropsType } from '../../lib/spa/types';
 import { escapeAttr } from '../../utils/escape-html';
@@ -30,6 +31,7 @@ export const ProfilePage = async (
 
     if (!(profilePageElement instanceof HTMLElement)) return;
 
+    await mountPictureSetting(profilePageElement, session, signal);
     await mountNpmSettings(profilePageElement, signal);
     await mountEnsuredPackages(profilePageElement, signal);
   });
@@ -69,6 +71,31 @@ export const ProfilePage = async (
               disabled: true,
               children: html`Save`
             })}
+          </div>
+        </form>`
+    })}
+    ${Container({
+      size: 'small',
+      children: html`<h2>Privacy</h2>
+        <form class="well picture-setting">
+          <div class="input-group horizontal">
+            <div class="label-container">
+              <label for="show-profile-pictures">Show profile pictures</label>
+              <p id="show-profile-pictures-help">
+                Shows your picture from GitHub or gravatar.com, and package
+                maintainers' pictures from GitHub. Those services can then see
+                which pages you open. Off, the site shows initials and loads
+                nothing from them.
+              </p>
+            </div>
+            <div class="input-container">
+              <input
+                type="checkbox"
+                id="show-profile-pictures"
+                aria-describedby="show-profile-pictures-help"
+              />
+              <span class="status" role="status"></span>
+            </div>
           </div>
         </form>`
     })}

@@ -478,6 +478,10 @@
   font: 600 0.8rem var(--font-family-heading);
 }
 
+img.report-avatar {
+  object-fit: cover;
+}
+
 .report-stars {
   margin-top: 0.8rem !important;
   font-size: 0.82rem;

@@ -21,6 +21,7 @@
     "preview": "vite preview",
     "lint": "eslint . --max-warnings 0 && node scripts/check-colours.mjs",
     "format:check": "prettier --check .",
+    "check:metadata": "node scripts/check-metadata.mjs",
     "typecheck": "tsc",
     "test:unit": "node --import tsx --enable-source-maps --test \"tests/unit/**/*.test.ts\"",
     "test:coverage": "node --import tsx --enable-source-maps --experimental-test-coverage --test-coverage-include=\"src/**\" --test-coverage-lines=90 --test-coverage-branches=85 --test-coverage-functions=95 --test \"tests/unit/**/*.test.ts\"",
@@ -43,6 +44,7 @@
     "fast-check": "^4.10.2",
     "git-cz": "^4.9.0",
     "globals": "^17.13.0",
+    "html-validate": "^11.17.0",
     "prettier": "3.9.10",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
@@ -56,8 +58,7 @@
     "diff-dom": "^5.2.1",
     "dompurify": "^3.4.17",
     "highcharts": "^13.1.1",
-    "marked": "^18.1.1",
-    "shiki": "^4.5.0"
+    "marked": "^18.1.1"
   },
   "overrides": {
     "micromark-extension-math": {

@@ -7,6 +7,7 @@ import {
   addOnRouteChange
 } from '../../../../../lib/spa';
 import { signOut } from '../../../../../services/github';
+import { getShowProfilePictures } from '../../../../../services/supabase/utils/profile-pictures';
 import { cx } from '../../../../../utils/cx';
 import { escapeAttr, escapeHtml } from '../../../../../utils/escape-html';
 import { Button } from '../../../../actions/Button';
@@ -20,7 +21,10 @@ const html = String.raw;
 export const ProfileMenu = async (session?: Session | null) => {
   if (!session || session === null) return '';
 
-  const avatarUrl = await getUserAvatar(session);
+  // Initials unless the user turned pictures on (#37)
+  const avatarUrl = (await getShowProfilePictures(session))
+    ? await getUserAvatar(session)
+    : null;
   const { user } = session;
   const { user_metadata } = user;
   const { name, user_name, email } = user_metadata;
@@ -55,31 +59,32 @@ export const ProfileMenu = async (session?: Session | null) => {
   });
 
   const id = 'profile-menu';
+  // Closed in every way the same: the class and aria-expanded together, so
+  // screen readers don't hear an open menu (#44)
+  const close = () => {
+    document
+      .querySelectorAll('.profile-menu-launcher.is-open')
+      .forEach((el) => {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-expanded', 'false');
+      });
+  };
   const toggle = (e: Event) => {
     const target = e.target;
 
     if (!(target instanceof HTMLElement)) return;
 
-    const els = document.querySelectorAll('.profile-menu-launcher.is-open');
+    const wasOpen = target.classList.contains('is-open');
 
-    els.forEach((el) => el.classList.remove('is-open'));
+    close();
 
-    const isOpen = target.classList.toggle('is-open');
+    const isOpen = !wasOpen && target.classList.toggle('is-open');
 
     target.setAttribute('aria-expanded', String(isOpen));
   };
 
-  addClickOutside(`profile-menu-wrapper-${id}`, () => {
-    const els = document.querySelectorAll('.profile-menu-launcher.is-open');
-
-    els.forEach((el) => el.classList.remove('is-open'));
-  });
-
-  addOnRouteChange(() => {
-    const els = document.querySelectorAll('.profile-menu-launcher.is-open');
-
-    els.forEach((el) => el.classList.remove('is-open'));
-  });
+  addClickOutside(`profile-menu-wrapper-${id}`, close);
+  addOnRouteChange(close);
 
   addOnClick(id, toggle);
 
@@ -87,7 +92,8 @@ export const ProfileMenu = async (session?: Session | null) => {
     if (e.key !== 'Escape') return;
 
     e.preventDefault();
-    document.getElementById(id)?.classList.remove('is-open');
+    close();
+    document.getElementById(id)?.focus();
   });
 
   const profileMenuLauncherClassNames = cx('profile-menu-launcher');
@@ -101,6 +107,7 @@ export const ProfileMenu = async (session?: Session | null) => {
         aria-haspopup="menu"
         id="${id}"
         aria-controls="${id}-menu"
+        aria-expanded="false"
       >
         ${avatar}
       </button>

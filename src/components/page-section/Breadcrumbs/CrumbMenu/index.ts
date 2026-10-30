@@ -21,31 +21,30 @@ export const CrumbMenu = (props: CrumbMenuPropsType) => {
 
   if (!menu || menu.length === 0) return '';
 
+  // Closed in every way the same: the class and aria-expanded together, so
+  // screen readers don't hear an open menu (#44)
+  const close = () => {
+    document.querySelectorAll('.crumb-menu-trigger.is-open').forEach((el) => {
+      el.classList.remove('is-open');
+      el.setAttribute('aria-expanded', 'false');
+    });
+  };
   const toggle = (e: Event) => {
     const target = e.target;
 
     if (!(target instanceof HTMLElement)) return;
 
-    const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
+    const wasOpen = target.classList.contains('is-open');
 
-    els.forEach((el) => el.classList.remove('is-open'));
+    close();
 
-    const isOpen = target.classList.toggle('is-open');
+    const isOpen = !wasOpen && target.classList.toggle('is-open');
 
     target.setAttribute('aria-expanded', String(isOpen));
   };
 
-  addClickOutside(`crumb-menu-wrapper-${id}`, () => {
-    const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
-
-    els.forEach((el) => el.classList.remove('is-open'));
-  });
-
-  addOnRouteChange(() => {
-    const els = document.querySelectorAll('.crumb-menu-trigger.is-open');
-
-    els.forEach((el) => el.classList.remove('is-open'));
-  });
+  addClickOutside(`crumb-menu-wrapper-${id}`, close);
+  addOnRouteChange(close);
 
   addOnClick(id, toggle);
 
@@ -53,7 +52,8 @@ export const CrumbMenu = (props: CrumbMenuPropsType) => {
     if (e.key !== 'Escape') return;
 
     e.preventDefault();
-    document.getElementById(id)?.classList.remove('is-open');
+    close();
+    document.getElementById(id)?.focus();
   });
 
   const crumbMenuTriggerClassNames = cx('crumb-menu-trigger');
@@ -67,6 +67,7 @@ export const CrumbMenu = (props: CrumbMenuPropsType) => {
         aria-haspopup="menu"
         id="${id}"
         aria-controls="${id}-menu"
+        aria-expanded="false"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,8 @@
 import type { Page } from '@playwright/test';
 
 import { lastYearDownloads, packument, searchResponse } from './data/npm';
-import { mockJson, mockSupabaseFunction } from './fixtures';
+import { session, STORAGE_KEY, user } from './data/session';
+import { mockJson, mockSupabaseFunction, mockSupabaseTable } from './fixtures';
 
 /**
  * Mocks the npm, OSV and GitHub data for `packages`, a map from package name
@@ -70,4 +71,22 @@ export const mockUser = async (
     ok: true,
     hasPackages: body.username === username && names.length > 0
   }));
+};
+
+/**
+ * Signs `user` in, as supabase-js keeps the session, with the "Show profile
+ * pictures" setting (#37) as given.
+ */
+export const signIn = async (
+  page: Page,
+  { showProfilePictures = false } = {}
+): Promise<void> => {
+  await page.addInitScript(
+    ({ key, value }) => localStorage.setItem(key, value),
+    { key: STORAGE_KEY, value: JSON.stringify(session) }
+  );
+  await page.route('**/auth/v1/user', (route) => route.fulfill({ json: user }));
+  await mockSupabaseTable(page, 'user_settings', [
+    { user_id: user.id, show_profile_pictures: showProfilePictures }
+  ]);
 };

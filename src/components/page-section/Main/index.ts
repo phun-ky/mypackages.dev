@@ -12,7 +12,7 @@ export const Main = (props: MainPropsType) => {
   const { page, children } = props;
 
   if (page === 'DashboardPage') {
-    return html`<main class="main">
+    return html`<main class="main" id="main" tabindex="-1">
       ${Alert({
         title:
           'You are currently using this application without a set npm access token.',
@@ -25,5 +25,5 @@ export const Main = (props: MainPropsType) => {
     </main>`;
   }
 
-  return html`<main class="main">${children}</main>`;
+  return html`<main class="main" id="main" tabindex="-1">${children}</main>`;
 };
