@@ -90,7 +90,7 @@ test.describe('keyboard', () => {
               : null
           )
         )
-        .toMatch(/^(H1|MAIN)$/);
+        .toBe('MAIN');
     });
 
     test(`${path}: Tab reaches every control, and each shows focus`, async ({

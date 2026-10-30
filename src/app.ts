@@ -16,6 +16,10 @@ import { Footer } from './components/page-section/Footer';
 import { Header } from './components/page-section/Header';
 import { Main } from './components/page-section/Main';
 import { Navigation } from './components/page-section/Navigation';
+import {
+  SiteHeader,
+  type SiteHeaderPropsType
+} from './components/page-section/SiteHeader';
 import { addOnAfterAppRender, addOnClick } from './lib/spa';
 import { routes, type PageId } from './lib/spa/router/routes';
 import type { PagePropsType } from './lib/spa/types';
@@ -28,6 +32,19 @@ import './styles/app.css';
 let _currentAbort: AbortController | null = null;
 
 const html = String.raw;
+// The redesigned pages' header, outside <main> so it's the banner landmark
+// (#116), with the section each page belongs to marked
+const SITE_HEADER: Partial<
+  Record<string, Omit<SiteHeaderPropsType, 'session'>>
+> = {
+  StartPage: { onStartPage: true },
+  PackagesPage: { current: 'packages' },
+  PackagePage: { current: 'packages' },
+  UsersPage: { current: 'users' },
+  UserPage: { current: 'users' },
+  UserPackagesPage: { current: 'users' },
+  AboutPage: { current: 'about' }
+};
 const App = async (initialProps: Partial<PagePropsType>) => {
   let _pageId: string;
   let _resolvedPageProps = initialProps;
@@ -108,21 +125,11 @@ const App = async (initialProps: Partial<PagePropsType>) => {
           withMenus: true
         });
 
-  // Keyboard users skip the header and navigation (#44), to the page's
-  // heading: the redesigned pages have their header inside <main>. Focused
-  // in a handler, as following `#main` would replace the options in the hash
+  // Keyboard users skip the header and navigation (#44). Focused in a
+  // handler: following `#main` would replace the options in the hash
   addOnClick('skip-link', (e) => {
     e.preventDefault();
-
-    const target =
-      document.querySelector<HTMLElement>('main h1') ??
-      document.getElementById('main');
-
-    if (!target) return;
-
-    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-
-    target.focus();
+    document.getElementById('main')?.focus();
   });
 
   return html`<a class="skip-link" id="skip-link" href="#main"
@@ -148,6 +155,7 @@ const App = async (initialProps: Partial<PagePropsType>) => {
       page: _pageId,
       ...(_resolvedPageProps as unknown as { username?: string })
     })}
+    ${NEBULA_PAGES.has(_pageId) ? SiteHeader({ session, ...SITE_HEADER[_pageId] }) : ''}
     ${Main({ page: _pageId, children: content })} ${Footer({ page: _pageId })}`;
 };
 

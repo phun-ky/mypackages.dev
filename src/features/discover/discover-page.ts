@@ -1,4 +1,3 @@
-import { SiteHeader } from '../../components/page-section/SiteHeader';
 import type { PagePropsType } from '../../lib/spa/types';
 import { supabase } from '../../services/supabase';
 
@@ -17,7 +16,7 @@ import './styles/discover.css';
  */
 export const DiscoverPage = async (
   kind: LookupKind,
-  { options, session = null }: PagePropsType,
+  { options }: PagePropsType,
   signal: AbortSignal
 ) => {
   attachDiscoverEvents(kind, supabase, signal);
@@ -35,7 +34,6 @@ export const DiscoverPage = async (
   ]);
 
   return `<div class="user-page discover-page nebula-page">
-  ${SiteHeader({ session, current: kind === 'package' ? 'packages' : 'users' })}
   <div class="user-content">
     ${discoverHead(kind, query)}
     ${trending(kind, lookups.trending)}

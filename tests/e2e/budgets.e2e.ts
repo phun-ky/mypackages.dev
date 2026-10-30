@@ -18,12 +18,14 @@ const BUDGETS = {
   pages: {
     // Measured 457 kB, LCP 2.95-2.99 s, CLS 0.087, TBT 88-152 ms
     '/': { transferKb: 530, lcpMs: 3800, cls: 0.1, tbtMs: 400 },
-    // Measured 483 kB, LCP 3.48-3.54 s, CLS 0.078, TBT 171-224 ms
+    // Measured 483 kB, LCP 3.48-3.54 s, CLS 0.078, TBT 171-224 ms. TBT
+    // varies more than that on one machine: 181-443 ms over 6 runs of the
+    // same build on 2026-10-30, so its budget allows for that
     '/packages/speccer': {
       transferKb: 560,
       lcpMs: 4400,
       cls: 0.1,
-      tbtMs: 400
+      tbtMs: 550
     }
   }
 } as const;

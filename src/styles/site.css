@@ -30,8 +30,7 @@ html {
 }
 
 /* Where the skip link moves focus to, without a ring */
-main:focus,
-main h1:focus {
+main:focus {
   outline: none;
 }
 

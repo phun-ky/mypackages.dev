@@ -1,9 +1,7 @@
-import { SiteHeader } from '../../components/page-section/SiteHeader';
 import { FAQ_TOPICS } from '../../features/help/faq';
 import { attachHelpSearchEvents } from '../../features/help/interactions';
 import { faqLink } from '../../features/help/sections';
 import { answerCount } from '../../features/help/topics';
-import type { PagePropsType } from '../../lib/spa/types';
 
 import './styles/helpPage.css';
 
@@ -12,11 +10,10 @@ const card = (to: string, title: string, text: string) =>
   `<li><a class="help-card help-link-card" href="${to}" data-link><h2>${title}</h2><p>${text}</p></a></li>`;
 
 /** The help hub (#63): search the FAQ, or go to About, the FAQ or Feedback. */
-export const HelpPage = async ({ session = null }: PagePropsType) => {
+export const HelpPage = async () => {
   attachHelpSearchEvents();
 
   return html`<div class="help-page nebula-page">
-    ${SiteHeader({ session })}
     <div class="help-wrap">
       <div class="help-hero">
         <span class="help-eyebrow">Help</span>
