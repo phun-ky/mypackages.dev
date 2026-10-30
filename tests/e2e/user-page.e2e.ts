@@ -187,6 +187,52 @@ test('ignores the author mode in an old link', async ({ page }) => {
   );
 });
 
+// npm's search gives at most 250 a request, and the site read one page (#96)
+test('asks for up to 500 packages', async ({ page }) => {
+  const [request] = await Promise.all([
+    page.waitForRequest('**/functions/v1/npm-search-by-user-role'),
+    page.goto('/users/someone-else')
+  ]);
+
+  expect(request.postDataJSON()).toMatchObject({ size: 500 });
+});
+
+test('shows every package of a user with more than 250', async ({ page }) => {
+  const names = Array.from({ length: 300 }, (_, i) => `pkg-${i}`);
+
+  await mockPackages(page, Object.fromEntries(names.map((n) => [n, {}])));
+  await mockUser(page, 'many', names);
+  await page.goto('/users/many');
+  await waitForApp(page);
+
+  await expect(page.locator('.user-sub')).toContainText(
+    '300 packages maintained on npm'
+  );
+  await expect(page.locator('.user-sub')).not.toContainText('Showing');
+  await expect(page.locator('#package-rows tr')).toHaveCount(300);
+});
+
+test('says it shows only some when npm has more than it loads', async ({
+  page
+}) => {
+  await mockUser(page, 'many', ['speccer', '@phun-ky/speccer'], {
+    total: 1074
+  });
+  await page.goto('/users/many');
+  await waitForApp(page);
+
+  await expect(page.locator('.user-sub')).toContainText(
+    'Showing 2 of 1,074 packages maintained on npm'
+  );
+  await expect(page.locator('.user-total .user-label').first()).toHaveText(
+    `Downloads in ${lastMonthName}, the 2 packages shown`
+  );
+  await expect(page.locator('.user-total svg')).toHaveAttribute(
+    'aria-label',
+    /^Monthly downloads for the 2 packages shown/
+  );
+});
+
 test('fits a phone without scrolling sideways', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
 

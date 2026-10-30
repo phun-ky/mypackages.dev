@@ -9,7 +9,8 @@ const searchCache = new Map();
 /**
  * The packages a user maintains, from npm's search. Only maintainers: npm's
  * `author:` matches whoever published the latest version, which trusted
- * publishing records as GitHub Actions (#95).
+ * publishing records as GitHub Actions (#95). Up to 500 (#96); `total` says
+ * how many there are.
  */
 export const searchPackagesByUserRole = async (
   supabase: SupabaseClient,
@@ -17,7 +18,7 @@ export const searchPackagesByUserRole = async (
   options: Config,
   signal?: AbortSignal
 ): Promise<NpmRegistrySearchResponse> => {
-  const { responseSize = 250 } = options;
+  const { responseSize = 500 } = options;
   const key = `search:maintainer:${username}:size:${responseSize}`;
 
   return await cachedAsync(searchCache, key, { ttlMs: DAY_MS }, async () => {
@@ -38,7 +39,7 @@ export const searchPackagesByUserRole = async (
       {
         body: {
           username,
-          size: responseSize // edge clamps to <= 250
+          size: responseSize // edge clamps to <= 500
         },
         headers,
         signal

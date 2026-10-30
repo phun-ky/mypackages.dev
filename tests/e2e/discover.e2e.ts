@@ -152,6 +152,21 @@ test.describe('/users', () => {
     ).toHaveAttribute('href', '/users/phun-ky');
   });
 
+  // As on the user page, which loads up to 500 (#96)
+  test('says when a user has more packages than are loaded', async ({
+    page
+  }) => {
+    await mockUser(page, 'phun-ky', ['speccer', '@phun-ky/speccer'], {
+      total: 1074
+    });
+    await mockLookups(page, 'user', ['phun-ky']);
+    await open(page, '/users');
+
+    await expect(page.locator('.discover-tile')).toContainText(
+      '2 of 1,074 packages, 6K downloads in 30 days for those'
+    );
+  });
+
   test('opens a user searched for, and not a package', async ({ page }) => {
     await open(page, '/users');
 
