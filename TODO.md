@@ -1,5 +1,12 @@
 # TODO — Pages, Routes, and Content (v1 → v2)
 
+> Planning notes from before the Nebula, refined redesign
+> ([#47](https://github.com/phun-ky/mypackages.dev/issues/47)), kept for their
+> page ideas. The v1 checklist is done; what's planned now is in
+> [ROADMAP.md](ROADMAP.md), and the work is tracked in
+> [issues](https://github.com/phun-ky/mypackages.dev/issues). About moved to
+> `/help/about`.
+
 ## Goals
 
 - Provide a great overview/dashboard/statistics experience for npm packages (and
@@ -257,55 +264,26 @@ Future (private features on public pages):
 
 ## v1 MVP checklist
 
-- [ ] StartPage search routes to package/user pages
-- [ ] PackagesPage explorer/search working (npm)
-- [ ] PackagePage:
-  - [ ] downloads (monthly + chart)
-  - [ ] health breakdown (maintenance/popularity/quality/security)
-  - [ ] metadata panel (repo, license, maintainers, keywords)
-- [ ] UserPage:
-  - [ ] aggregate totals + top packages
-- [ ] UserPackagesPage list + sort
-- [ ] DashboardPage (logged in):
-  - [ ] portfolio totals + chart + table
-- [ ] Route privacy guard: redirect or show login required for `/dashboard`
+- [x] StartPage search routes to package/user pages
+- [x] PackagesPage explorer/search working (npm)
+- [x] PackagePage:
+  - [x] downloads (monthly + chart)
+  - [x] health breakdown (maintenance/popularity/quality/security)
+  - [x] metadata panel (repo, license, maintainers, keywords)
+- [x] UserPage:
+  - [x] aggregate totals + top packages
+- [x] UserPackagesPage list + sort
+- [x] DashboardPage (logged in):
+  - [x] portfolio totals + chart + table
+- [x] Route privacy guard: redirect or show login required for `/dashboard`
 
 ---
 
 ## v2 backlog
 
-ages`,`/packages/:packageName`,`/users`,`/users/:username`,`/users/:username/packages`,`/about`
-
-Private:
-
-- `/dashboard` (requires session)
-
-Future (private features on public pages):
-
-- Pin / watchlist / tags
-- Notes
-- Alerts
-
----
-
-## v1 MVP checklist
-
-- [ ] StartPage search routes to package/user pages
-- [ ] PackagesPage explorer/search working (npm)
-- [ ] PackagePage:
-  - [ ] downloads (monthly + chart)
-  - [ ] health breakdown (maintenance/popularity/quality/security)
-  - [ ] metadata panel (repo, license, maintainers, keywords)
-- [ ] UserPage:
-  - [ ] aggregate totals + top packages
-- [ ] UserPackagesPage list + sort
-- [ ] DashboardPage (logged in):
-  - [ ] portfolio totals + chart + table
-- [ ] Route privacy guard: redirect or show login required for `/dashboard`
-
----
-
-## v2 backlog
+None of these has an issue yet; they're listed under
+[considered, not scheduled](ROADMAP.md#considered-not-scheduled) in the roadmap,
+and each starts with an issue when it's picked up.
 
 - [ ] Watchlists / pin packages
 - [ ] Notes + tags
