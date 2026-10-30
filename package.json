@@ -22,6 +22,7 @@
     "lint": "eslint . --max-warnings 0 && node scripts/check-colours.mjs",
     "format:check": "prettier --check .",
     "check:metadata": "node scripts/check-metadata.mjs",
+    "images:og": "node scripts/og/render.mjs",
     "typecheck": "tsc",
     "test:unit": "node --import tsx --enable-source-maps --test \"tests/unit/**/*.test.ts\"",
     "test:coverage": "node --import tsx --enable-source-maps --experimental-test-coverage --test-coverage-include=\"src/**\" --test-coverage-lines=90 --test-coverage-branches=85 --test-coverage-functions=95 --test \"tests/unit/**/*.test.ts\"",

@@ -9,9 +9,14 @@ export const SITE_NAME = 'My packages';
 
 export const ORIGIN = 'https://mypackages.dev';
 
-// A placeholder until the Open Graph images of #108: square, so the card
-// is `summary`, not `summary_large_image`
-export const SOCIAL_IMAGE = '/meta/web-app-manifest-512x512.png';
+// The link preview image (#108), rendered by scripts/og/render.mjs. A
+// portrait one is next to it, for posting by hand where previews are tall.
+export const SOCIAL_IMAGE = {
+  path: '/images/mypackages-og.png',
+  width: 1200,
+  height: 630,
+  alt: 'My packages: see how your npm packages are really doing. Downloads per month and package health, on the night sky of the site.'
+};
 
 export type PageMeta = {
   title: string;
@@ -174,11 +179,13 @@ export const metaTags = (meta: PageMeta) => {
     `<meta property="og:title" content="${escapeAttr(meta.title)}" />`,
     `<meta property="og:description" content="${escapeAttr(meta.description)}" />`,
     ...(url ? [`<meta property="og:url" content="${escapeAttr(url)}" />`] : []),
-    `<meta property="og:image" content="${ORIGIN}${SOCIAL_IMAGE}" />`,
-    '<meta property="og:image:width" content="512" />',
-    '<meta property="og:image:height" content="512" />',
-    `<meta property="og:image:alt" content="The ${SITE_NAME} logo" />`,
-    '<meta name="twitter:card" content="summary" />',
+    `<meta property="og:image" content="${ORIGIN}${SOCIAL_IMAGE.path}" />`,
+    '<meta property="og:image:type" content="image/png" />',
+    `<meta property="og:image:width" content="${SOCIAL_IMAGE.width}" />`,
+    `<meta property="og:image:height" content="${SOCIAL_IMAGE.height}" />`,
+    `<meta property="og:image:alt" content="${escapeAttr(SOCIAL_IMAGE.alt)}" />`,
+    '<meta name="twitter:card" content="summary_large_image" />',
+    `<meta name="twitter:image:alt" content="${escapeAttr(SOCIAL_IMAGE.alt)}" />`,
     `<meta name="twitter:title" content="${escapeAttr(meta.title)}" />`,
     `<meta name="twitter:description" content="${escapeAttr(meta.description)}" />`
   ];
