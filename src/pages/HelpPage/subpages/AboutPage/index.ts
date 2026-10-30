@@ -42,7 +42,12 @@ const story = `<section class="help-block help-two" aria-label="The site and its
       <h2>Accounts and privacy</h2>
       <div class="help-prose">
         <p>Signing in is optional. It gives you a dashboard of your own packages, with GitHub sign-in through Supabase.</p>
-        <p>The site shows public package data. What it stores for an account is only what the dashboard needs.</p>
+        <ul>
+          <li>Searches are logged with a random id your browser keeps, and deleted after 90 days. Only what was looked up is public, never who.</li>
+          <li>For an account: your GitHub name and email, your settings, the packages you add, and any npm token you store, encrypted.</li>
+          <li>No analytics, no ads, and nothing is sold or shared.</li>
+        </ul>
+        <p><a href="${REPOSITORY}/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">What is stored, for how long, and how to delete it</a></p>
       </div>
     </div>
   </div>
