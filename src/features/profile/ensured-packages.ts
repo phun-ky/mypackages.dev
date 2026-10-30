@@ -47,8 +47,6 @@ const ensurePackage = async (
     { body: { packageName, registry } }
   );
 
-  console.log('ensurePackage', data, error);
-
   if (error) return { ok: false, error: error.message };
 
   return data as EnsureResponse;
@@ -212,8 +210,6 @@ export const mountEnsuredPackages = async (
           res.code === 'NOT_FOUND'
             ? (res.message ?? 'Package not found (typo?)')
             : (res.error ?? res.message ?? 'Could not register');
-
-        console.log('msg', res.code, msg, res.error, res.message);
 
         setStatus(status, 'error', escapeHtml(msg));
         input.disabled = false;

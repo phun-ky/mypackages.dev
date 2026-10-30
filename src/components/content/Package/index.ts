@@ -3,8 +3,8 @@ import { renderSinglePackageChart } from '../../../features/package-chart';
 import { releaseStatusFromHealth } from '../../../features/release-status';
 import { addOnAfterAppRender } from '../../../lib/spa';
 import { getLastYearDownloadsResult } from '../../../services/npm/get-last-year-downloads-result';
+import { logNpmFailure } from '../../../services/npm/log-npm-failure';
 import type { Config, FetchUserPackagesUnionItem } from '../../../types';
-import { assertNever } from '../../../utils/error/assert-never';
 import { escapeHtml } from '../../../utils/escape-html';
 import { slugify } from '../../../utils/slugify';
 
@@ -32,37 +32,7 @@ export const Package = async (props: PackagePropsType, signal: AbortSignal) => {
   const res = await getLastYearDownloadsResult(name, signal);
 
   if (!res.ok) {
-    switch (res.kind) {
-      case 'http': {
-        const { status, url, retryAfterSeconds } = res;
-
-        if (status >= 500) {
-          console.warn('Downloads API server error', status, url);
-        } else if (status === 429) {
-          console.debug?.(
-            'Downloads API rate limited',
-            status,
-            url,
-            retryAfterSeconds
-          );
-        } else if (status !== 404) {
-          console.warn('Downloads API client error', status, url);
-        }
-
-        break;
-      }
-      case 'abort': {
-        // totally normal; do nothing
-        break;
-      }
-      case 'network': {
-        // optional: console.debug / metrics, but not console.error
-        break;
-      }
-      default: {
-        assertNever(res);
-      }
-    }
+    logNpmFailure(`Downloads for ${name}`, res);
   } else {
     const { data } = res;
     const { /*weekly,*/ monthly } = getDataForChart(data.downloads);

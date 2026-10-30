@@ -13,11 +13,9 @@ const html = String.raw;
 export type SecretsPagePropsType = PagePropsType;
 
 export const SecretsPage = async (
-  props: SecretsPagePropsType,
+  _props: SecretsPagePropsType,
   signal: AbortSignal
 ) => {
-  console.log(props, signal);
-
   const items = await listProviderTokens(supabase);
   const activeNpm = await getActiveProviderTokenMeta(
     supabase,

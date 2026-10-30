@@ -30,6 +30,7 @@ export const mapToUserPackageResult =
       maintainers = detailData.maintainers || [];
       releaseHealth = computeReleaseHealth(detailData, { sampleSize: 8 });
     } catch (err) {
+      // eslint-disable-next-line no-console -- why a package's details are missing, for whoever reports it
       console.warn(`Failed to fetch registry details for ${name}:`, err);
     }
 
@@ -43,6 +44,7 @@ export const mapToUserPackageResult =
 
         monthly = parseInt(`${lm?.downloads}`) || 0;
       } catch (err) {
+        // eslint-disable-next-line no-console -- why a package's numbers are missing, for whoever reports it
         console.warn(`Failed last-month downloads for ${name}:`, err);
         monthly = 0;
       }

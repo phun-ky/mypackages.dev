@@ -40,6 +40,7 @@ export const ttlLocalStorage = {
 
       localStorage.setItem(key, JSON.stringify(payload));
     } catch (e) {
+      // eslint-disable-next-line no-console -- a full or blocked cache only makes the site slower; this says why
       console.warn('localStorage cache set failed', e);
     }
   },

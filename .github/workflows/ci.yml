@@ -37,6 +37,8 @@ jobs:
       - run: npm ci
       - name: Lint
         run: npm run lint
+      - name: Check formatting
+        run: npm run format:check
       - name: Typecheck # Source and tests, see tsconfig.json
         run: npm run typecheck
       # actionlint checks the workflows, and their run: blocks with the

@@ -180,6 +180,9 @@ test('ignores the author mode in an old link', async ({ page }) => {
 
   expect(request.postDataJSON()).not.toHaveProperty('mode');
 
+  // Leaving a page while its fonts load makes Firefox report them as failed
+  await waitForApp(page);
+  await page.evaluate(() => document.fonts.ready);
   await page.goto(`/users/phun-ky#options=${options}`);
   await waitForApp(page);
   await expect(page.locator('.user-sub')).toContainText(

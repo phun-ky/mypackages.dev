@@ -69,7 +69,7 @@ export const pageLoaders = {
     const { FeedbackPage } =
       await import('/pages/HelpPage/subpages/FeedbackPage');
 
-    return ({ props, signal }: PageCtx) => FeedbackPage(props, signal);
+    return () => FeedbackPage();
   },
   PackagesPage: async () => {
     const { PackagesPage } = await import('/pages/PackagesPage');
@@ -94,7 +94,7 @@ export const pageLoaders = {
   ErrorPage: async () => {
     const { ErrorPage } = await import('/pages/ErrorPage');
 
-    return ({ props, signal }: PageCtx) => ErrorPage(props, signal);
+    return ({ props }: PageCtx) => ErrorPage(props);
   },
   PageNotFoundPage: async () => {
     const { PageNotFoundPage } = await import('/pages/PageNotFoundPage');

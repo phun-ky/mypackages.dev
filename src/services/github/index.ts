@@ -6,8 +6,6 @@ import { navigateTo } from '../../lib/spa/utils/navigate-to';
 import { supabase } from '../supabase';
 
 export const signInWithGitHub = async () => {
-  console.log('signing in');
-
   rememberPathAfterSignIn(getPathAfterSignIn());
 
   const { error } = await supabase.auth.signInWithOAuth({
@@ -20,6 +18,7 @@ export const signInWithGitHub = async () => {
     }
   });
 
+  // eslint-disable-next-line no-console -- sign-in has no other place to say why it failed
   if (error) console.error(error);
 };
 
@@ -27,6 +26,7 @@ export const signOut = async () => {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
+    // eslint-disable-next-line no-console -- sign-out has no other place to say why it failed
     console.error(error);
 
     return;

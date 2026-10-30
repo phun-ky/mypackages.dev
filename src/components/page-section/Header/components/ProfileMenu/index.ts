@@ -24,9 +24,6 @@ export const ProfileMenu = async (session?: Session | null) => {
   const { user } = session;
   const { user_metadata } = user;
   const { name, user_name, email } = user_metadata;
-
-  console.log(user_metadata);
-
   const avatar =
     avatarUrl && avatarUrl !== ''
       ? `<img src="${escapeAttr(avatarUrl)}" alt="${escapeAttr(name)}" class="avatar" />`

@@ -14,6 +14,7 @@ export const renderMonthlyDownloadsChart = async (
     .map(([month, value]) => [new Date(`${month}-01`).getTime(), value]);
 
   if (!monthlyDownloadsElement) {
+    // eslint-disable-next-line no-console -- a chart that silently doesn't draw is hard to report
     console.warn('Chart container not found.');
 
     return;

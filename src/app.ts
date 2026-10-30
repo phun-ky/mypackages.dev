@@ -32,10 +32,8 @@ const App = async (initialProps: Partial<PagePropsType>) => {
 
   const { match } = initialProps;
   const options = getOptionsFromHash();
-  const { data, error: sessionError } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getSession();
   const { session } = data;
-
-  console.log(session, sessionError);
 
   if (_currentAbort) _currentAbort.abort();
 

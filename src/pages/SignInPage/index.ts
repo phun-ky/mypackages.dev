@@ -21,8 +21,6 @@ export const SignInPage = async (props: SignInPagePropsType) => {
   });
 
   addOnAfterAppRender(async () => {
-    console.log('session from signinpage', session);
-
     if (session) {
       const urlParams = new URLSearchParams(window.location.search);
       const returnTo = urlParams.get('returnTo') || '/dashboard';
