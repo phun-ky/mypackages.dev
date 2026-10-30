@@ -11,6 +11,14 @@ html {
   outline-offset: 2px;
 }
 
+/* A card in the Nebula, refined design, on every page that has cards */
+.user-card {
+  border: 1px solid rgb(var(--rgb-line) / var(--nebula-line-alpha));
+  border-radius: var(--nebula-radius);
+  background: rgb(var(--rgb-surface) / var(--nebula-card-alpha));
+  backdrop-filter: blur(14px);
+}
+
 /* The first stop for keyboard users, shown only when focused (#44) */
 .skip-link {
   position: absolute;

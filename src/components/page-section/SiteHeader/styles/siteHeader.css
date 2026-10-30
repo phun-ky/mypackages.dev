@@ -11,6 +11,10 @@
   );
   background: rgb(var(--rgb-canvas) / 0.6);
   backdrop-filter: blur(10px);
+  /* backdrop-filter makes the header its own stacking context, so its
+     account menu is drawn above the page only if the header is */
+  position: relative;
+  z-index: 10;
   /* Outside the page since issue 116, so the page's type is set here too */
   color: rgb(var(--rgb-text));
   font-family: var(--font-family-body);
@@ -107,5 +111,13 @@
   }
   .site-header-actions {
     margin-left: auto;
+  }
+}
+
+/* The account menu has the dashboard too, so narrow screens drop the
+   button and keep the logo on one line (#78) */
+@media (max-width: 30rem) {
+  .site-header-actions .site-header-dashboard {
+    display: none;
   }
 }

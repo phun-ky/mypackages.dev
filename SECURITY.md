@@ -74,7 +74,8 @@ What you can't rely on yet:
 - **A complete Content Security Policy.** GitHub Pages can't send headers, so
   the policy is a `<meta>` tag, which can't set `frame-ancestors` (the site can
   be framed) or reporting. It allows scripts only from the site, but inline
-  `style` attributes are allowed, because the templates and Highcharts set them.
+  `style` attributes are allowed, because the templates set them (bar widths and
+  the like).
 - **Availability.** The site depends on npm's public API and its rate limits.
   There is no rate limit of its own on the edge functions.
 

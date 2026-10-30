@@ -42,8 +42,16 @@ export const ProfileMenu = async (session?: Session | null) => {
       type: 'separator'
     },
     {
+      href: '/dashboard',
+      label: 'Dashboard'
+    },
+    {
       href: '/profile',
       label: 'Profile'
+    },
+    {
+      href: '/profile/secrets',
+      label: 'npm tokens'
     },
     {
       type: 'separator'
@@ -103,7 +111,7 @@ export const ProfileMenu = async (session?: Session | null) => {
       <button
         type="button"
         class="${profileMenuLauncherClassNames}"
-        title="More"
+        aria-label="Account menu"
         aria-haspopup="menu"
         id="${id}"
         aria-controls="${id}-menu"

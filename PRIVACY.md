@@ -73,8 +73,7 @@ no analytics or tracking beyond the lookup log above.
 
 - **Settings and profile packages:** change or remove them on your profile page.
 - **What's in your browser:** clear the site's data in your browser. "Refresh
-  data" on a user page, and "Clear cache" on the dashboard, clear the cached
-  responses.
+  data" on a user page or the dashboard clears the cached responses.
 - **Lookups** go after 90 days on their own.
 - **A stored token:** delete it on your profile's Secrets page. It's deleted
   from Vault too, and stops being your active token.

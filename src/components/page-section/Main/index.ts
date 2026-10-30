@@ -1,29 +1,9 @@
 import type { ComponentBasePropsType } from '../../../lib/spa/types';
-import { Alert } from '../../feedback/Alert';
 import './styles/main.css';
 
 const html = String.raw;
 
-export type MainPropsType = ComponentBasePropsType & {
-  page: string;
-};
+export type MainPropsType = ComponentBasePropsType;
 
-export const Main = (props: MainPropsType) => {
-  const { page, children } = props;
-
-  if (page === 'DashboardPage') {
-    return html`<main class="main" id="main" tabindex="-1">
-      ${Alert({
-        title:
-          'You are currently using this application without a set npm access token.',
-        size: 'wide',
-        description: html`This might cause incomplete data due to rate limiting.
-        Please register a npm token in your profile to get more complete data.`,
-        type: 'warning'
-      })}
-      ${children}
-    </main>`;
-  }
-
-  return html`<main class="main" id="main" tabindex="-1">${children}</main>`;
-};
+export const Main = ({ children }: MainPropsType) =>
+  html`<main class="main" id="main" tabindex="-1">${children}</main>`;

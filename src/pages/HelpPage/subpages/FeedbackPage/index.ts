@@ -1,10 +1,7 @@
-import { Link } from '../../../../components/actions/Link';
-import { Container } from '../../../../components/layout/Container';
+import { escapeAttr } from '../../../../utils/escape-html';
 import { buildFeedbackReportUrl } from '/features/bugs/build-github-issue-url';
 
-import './styles/feedbackPage.css';
-
-const html = String.raw;
+import '../../styles/helpPage.css';
 
 export const FeedbackPage = async () => {
   const issueTitle = 'Feedback';
@@ -68,17 +65,6 @@ Add screenshots or a short recording if it helps explain.
 
 ## Additional context
 
-short recording if it helps explain.
-
-## Environment (if relevant)
-
-- Device: [e.g. Desktop / iPhone 15]
-- OS: [e.g. macOS 14 / Windows 11 / iOS 17]
-- Browser: [e.g. Chrome / Safari / Firefox]
-- Version: [e.g. 121]
-
-## Additional context
-
 Anything else we should know (workarounds, frequency, impact, etc.).
 `;
   const feedbackUrl = buildFeedbackReportUrl({
@@ -86,44 +72,18 @@ Anything else we should know (workarounds, frequency, impact, etc.).
     body: issueBody
   });
 
-  return html`<section class="feedback-page">
-    <header class="feedback-hero">
-      ${Container({
-        size: 'small',
-        children: html`
-          <div class="inner">
-            ${Link({
-              to: '/help',
-              className: 'button back-to ghost',
-              children: html`<svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 -960 960 960"
-                  fill="currentColor"
-                >
-                  <path
-                    d="m294.92-450 227.85 227.85L480-180 180-480l300-300 42.77 42.15L294.92-510H780v60H294.92Z"
-                  />
-                </svg>
-                Back to Help`
-            })}
-            <div class="title-container">
-              <span class="eyebrow">Feedback</span>
-              <h1>Have feedback?</h1>
-            </div>
-            <p class="lead">
-              If something is missing, or wrong, please let me know!
-            </p>
-
-            <div class="flex gap-1">
-              ${Link({
-                to: feedbackUrl,
-                className: 'button primary',
-                children: 'Provide feedback'
-              })}
-            </div>
-          </div>
-        `
-      })}
-    </header>
-  </section>`;
+  return `<div class="help-page feedback-page nebula-page">
+  <div class="help-wrap">
+    <div class="help-hero">
+      <span class="help-eyebrow">Feedback</span>
+      <h1>Have feedback?</h1>
+      <p class="help-lede">If something is missing, unclear or wrong, tell me on GitHub. A bug has its own report, and a security problem goes privately, as the <a href="https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">security policy</a> says.</p>
+      <div class="help-row">
+        <a class="pill-button is-primary" href="${escapeAttr(feedbackUrl)}" target="_blank" rel="noopener noreferrer">Give feedback on GitHub</a>
+        <a class="pill-button" href="https://github.com/phun-ky/mypackages.dev/issues/new?template=bug_report.md" target="_blank" rel="noopener noreferrer">Report a bug</a>
+        <a class="pill-button" href="/help" data-link>Back to Help</a>
+      </div>
+    </div>
+  </div>
+</div>`;
 };

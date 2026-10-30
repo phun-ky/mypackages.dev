@@ -1,8 +1,9 @@
 import { escapeAttr } from '../../../utils/escape-html';
 import './styles/charts.css';
 
-// Small SVG charts coloured from the theme tokens (see charts.css), for
-// places where Highcharts is more than the job needs. Plain strings, so
+// Small SVG charts coloured from the theme tokens (see charts.css), the
+// site's only charts since Highcharts left with the old dashboard (#78).
+// Plain strings, so
 // Prettier never splits an end tag over two lines, which diff-dom can't
 // read (#64).
 

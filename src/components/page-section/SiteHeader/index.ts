@@ -13,18 +13,37 @@ export type SiteHeaderPropsType = {
   current?: 'packages' | 'users' | 'about';
   /** On the front page, "How it works" scrolls; elsewhere it goes there */
   onStartPage?: boolean;
+  /** The account menu for a signed-in user, rendered by ProfileMenu */
+  account?: string;
 };
 
 /**
  * The header for the Nebula, refined design (#47): the logo, the main
- * sections, the theme toggle, and sign in or the dashboard.
+ * sections, the theme toggle, and sign in, or the dashboard and the account
+ * menu.
  */
 export const SiteHeader = ({
   session,
   current,
-  onStartPage = false
-}: SiteHeaderPropsType) =>
-  html`<header class="site-header">
+  onStartPage = false,
+  account = ''
+}: SiteHeaderPropsType) => {
+  let actions = Link({
+    to: '/dashboard/signin',
+    className: 'pill-button',
+    children: 'Sign in'
+  });
+
+  if (session) {
+    actions =
+      Link({
+        to: '/dashboard',
+        className: 'pill-button site-header-dashboard',
+        children: 'Dashboard'
+      }) + account;
+  }
+
+  return html`<header class="site-header">
     ${Link({
       to: '/',
       className: 'site-header-brand',
@@ -48,20 +67,6 @@ export const SiteHeader = ({
         ...(current === 'about' && { 'aria-current': 'page' })
       })}
     </nav>
-    <div class="site-header-actions">
-      ${ThemeToggle()}
-      ${
-        session
-          ? Link({
-              to: '/dashboard',
-              className: 'pill-button',
-              children: 'Dashboard'
-            })
-          : Link({
-              to: '/dashboard/signin',
-              className: 'pill-button',
-              children: 'Sign in'
-            })
-      }
-    </div>
+    <div class="site-header-actions">${ThemeToggle()} ${actions}</div>
   </header>`;
+};

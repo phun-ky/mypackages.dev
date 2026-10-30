@@ -1,14 +1,15 @@
-.dashboard-page {
-  position: relative;
+/* The dashboard (#78): the user page's layout, with a card to start from */
+.dashboard-start {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
-  padding-bottom: 8rem;
+  align-items: flex-start;
+  gap: 0.8rem;
+  max-width: 40rem;
+  margin-top: 1.5rem;
+  padding: 1.6rem 1.8rem;
 
-  h1 {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-start;
-    align-items: flex-start;
+  & h2 {
+    font: 600 1.25rem/1.25 var(--font-family-heading);
+    color: rgb(var(--rgb-text-bright));
   }
 }
