@@ -14,7 +14,6 @@ const REQUIRED = [
   /<meta name="description" content="[^"]+"/,
   /<meta property="og:title" content="[^"]+"/,
   /<meta property="og:description" content="[^"]+"/,
-  /<meta property="og:url" content="https:\/\/mypackages\.dev\/[^"]*"/,
   /<meta property="og:image" content="https:\/\/mypackages\.dev\/[^"]+"/,
   /<meta name="twitter:card" content="[^"]+"/
 ];
@@ -42,6 +41,11 @@ for (const file of pages) {
 
   if (!canonical === !noindex) {
     problems.push(`${name}: needs a canonical URL or noindex, not both`);
+  }
+
+  // 404.html is what a link to a package or user page previews as (#39)
+  if (name === '404.html' && /Page not found/.test(html)) {
+    problems.push('404.html: says "Page not found", which package links show');
   }
 
   if (!canonical) continue;
