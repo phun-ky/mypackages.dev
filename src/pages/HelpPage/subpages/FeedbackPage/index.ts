@@ -1,18 +1,12 @@
 import { Link } from '../../../../components/actions/Link';
 import { Container } from '../../../../components/layout/Container';
-import type { PagePropsType } from '../../../../lib/spa/types';
 import { buildFeedbackReportUrl } from '/features/bugs/build-github-issue-url';
 
 import './styles/feedbackPage.css';
 
 const html = String.raw;
 
-export const FeedbackPage = async (
-  props: PagePropsType,
-  signal: AbortSignal
-) => {
-  console.log(props, signal);
-
+export const FeedbackPage = async () => {
   const issueTitle = 'Feedback';
   const issueBody = `Thanks for taking the time to share feedback! 🙌
 

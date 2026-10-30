@@ -12,8 +12,6 @@ export type HasDependentsParamsType = {
 export const hasDependents = (params: HasDependentsParamsType) => {
   const { role, username, packageName } = params;
 
-  console.log('hasDependents', role, username, packageName);
-
   if (!role || !username) return null;
 
   const query =

@@ -1,6 +1,6 @@
 import { getLastYearDownloadsResult } from '../../../../../../../services/npm/get-last-year-downloads-result';
+import { logNpmFailure } from '../../../../../../../services/npm/log-npm-failure';
 import type { FetchUserPackagesUnionItem } from '../../../../../../../types';
-import { assertNever } from '../../../../../../../utils/error/assert-never';
 import { escapeHtml } from '../../../../../../../utils/escape-html';
 import { getDataForChart } from '../../../../../../package/get-data-for-chart';
 import { Link } from '/components/actions/Link';
@@ -21,44 +21,7 @@ export const PackagesList = async (
   const res = await getLastYearDownloadsResult(name, signal);
 
   if (!res.ok) {
-    switch (res.kind) {
-      case 'http': {
-        const { status, url, retryAfterSeconds } = res;
-
-        if (status >= 500) {
-          console.warn('Downloads API server error', status, url);
-        } else if (status === 429) {
-          console.info?.(
-            'Downloads API rate limited',
-            status,
-            url,
-            retryAfterSeconds
-          );
-        } else if (status === 404) {
-          console.warn('File not found', status, url);
-        } else {
-          console.warn('AWDASDASD', res.body);
-        }
-
-        break;
-      }
-      case 'abort': {
-        // totally normal; do nothing
-        break;
-      }
-      case 'network': {
-        console.warn(
-          'Downloads API network/CORS failure',
-          res.url,
-          res.message
-        );
-
-        break;
-      }
-      default: {
-        assertNever(res);
-      }
-    }
+    logNpmFailure(`Downloads for ${name}`, res);
   } else {
     const { data } = res;
     const { /*weekly,*/ monthly } = getDataForChart(data.downloads);

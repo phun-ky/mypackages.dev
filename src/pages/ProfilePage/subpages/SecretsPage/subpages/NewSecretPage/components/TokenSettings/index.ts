@@ -74,8 +74,6 @@ export const TokenSettings = async (props: TokenSettingsPropsType) => {
   addOnAfterAppRender(() => {
     const root = document.querySelector('.profile-page');
 
-    console.log('root', root);
-
     if (!(root instanceof HTMLElement)) return;
 
     TokenSettings_bind(root, { supabase }, signal);
@@ -156,8 +154,6 @@ export const TokenSettings_bind = (
   opts: { supabase: SupabaseClient },
   signal?: AbortSignal
 ) => {
-  console.log('binding');
-
   const host = root.querySelector<HTMLElement>('[data-token-settings]');
 
   if (!host) return;

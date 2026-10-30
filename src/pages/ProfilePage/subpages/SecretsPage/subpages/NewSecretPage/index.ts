@@ -9,11 +9,9 @@ const html = String.raw;
 export type NewSecretPagePropsType = PagePropsType;
 
 export const NewSecretPage = async (
-  props: NewSecretPagePropsType,
+  _props: NewSecretPagePropsType,
   signal: AbortSignal
 ) => {
-  console.log(props, signal);
-
   return html`<section class="new-secret-page">
     ${Container({
       size: 'small',

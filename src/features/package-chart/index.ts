@@ -98,6 +98,7 @@ export const renderSinglePackageChart = async (
 
     Highcharts.chart(containerId, chartOptions);
   } catch (err) {
+    // eslint-disable-next-line no-console -- a chart that silently doesn't draw is hard to report
     console.warn(`Chart error for ${pkgName}:`, err);
   }
 };

@@ -16,9 +16,6 @@ export const NewestPackages = async (
   signal: AbortSignal
 ) => {
   const { packages, options } = props;
-
-  console.log(packages);
-
   const newestPackages = [...packages].sort((a, b) => {
     const aa = new Date(a.package.date ?? a.package.updated ?? 0).getTime();
     const bb = new Date(b.package.date ?? b.package.updated ?? 0).getTime();

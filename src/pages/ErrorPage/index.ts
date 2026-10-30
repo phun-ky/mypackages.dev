@@ -14,9 +14,7 @@ import './styles/errorPage.css';
 
 const html = String.raw;
 
-export const ErrorPage = async (props: PagePropsType, signal: AbortSignal) => {
-  console.log(signal);
-
+export const ErrorPage = async (props: PagePropsType) => {
   const { error } = props;
 
   if (!error) {

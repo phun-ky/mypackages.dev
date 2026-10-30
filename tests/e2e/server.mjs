@@ -99,5 +99,6 @@ createServer(async (req, res) => {
 
   res.writeHead(404, { 'Content-Type': 'text/plain' }).end('Not found');
 }).listen(PORT, '127.0.0.1', () => {
+  // eslint-disable-next-line no-console -- the test server says where it listens
   console.log(`Serving dist/ on http://127.0.0.1:${PORT}`);
 });

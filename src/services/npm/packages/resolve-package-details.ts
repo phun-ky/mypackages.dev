@@ -3,9 +3,9 @@ import type {
   NpmRegistryPackument,
   ReleaseHealth
 } from '../../../types';
-import { assertNever } from '../../../utils/error/assert-never';
 import { getLastMonthDownloadsResult } from '../get-last-month-downloads-result';
 import { getPackageDetailsResult } from '../get-package-details-result';
+import { logNpmFailure } from '../log-npm-failure';
 import { computeReleaseHealth } from '../release-health/compute-release-health';
 
 export type PackageDetails = Partial<NpmRegistryPackument> & {
@@ -26,37 +26,7 @@ export const resolvePackageDetails = async (
   const res = await getPackageDetailsResult(name, signal);
 
   if (!res.ok) {
-    switch (res.kind) {
-      case 'http': {
-        const { status, url, retryAfterSeconds } = res;
-
-        if (status >= 500) {
-          console.warn('Downloads API server error', status, url);
-        } else if (status === 429) {
-          console.debug?.(
-            'Downloads API rate limited',
-            status,
-            url,
-            retryAfterSeconds
-          );
-        } else if (status !== 404) {
-          console.warn('Downloads API client error', status, url);
-        }
-
-        break;
-      }
-      case 'abort': {
-        // totally normal; do nothing
-        break;
-      }
-      case 'network': {
-        // optional: console.debug / metrics, but not console.error
-        break;
-      }
-      default: {
-        assertNever(res);
-      }
-    }
+    logNpmFailure(`Package details for ${name}`, res);
 
     return {
       name,

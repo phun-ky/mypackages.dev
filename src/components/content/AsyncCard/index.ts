@@ -34,6 +34,7 @@ const defaultSkeleton = html`
   </div>
 `;
 const defaultError = (e?: unknown) => {
+  // eslint-disable-next-line no-console -- the card only says something went wrong; this says what
   console.error(e);
 
   return html`<div class="card__error" role="alert">

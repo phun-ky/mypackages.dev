@@ -22,8 +22,8 @@ export default defineConfig({
     : [['list']],
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry'
+    /* Keep a trace of every failed attempt, in the HTML report on CI. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure'
   },
   projects: [
     {

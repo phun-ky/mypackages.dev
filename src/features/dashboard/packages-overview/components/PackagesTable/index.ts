@@ -17,9 +17,6 @@ export const PackagesTable = async (
   const sortedByDownloads = [...packages].sort(
     (a, b) => b.downloads.monthly - a.downloads.monthly
   );
-
-  console.log(sortedByDownloads);
-
   const items = await Promise.all(
     sortedByDownloads.map((pkg) => PackagesList(pkg, signal))
   );

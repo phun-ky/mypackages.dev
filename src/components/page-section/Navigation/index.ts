@@ -22,7 +22,7 @@ export type NavigationItem = {
 };
 
 export const Navigation = (props: NavigationPropsType) => {
-  const { username, page } = props;
+  const { page } = props;
 
   if (
     NEBULA_PAGES.has(page) ||
@@ -33,8 +33,6 @@ export const Navigation = (props: NavigationPropsType) => {
     page === 'FAQPage'
   )
     return '';
-
-  console.log('Navigation', username);
 
   const currentPath = normalizePath(window.location.pathname);
   const navigationItems: NavigationItem[] = [
