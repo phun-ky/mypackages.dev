@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Container } from '../../../../components/layout/Container';
+import { deleteProviderToken } from '../../../../features/profile/secrets/utils/delete-provider-token';
 import { getActiveProviderTokenMeta } from '../../../../features/profile/secrets/utils/get-active-provider-token-meta';
 import { listProviderTokens } from '../../../../features/profile/secrets/utils/list-provider-tokens';
 import { setActiveProviderToken } from '../../../../features/profile/secrets/utils/set-active-provider-token';
 import { addOnAfterAppRender } from '../../../../lib/spa';
 import type { PagePropsType } from '../../../../lib/spa/types';
 import { supabase } from '../../../../services/supabase';
-import { escapeHtml } from '../../../../utils/escape-html';
+import { escapeAttr, escapeHtml } from '../../../../utils/escape-html';
 
 const html = String.raw;
 
@@ -82,6 +83,16 @@ export const SecretsPage = async (
                           </button>`
                         : ''
                     }
+                    <button
+                      type="button"
+                      class="button danger"
+                      data-delete
+                      data-token-id="${id}"
+                      data-label="${escapeAttr(label ?? '')}"
+                      aria-label="Delete ${escapeAttr(label ?? provider)}"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>`;
               })
@@ -105,6 +116,35 @@ export const SecretsPage_bind = (
 
     status.textContent = msg;
   };
+
+  // Deleting a token deletes it from Vault too (#125)
+  root.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+      '[data-delete]'
+    );
+    const tokenId = btn?.dataset.tokenId ?? '';
+
+    if (!btn || !tokenId) return;
+
+    // A native confirm: accessible, and deleting can't be undone
+    // eslint-disable-next-line no-alert -- the confirmation #125 asks for
+    const confirmed = window.confirm(
+      `Delete the token “${btn.dataset.label ?? ''}”? The site can no longer use it, and it is deleted from the database.`
+    );
+
+    if (!confirmed) return;
+
+    btn.disabled = true;
+    setStatus('Deleting the token…');
+
+    try {
+      await deleteProviderToken(supabase, { token_id: tokenId }, opts.signal);
+      window.location.reload();
+    } catch (err: any) {
+      btn.disabled = false;
+      setStatus(err?.message ?? 'Failed to delete the token.');
+    }
+  });
 
   root.addEventListener('click', async (e) => {
     const t = e.target as HTMLElement;

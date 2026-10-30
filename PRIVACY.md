@@ -43,7 +43,7 @@ Signing in is optional and uses your GitHub account through
 | Your GitHub user id, username, name, email and avatar address   | Supabase Auth                 | Until your account is deleted              |
 | Your npm username and email, and your settings                  | The `user_settings` table     | Until you change them, or the account goes |
 | Packages you add to your profile                                | The `ensured_packages` table  | Until you remove them, or the account goes |
-| npm or GitHub tokens you store                                  | Supabase Vault, encrypted     | Until deleted; see below                   |
+| npm or GitHub tokens you store                                  | Supabase Vault, encrypted     | Until you delete them, or the account goes |
 | What you look up, with your account id instead of the random id | The `search_events` table     | 90 days                                    |
 | Your session                                                    | Your browser, set by Supabase | Until you sign out or it expires           |
 
@@ -76,14 +76,12 @@ no analytics or tracking beyond the lookup log above.
   data" on a user page, and "Clear cache" on the dashboard, clear the cached
   responses.
 - **Lookups** go after 90 days on their own.
-- **A stored token or your whole account:** email <security@phun-ky.net> from
-  the address on your GitHub account, and the maintainer deletes it. Deleting an
-  account deletes your settings, profile packages and token records, and removes
-  your account id from your lookups. The site can't yet delete a token itself,
-  and deleting a token record doesn't yet delete its encrypted copy in Vault;
-  both are being fixed in
-  [#125](https://github.com/phun-ky/mypackages.dev/issues/125), and until then
-  the maintainer deletes the Vault copy by hand.
+- **A stored token:** delete it on your profile's Secrets page. It's deleted
+  from Vault too, and stops being your active token.
+- **Your whole account:** email <security@phun-ky.net> from the address on your
+  GitHub account, and the maintainer deletes it. That deletes your settings,
+  profile packages and stored tokens, from Vault too, and removes your account
+  id from your lookups.
 
 ## How it's protected
 
