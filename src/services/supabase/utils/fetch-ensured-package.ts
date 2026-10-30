@@ -19,10 +19,23 @@ export const fetchEnsuredPackages = async (
 
 const ensuredCache = new Map<string, Promise<string[]> | string[]>();
 
-export const getEnsuredPackageNames = (signal: AbortSignal) => {
+/**
+ * The packages the signed-in user has added in their profile. Nothing for a
+ * signed-out visitor, who may not read the table (#54). Cached per user, so
+ * signing out or in again doesn't keep someone else's.
+ */
+export const getEnsuredPackageNames = async (
+  signal: AbortSignal
+): Promise<string[]> => {
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) return [];
+
   return cachedAsync(
     ensuredCache,
-    'supabase:ensured-packages',
+    `supabase:ensured-packages:${session.user.id}`,
     { ttlMs: HOUR_MS },
     async () => {
       const rows = await fetchEnsuredPackages(signal);

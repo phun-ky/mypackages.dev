@@ -1,5 +1,6 @@
 import { YEAR_MS } from '../../../constants/temporal';
 import type { NpmPackageNames, Username } from '../../../types';
+import { isAbort } from '../../../utils';
 import { lsKey } from '../../../utils/storage/ls-key';
 import { ttlLocalStorage } from '../../../utils/storage/ttl-local-storage';
 import { getEnsuredPackageNames } from '../../supabase/utils/fetch-ensured-package';
@@ -21,7 +22,15 @@ export const getTrackedPackages = async (
 
   if (Array.isArray(v)) return v.filter(Boolean) as string[];
 
-  return await getEnsuredPackageNames(signal);
+  // Tracked packages only add to what npm's search finds, so the page
+  // shows the search's packages if they can't be read
+  try {
+    return await getEnsuredPackageNames(signal);
+  } catch (e) {
+    if (isAbort(e as Error)) throw e;
+
+    return [];
+  }
 };
 
 const setTrackedPackages = (names: NpmPackageNames, username: Username) => {
