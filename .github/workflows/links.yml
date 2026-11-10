@@ -48,7 +48,7 @@ jobs:
           lychee --no-progress --max-retries 3 --timeout 30 \
             --accept '200..=299,403,429' \
             --root-dir "$PWD/public" \
-            --exclude '\$(\{|%7B)' \
+            --exclude '[$](\{|%7B)' \
             --exclude '^https://api\.' \
             --exclude '^https://registry\.npmjs\.org' \
             --exclude '\.supabase\.co' \
