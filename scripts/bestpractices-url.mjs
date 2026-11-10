@@ -4,7 +4,7 @@
 // until you do. Saved justifications are kept unless you pass --justifications.
 // A level with many changes is split over several links, because the site
 // refuses very long URLs (HTTP 414); save each one in turn.
-// Usage: node scripts/bestpractices-url.mjs [--level silver] [--justifications]
+// Usage: npm run bestpractices:url -- [--level silver] [--justifications]
 // Levels: passing, silver, gold (the metal series) and baseline-1, baseline-2,
 // baseline-3 (OSPS Baseline), each read from the official criteria lists.
 import { readFileSync } from 'node:fs';
