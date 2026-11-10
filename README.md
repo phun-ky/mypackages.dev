@@ -87,7 +87,7 @@ answers every request with mocks.
 | `npm run typecheck`      | TypeScript, for the source and the tests                                      |
 | `npm run test:unit`      | Unit and property tests (`tests/unit`)                                        |
 | `npm run test:coverage`  | The unit tests with coverage thresholds                                       |
-| `npm run test:e2e`       | Builds with `.env.e2e`, then the Playwright tests in Chromium and Firefox     |
+| `npm run test:e2e`       | Builds with `.env.e2e`, then the Playwright tests in Chromium                 |
 | `npm run build`          | The production build                                                          |
 | `npm run check:metadata` | Titles, descriptions, link previews and the sitemap in `dist/`, after a build |
 
