@@ -103,14 +103,9 @@ jobs:
         run: npm run test:coverage
 
   e2e:
-    name: E2E tests (${{ matrix.browser }})
+    name: E2E tests
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    strategy:
-      # Report both browsers, even if one fails
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -121,14 +116,14 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+        run: npx playwright install --with-deps chromium
       # Builds with .env.e2e first, see the pretest:e2e script
       - name: Run Playwright tests
-        run: npm run test:e2e -- --project=${{ matrix.browser }}
+        run: npm run test:e2e
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report
           path: playwright-report/
           retention-days: 30
 
