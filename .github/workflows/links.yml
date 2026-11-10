@@ -37,20 +37,26 @@ jobs:
           echo "${LYCHEE_SHA256}  lychee.tar.gz" | sha256sum -c -
           tar xzf lychee.tar.gz
           find . -name lychee -type f -exec install {} /usr/local/bin/lychee \;
-      # Left out: URLs built in templates (`${...}`), APIs, which answer 404
-      # at their root, local and example addresses, and XML namespaces
+      # Left out: URLs built in templates (`${...}`, which lychee reports
+      # percent-encoded), APIs, which answer 404 at their root, local, example
+      # and placeholder addresses, and XML namespaces. index.html's
+      # root-relative links resolve to public/, as they do on the site.
       - name: Check links
         id: lychee
         continue-on-error: true
         run: |
           lychee --no-progress --max-retries 3 --timeout 30 \
             --accept '200..=299,403,429' \
-            --exclude '\$\{' \
+            --root-dir "$PWD/public" \
+            --exclude '\$(\{|%7B)' \
             --exclude '^https://api\.' \
             --exclude '^https://registry\.npmjs\.org' \
             --exclude '\.supabase\.co' \
             --exclude '^https?://(localhost|127\.0\.0\.1)' \
             --exclude 'example\.(com|org)' \
+            --exclude '^https://github\.com/owner/repo' \
+            --exclude '^https://ssh\.dev\.azure\.com' \
+            --exclude '^https://mypackages\.dev/(…|%E2%80%A6)$' \
             --exclude '^https?://www\.w3\.org/' \
             --exclude '^https?://www\.sitemaps\.org/' \
             --format markdown --output lychee.md \
