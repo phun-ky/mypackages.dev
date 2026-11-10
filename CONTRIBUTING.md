@@ -66,7 +66,7 @@ Every feature and every fix comes with tests:
 
 The end-to-end tests run against a build with every request mocked, so they
 don't need Supabase or the network. Run the files your change touches while you
-work; CI runs the whole suite in Chromium and Firefox.
+work; CI runs the whole suite in Chromium.
 
 ### Checks
 
