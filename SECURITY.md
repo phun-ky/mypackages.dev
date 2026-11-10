@@ -24,7 +24,7 @@ findings that need a compromised device or browser.
 ## Reporting a Vulnerability
 
 Report vulnerabilities privately, either with GitHub's
-[private vulnerability reporting](https://github.com/phun-ky/mypackages.dev/security/advisories/new)
+[private vulnerability reporting](https://github.com/phun-ky/site-mypackages.dev/security/advisories/new)
 or by email to <security@phun-ky.net>. Please don't open a public issue for a
 security problem.
 
@@ -113,7 +113,7 @@ in the dependency review until a fix is reachable.
 CodeQL analyses every pull request and every push to `main`, for the site's
 JavaScript and TypeScript and for the workflows. OpenSSF Scorecard runs on every
 push to `main` and weekly; its results are on the
-[Scorecard viewer](https://scorecard.dev/viewer/?uri=github.com/phun-ky/mypackages.dev).
+[Scorecard viewer](https://scorecard.dev/viewer/?uri=github.com/phun-ky/site-mypackages.dev).
 Secret scanning with push protection blocks commits that contain a known kind of
 secret.
 

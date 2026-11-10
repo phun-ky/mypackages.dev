@@ -34,7 +34,7 @@ export const Footer = ({ page }: FooterPropsType) => {
         ${Link({ to: '/help/faq', children: 'FAQ' })}
         ${Link({ to: '/help/feedback', children: 'Feedback' })}
         ${Link({
-          to: 'https://github.com/phun-ky/mypackages.dev',
+          to: 'https://github.com/phun-ky/site-mypackages.dev',
           children: 'GitHub'
         })}
       </nav>
@@ -59,7 +59,7 @@ export const Footer = ({ page }: FooterPropsType) => {
         <span>
           The code is
           ${external(
-            'https://github.com/phun-ky/mypackages.dev/blob/main/LICENSE',
+            'https://github.com/phun-ky/site-mypackages.dev/blob/main/LICENSE',
             'MIT licensed',
             'license noopener noreferrer'
           )}.

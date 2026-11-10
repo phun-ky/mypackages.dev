@@ -1,11 +1,11 @@
 # TODO — Pages, Routes, and Content (v1 → v2)
 
 > Planning notes from before the Nebula, refined redesign
-> ([#47](https://github.com/phun-ky/mypackages.dev/issues/47)), kept for their
-> page ideas. The v1 checklist is done; what's planned now is in
+> ([#47](https://github.com/phun-ky/site-mypackages.dev/issues/47)), kept for
+> their page ideas. The v1 checklist is done; what's planned now is in
 > [ROADMAP.md](ROADMAP.md), and the work is tracked in
-> [issues](https://github.com/phun-ky/mypackages.dev/issues). About moved to
-> `/help/about`.
+> [issues](https://github.com/phun-ky/site-mypackages.dev/issues). About moved
+> to `/help/about`.
 
 ## Goals
 
