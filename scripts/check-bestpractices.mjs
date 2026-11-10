@@ -4,7 +4,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 
 const ROOT = new URL('../', import.meta.url);
-const REPO = 'https://github.com/phun-ky/mypackages.dev/blob/main/';
+const REPO = 'https://github.com/phun-ky/site-mypackages.dev/blob/main/';
 const STATUSES = new Set(['Met', 'Unmet', 'N/A', '?']);
 const answers = JSON.parse(
   readFileSync(new URL('.bestpractices.json', ROOT), 'utf8')

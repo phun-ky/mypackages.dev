@@ -13,7 +13,7 @@ import './styles/profilePage.css';
 // account. Plain template strings, so Prettier never splits an end tag (#64).
 
 const PRIVACY =
-  'https://github.com/phun-ky/mypackages.dev/blob/main/PRIVACY.md';
+  'https://github.com/phun-ky/site-mypackages.dev/blob/main/PRIVACY.md';
 
 export type ProfilePagePropsType = PagePropsType;
 

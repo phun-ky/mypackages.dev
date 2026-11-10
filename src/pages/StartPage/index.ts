@@ -12,7 +12,7 @@ const html = String.raw;
 
 export type StartPagePropsType = PagePropsType;
 
-const ROADMAP = 'https://github.com/phun-ky/mypackages.dev/milestones';
+const ROADMAP = 'https://github.com/phun-ky/site-mypackages.dev/milestones';
 // Simple line icons, drawn with currentColor
 const icon = (paths: string) =>
   html`<svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true">

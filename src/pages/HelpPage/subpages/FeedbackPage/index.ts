@@ -77,10 +77,10 @@ Anything else we should know (workarounds, frequency, impact, etc.).
     <div class="help-hero">
       <span class="help-eyebrow">Feedback</span>
       <h1>Have feedback?</h1>
-      <p class="help-lede">If something is missing, unclear or wrong, tell me on GitHub. A bug has its own report, and a security problem goes privately, as the <a href="https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">security policy</a> says.</p>
+      <p class="help-lede">If something is missing, unclear or wrong, tell me on GitHub. A bug has its own report, and a security problem goes privately, as the <a href="https://github.com/phun-ky/site-mypackages.dev/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">security policy</a> says.</p>
       <div class="help-row">
         <a class="pill-button is-primary" href="${escapeAttr(feedbackUrl)}" target="_blank" rel="noopener noreferrer">Give feedback on GitHub</a>
-        <a class="pill-button" href="https://github.com/phun-ky/mypackages.dev/issues/new?template=bug_report.md" target="_blank" rel="noopener noreferrer">Report a bug</a>
+        <a class="pill-button" href="https://github.com/phun-ky/site-mypackages.dev/issues/new?template=bug_report.md" target="_blank" rel="noopener noreferrer">Report a bug</a>
         <a class="pill-button" href="/help" data-link>Back to Help</a>
       </div>
     </div>

@@ -5,11 +5,11 @@
   "description": "",
   "homepage": "https://mypackages.dev",
   "bugs": {
-    "url": "https://github.com/phun-ky/mypackages.dev/issues"
+    "url": "https://github.com/phun-ky/site-mypackages.dev/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phun-ky/mypackages.dev.git"
+    "url": "git+https://github.com/phun-ky/site-mypackages.dev.git"
   },
   "license": "MIT",
   "author": "Alexander Vassbotn Røyne-Helgesen",

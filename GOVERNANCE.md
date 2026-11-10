@@ -13,7 +13,7 @@ discussion with contributors.
 Decisions are made in public:
 
 - **Proposals** are made as
-  [GitHub issues](https://github.com/phun-ky/mypackages.dev/issues). Larger
+  [GitHub issues](https://github.com/phun-ky/site-mypackages.dev/issues). Larger
   changes, such as a new page, a new data source or anything that stores more
   about users, are discussed in an issue before work starts. The decision is
   recorded in the issue.
@@ -47,9 +47,9 @@ do the work, and the change is recorded in the roles table above.
 ## Continuity
 
 Today, one person holds everything needed to run the site: admin access to the
-[GitHub repository](https://github.com/phun-ky/mypackages.dev), the Supabase
-project with the database, users and edge functions, and the `mypackages.dev`
-domain.
+[GitHub repository](https://github.com/phun-ky/site-mypackages.dev), the
+Supabase project with the database, users and edge functions, and the
+`mypackages.dev` domain.
 
 - **The site** deploys from GitHub Actions, so it keeps working, and keeps
   deploying merged changes, without the maintainer's machine.

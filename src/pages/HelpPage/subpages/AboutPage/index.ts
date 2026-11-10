@@ -6,7 +6,7 @@ import {
 
 import '../../styles/helpPage.css';
 
-const REPOSITORY = 'https://github.com/phun-ky/mypackages.dev';
+const REPOSITORY = 'https://github.com/phun-ky/site-mypackages.dev';
 // Plain template strings, not `html`, so Prettier never splits an end tag
 // over two lines, which diff-dom can't read (#64)
 const hero = `<div class="help-hero">

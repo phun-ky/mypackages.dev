@@ -2,7 +2,7 @@ header:
   schema-version: 2.2.0
   last-updated: '2026-10-30'
   last-reviewed: '2026-10-30'
-  url: https://raw.githubusercontent.com/phun-ky/mypackages.dev/main/security-insights.yml
+  url: https://raw.githubusercontent.com/phun-ky/site-mypackages.dev/main/security-insights.yml
   comment: |
     Security information for mypackages.dev, in the OpenSSF Security
     Insights format. Keep it in step with SECURITY.md.
@@ -15,19 +15,19 @@ project:
       social: https://github.com/phun-ky
       primary: true
   documentation:
-    support-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md#supported-versions
+    support-policy: https://github.com/phun-ky/site-mypackages.dev/blob/main/SECURITY.md#supported-versions
   repositories:
     - name: mypackages.dev
-      url: https://github.com/phun-ky/mypackages.dev
+      url: https://github.com/phun-ky/site-mypackages.dev
       comment: |
         The website, its Supabase edge functions and database migrations.
   vulnerability-reporting:
     reports-accepted: true
     bug-bounty-available: false
-    policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md
+    policy: https://github.com/phun-ky/site-mypackages.dev/blob/main/SECURITY.md
     comment: |
       Report privately with GitHub's private vulnerability reporting
-      (https://github.com/phun-ky/mypackages.dev/security/advisories/new)
+      (https://github.com/phun-ky/site-mypackages.dev/security/advisories/new)
       or by email to the contact below.
     contact:
       name: mypackages.dev security contact
@@ -35,7 +35,7 @@ project:
       primary: true
 
 repository:
-  url: https://github.com/phun-ky/mypackages.dev
+  url: https://github.com/phun-ky/site-mypackages.dev
   status: active
   accepts-change-request: true
   accepts-automated-change-request: true
@@ -45,10 +45,10 @@ repository:
       social: https://github.com/phun-ky
       primary: true
   documentation:
-    security-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md
-    dependency-management-policy: https://github.com/phun-ky/mypackages.dev/blob/main/SECURITY.md#dependencies
+    security-policy: https://github.com/phun-ky/site-mypackages.dev/blob/main/SECURITY.md
+    dependency-management-policy: https://github.com/phun-ky/site-mypackages.dev/blob/main/SECURITY.md#dependencies
   license:
-    url: https://github.com/phun-ky/mypackages.dev/blob/main/README.md#licence
+    url: https://github.com/phun-ky/site-mypackages.dev/blob/main/README.md#licence
     expression: MIT AND CC-BY-NC-SA-4.0
   release:
     automated-pipeline: true
@@ -61,7 +61,7 @@ repository:
   security:
     assessments:
       self:
-        evidence: https://github.com/phun-ky/mypackages.dev/blob/main/ASSURANCE.md
+        evidence: https://github.com/phun-ky/site-mypackages.dev/blob/main/ASSURANCE.md
         date: '2026-10-30'
         comment: |
           The assurance case covers what is protected, the threat model, the
@@ -115,7 +115,7 @@ repository:
         results: {}
         comment: |
           Runs on every push to main and weekly; results at
-          https://scorecard.dev/viewer/?uri=github.com/phun-ky/mypackages.dev
+          https://scorecard.dev/viewer/?uri=github.com/phun-ky/site-mypackages.dev
       - name: pgTAP
         type: other
         rulesets:

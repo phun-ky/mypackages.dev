@@ -5,7 +5,7 @@
   <img alt="My packages: see how your npm packages are really doing: downloads, releases and health, from npm’s own data" src="./public/logo/banner-light.png">
 </picture>
 
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/phun-ky/mypackages.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/phun-ky/mypackages.dev)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/phun-ky/site-mypackages.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/phun-ky/site-mypackages.dev)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16089/badge)](https://www.bestpractices.dev/projects/16089)
 
 [My packages](https://mypackages.dev) shows how npm packages, and the people who

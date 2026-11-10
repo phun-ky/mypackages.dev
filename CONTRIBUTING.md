@@ -12,8 +12,8 @@ Everyone taking part is expected to follow the
 ## Asking a question
 
 Read the [FAQ](https://mypackages.dev/help/faq) first, and search the
-[issues](https://github.com/phun-ky/mypackages.dev/issues). If your question
-isn't answered there, open an issue and say what you were trying to do.
+[issues](https://github.com/phun-ky/site-mypackages.dev/issues). If your
+question isn't answered there, open an issue and say what you were trying to do.
 
 ## Reporting a bug
 
