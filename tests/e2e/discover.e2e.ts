@@ -8,8 +8,22 @@ const HOUR_MS = 60 * 60 * 1000;
 const hoursAgo = (hours: number) =>
   new Date(Date.now() - hours * HOUR_MS).toISOString();
 /**
- * Lookups of one kind, as the views return them. Each mocked package has
- * 3,000 downloads in the last complete month.
+ * The tile's download count for a mocked package: 100 a day over the last
+ * complete month, so 2.8K to 3.1K depending on how long that month was
+ */
+const lastMonthDownloads = () => {
+  const now = new Date();
+  const days = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 0)
+  ).getUTCDate();
+
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    maximumFractionDigits: 1
+  }).format(days * 100);
+};
+/**
+ * Lookups of one kind, as the views return them
  */
 const mockLookups = async (
   page: Page,
@@ -65,7 +79,7 @@ test.describe('/packages', () => {
 
     await expect(tiles).toHaveCount(2);
     await expect(tiles.first()).toContainText('The speccer package');
-    await expect(tiles.first()).toContainText('3K');
+    await expect(tiles.first()).toContainText(lastMonthDownloads());
     await expect(tiles.first()).toContainText('looked up by 2 people');
     await expect(tiles.nth(1)).toContainText('looked up by 1 person');
     await expect(

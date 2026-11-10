@@ -66,7 +66,7 @@
   "build_floss_tools_status": "Met",
   "build_floss_tools_justification": "npm, Node.js, TypeScript and Vite are all FLOSS.",
   "test_status": "Met",
-  "test_justification": "Unit and property tests (npm run test:unit), end-to-end tests in Chromium and Firefox (npm run test:e2e), Deno tests for the edge functions and pgTAP tests for the database: https://github.com/phun-ky/mypackages.dev/blob/main/README.md#checks",
+  "test_justification": "Unit and property tests (npm run test:unit), end-to-end tests in Chromium (npm run test:e2e), Deno tests for the edge functions and pgTAP tests for the database: https://github.com/phun-ky/mypackages.dev/blob/main/README.md#checks",
   "test_invocation_status": "Met",
   "test_invocation_justification": "npm run test:unit and npm run test:e2e, the standard way to run scripts in an npm project; the commands are in the README.",
   "test_most_status": "Met",
